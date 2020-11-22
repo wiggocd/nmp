@@ -15,14 +15,13 @@ class ViewController: NSViewController {
     var playlistItems: [PlaylistItem] = []
     
     let shadowRadius = CGFloat(8)
-    let artworkSize = NSSize(width: 100, height: 100)
-    let stdUICornerRadius = CGFloat(4)
+    let coverImageSize = NSSize(width: 640, height: 640)
+    let UICornerRadius = CGFloat(4)
     let bgBlurRadius = CGFloat(50)
-    let coverImageCornerRadius = CGFloat(12)
+    let coverImageCornerRadius = CGFloat(10)
     
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var detailsLabel: NSTextField!
-    @IBOutlet weak var playlistView: NSScrollView!
     @IBOutlet weak var coverImageView: NSImageView!
     @IBOutlet weak var playPauseButton: NSButton!
     @IBOutlet weak var timeSlider: NSSlider!
@@ -34,14 +33,7 @@ class ViewController: NSViewController {
         
         self.notificationCenter = NotificationCenter.default
         self.player = AudioPlayer()
-        self.timeSlider.minValue = 0
-        titleLabel.stringValue = ""
-        detailsLabel.stringValue = ""
-        positionLabel.stringValue = ""
-        durationLabel.stringValue = ""
-        positionLabel.stringValue = to_hhmmss(seconds: 0.0)
-        durationLabel.stringValue = to_hhmmss(seconds: 0.0)
-        timeSlider.doubleValue = 0.0
+        setUIDefaults()
         addObservers()
     }
 
@@ -62,9 +54,21 @@ class ViewController: NSViewController {
         notificationCenter.removeObserver(self)
     }
     
+    func setUIDefaults() {
+        titleLabel.stringValue = "Not Playing"
+        detailsLabel.stringValue = "No Media"
+        positionLabel.stringValue = to_hhmmss(seconds: 0.0)
+        durationLabel.stringValue = to_hhmmss(seconds: 0.0)
+        timeSlider.minValue = 0
+        timeSlider.maxValue = 0
+        timeSlider.doubleValue = 0.0
+        
+        resetCoverImage()
+    }
+    
     func setCoverImage(image: CGImage) {
-        let scale = CGFloat(image.height) / self.artworkSize.height
-        let size = NSSize(width: artworkSize.width * scale, height: artworkSize.height * scale)
+        let scale = coverImageSize.height / CGFloat(image.height)
+        let size = NSSize(width: coverImageSize.width * scale, height: coverImageSize.height * scale)
         
         coverImageView.image = NSImage(cgImage: image, size: size).roundCorners(withRadius: coverImageCornerRadius)
         
@@ -74,8 +78,17 @@ class ViewController: NSViewController {
         coverImageView.shadow = shadow
     }
     
-    func removeCoverImage() {
-        coverImageView.image = nil
+    func resetCoverImage() {
+        let image = NSImage()
+        image.size = coverImageSize
+        image.lockFocus()
+        NSColor(red: 0, green: 0, blue: 0, alpha: 0.1).set()
+        
+        let imageRect = NSRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
+        imageRect.fill()
+        image.unlockFocus()
+        
+        coverImageView.image = image.roundCorners(withRadius: coverImageCornerRadius)
     }
     
     func setBackgroundView() {
@@ -121,16 +134,8 @@ class ViewController: NSViewController {
     }
     
     func addPlaylistItemsToView(items: [PlaylistItem]) {
-        for item in items {
-            let contentSize = playlistView.contentSize
-            let view = NSTextView()
-            view.minSize = NSMakeSize(contentSize.width, 0.0)
-            view.maxSize = NSMakeSize(CGFloat.greatestFiniteMagnitude, CGFloat.greatestFiniteMagnitude)
-            view.insertText(item.name, replacementRange: NSMakeRange(0, 0))
+        for _ in items {
             
-            let documentView = NSView()
-            playlistView.documentView = documentView
-            documentView.addSubview(view)
         }
     }
     
@@ -182,12 +187,7 @@ class ViewController: NSViewController {
             createPlaylistItems(urls: player.playlist)
             addPlaylistItemsToView(items: playlistItems)
         } else {
-            titleLabel.stringValue = ""
-            detailsLabel.stringValue = ""
-            positionLabel.stringValue = to_hhmmss(seconds: 0.0)
-            durationLabel.stringValue = to_hhmmss(seconds: 0.0)
-            timeSlider.doubleValue = 0.0
-            removeCoverImage()
+            setUIDefaults()
 //            titleLabel.isHidden = true
 //            detailsLabel.isHidden = true
 //            playlistView.isHidden = true
@@ -215,6 +215,11 @@ class ViewController: NSViewController {
     @objc func playbackStopped(_ notification: Notification) {
         playPauseButton.title = "Play"
     }
+    
+    @IBAction func playlistAction(_ sender: Any) {
+        
+    }
+    
 }
 
 extension NSImage {
