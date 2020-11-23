@@ -1,6 +1,6 @@
 nmp - The New Music Player
 
-Written in Swift 4
+Written with AppKit in Swift 5
 
 
 ## Building

@@ -27,6 +27,10 @@ class ViewController: NSViewController {
     @IBOutlet weak var timeSlider: NSSlider!
     @IBOutlet weak var positionLabel: NSTextField!
     @IBOutlet weak var durationLabel: NSTextField!
+    @IBOutlet weak var playlistButton: NSButton!
+    @IBOutlet weak var playlistView: NSScrollView!
+    @IBOutlet weak var playlistOutlineView: NSOutlineView!
+    @IBOutlet weak var playlistTableColumn: NSTableColumn!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,10 +97,7 @@ class ViewController: NSViewController {
     
     func setBackgroundView() {
         if coverImageView != nil && coverImageView.image != nil {
-            let imageView = coverImageView.copy() as! NSImageView
-            let scale = NSScreen.main!.frame.height / CGFloat(self.player.metadata.artwork.height)
-            imageView.setFrameSize(NSSize(width: imageView.image!.size.width * scale, height: imageView.image!.size.height * scale))
-            view.addSubview(imageView, positioned: .below, relativeTo: view.subviews[0])
+            // Todo: add blurred background from artwork
         }
     }
     
@@ -134,8 +135,9 @@ class ViewController: NSViewController {
     }
     
     func addPlaylistItemsToView(items: [PlaylistItem]) {
-        for _ in items {
-            
+        for item in items {
+            let cell = playlistOutlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "DataCell"), owner: self) as? NSTableCellView // Returns nil
+            cell?.textField?.stringValue = item.name
         }
     }
     
@@ -180,7 +182,7 @@ class ViewController: NSViewController {
                 detailsLabel.stringValue = player.metadata.detailsString()
                 if self.player.metadata.artwork != nil {
                     setCoverImage(image: player.metadata.artwork)
-                    //setBackgroundView()
+                    setBackgroundView()
                 }
             }
             
@@ -217,9 +219,23 @@ class ViewController: NSViewController {
     }
     
     @IBAction func playlistAction(_ sender: Any) {
-        
+        if playlistView.isHidden {
+            playlistView.isHidden = false
+        } else {
+            playlistView.isHidden = true
+        }
     }
     
+}
+
+class PlaylistItem {
+    var name: String
+    var playlistIndex: Int
+    
+    init(name: String = "", playlistIndex: Int = 0) {
+        self.name = name
+        self.playlistIndex = playlistIndex
+    }
 }
 
 extension NSImage {
@@ -258,16 +274,6 @@ fileprivate extension NSImage {
 extension NSSlider {
     func reset() {
         doubleValue = minValue
-    }
-}
-
-class PlaylistItem {
-    var name: String
-    var playlistIndex: Int
-    
-    init(name: String = "", playlistIndex: Int = 0) {
-        self.name = name
-        self.playlistIndex = playlistIndex
     }
 }
 
