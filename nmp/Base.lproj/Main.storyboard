@@ -816,19 +816,19 @@
                                 </connections>
                             </slider>
                             <scrollView hidden="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZUU-ru-jEQ">
-                                <rect key="frame" x="20" y="20" width="404" height="80"/>
+                                <rect key="frame" x="0.0" y="0.0" width="444" height="100"/>
                                 <clipView key="contentView" drawsBackground="NO" id="vu6-q2-hY3">
-                                    <rect key="frame" x="1" y="1" width="402" height="78"/>
+                                    <rect key="frame" x="1" y="1" width="442" height="98"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" outlineTableColumn="wnY-SM-EmK" id="mzH-Gz-28f">
-                                            <rect key="frame" x="0.0" y="0.0" width="402" height="78"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="442" height="98"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="399" minWidth="16" maxWidth="1000" id="wnY-SM-EmK">
+                                                <tableColumn width="439" minWidth="16" maxWidth="1000" id="wnY-SM-EmK">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -841,11 +841,11 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="HeaderCell" id="rSg-3k-Sc1">
-                                                            <rect key="frame" x="1" y="1" width="399" height="17"/>
+                                                            <rect key="frame" x="1" y="1" width="439" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="F6a-I7-3TV">
-                                                                    <rect key="frame" x="0.0" y="1" width="399" height="14"/>
+                                                                    <rect key="frame" x="0.0" y="1" width="439" height="14"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Playlist" id="MGM-d3-XM3">
                                                                         <font key="font" metaFont="smallSystemBold"/>
                                                                         <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -862,19 +862,40 @@
                                                                 <outlet property="textField" destination="F6a-I7-3TV" id="O07-Xo-2Xl"/>
                                                             </connections>
                                                         </tableCellView>
+                                                        <tableCellView id="C34-az-z8U">
+                                                            <rect key="frame" x="1" y="20" width="439" height="17"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                            <subviews>
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Qa7-G7-pq0">
+                                                                    <rect key="frame" x="0.0" y="1" width="439" height="16"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="naO-Rs-yyP">
+                                                                        <font key="font" metaFont="system"/>
+                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                    </textFieldCell>
+                                                                </textField>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="Qa7-G7-pq0" firstAttribute="leading" secondItem="C34-az-z8U" secondAttribute="leading" constant="2" id="fsd-oM-QIc"/>
+                                                                <constraint firstAttribute="trailing" secondItem="Qa7-G7-pq0" secondAttribute="trailing" constant="2" id="s6b-FP-oZ1"/>
+                                                                <constraint firstItem="Qa7-G7-pq0" firstAttribute="top" secondItem="C34-az-z8U" secondAttribute="top" id="sYf-FV-cW8"/>
+                                                            </constraints>
+                                                            <connections>
+                                                                <outlet property="textField" destination="Qa7-G7-pq0" id="qzt-Ib-b3U"/>
+                                                            </connections>
+                                                        </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
                                             </tableColumns>
+                                            <connections>
+                                                <action selector="doubleClickedItem:" target="XfG-lQ-9wD" id="tyS-qX-eS5"/>
+                                            </connections>
                                         </outlineView>
                                     </subviews>
                                     <nil key="backgroundColor"/>
                                 </clipView>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="Grx-hN-O4c"/>
-                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="80" id="fXN-Wk-tIf"/>
-                                </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="uIz-Vr-VZp">
-                                    <rect key="frame" x="1" y="243" width="394" height="16"/>
+                                    <rect key="frame" x="1" y="83" width="442" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="O1y-DT-rWX">
@@ -890,25 +911,23 @@
                             <constraint firstItem="ccp-8a-79m" firstAttribute="top" secondItem="oS3-2p-Kj9" secondAttribute="bottom" constant="8" id="4Zo-95-dgz"/>
                             <constraint firstItem="3xK-Pi-Qal" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="7ds-vY-NQi"/>
                             <constraint firstItem="ccp-8a-79m" firstAttribute="leading" secondItem="J2Q-Jx-RCt" secondAttribute="trailing" constant="8" id="B3k-sA-cRg"/>
+                            <constraint firstItem="ZUU-ru-jEQ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Oqy-yU-Mwh" secondAttribute="bottom" constant="20" id="C2W-G4-dEm"/>
                             <constraint firstItem="J2Q-Jx-RCt" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="DG1-Rz-s5g"/>
-                            <constraint firstItem="ZUU-ru-jEQ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Oqy-yU-Mwh" secondAttribute="bottom" constant="20" id="DsE-MR-X5I"/>
                             <constraint firstItem="W3q-Vw-E4r" firstAttribute="top" secondItem="9sX-qc-cPp" secondAttribute="bottom" constant="18" id="GMj-lf-GXN"/>
                             <constraint firstAttribute="trailing" secondItem="9sX-qc-cPp" secondAttribute="trailing" constant="20" id="GwH-Tn-JdA"/>
                             <constraint firstItem="tcp-Og-jxF" firstAttribute="top" secondItem="ccp-8a-79m" secondAttribute="bottom" constant="18" id="H5p-X3-ORs"/>
-                            <constraint firstAttribute="trailing" secondItem="ZUU-ru-jEQ" secondAttribute="trailing" constant="20" id="Hmd-k8-2Vr"/>
                             <constraint firstItem="oS3-2p-Kj9" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="J7g-4z-RKL"/>
                             <constraint firstItem="W3q-Vw-E4r" firstAttribute="leading" secondItem="Z72-XO-r8D" secondAttribute="trailing" constant="12" id="Kag-7Y-PCY"/>
                             <constraint firstItem="rso-5a-nyJ" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="MY8-f8-yVF"/>
                             <constraint firstItem="9sX-qc-cPp" firstAttribute="top" relation="greaterThanOrEqual" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="204" id="Pa7-en-kpK"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Oqy-yU-Mwh" secondAttribute="bottom" constant="20" id="Q7W-vh-nRw"/>
-                            <constraint firstAttribute="bottom" secondItem="ZUU-ru-jEQ" secondAttribute="bottom" constant="20" id="QfN-yX-7tE"/>
                             <constraint firstItem="Z72-XO-r8D" firstAttribute="top" secondItem="ccp-8a-79m" secondAttribute="bottom" constant="18" id="SbU-1V-GWY"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Z72-XO-r8D" secondAttribute="bottom" constant="20" id="T94-vr-OLN"/>
                             <constraint firstItem="J2Q-Jx-RCt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="204" id="Vm4-Rq-SwA"/>
+                            <constraint firstAttribute="trailing" secondItem="ZUU-ru-jEQ" secondAttribute="trailing" id="Vuf-mo-qQ1"/>
                             <constraint firstItem="9sX-qc-cPp" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="204" id="WQQ-t7-hGw"/>
                             <constraint firstItem="Oqy-yU-Mwh" firstAttribute="top" secondItem="ccp-8a-79m" secondAttribute="bottom" constant="18" id="ZbF-L8-PGr"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="tcp-Og-jxF" secondAttribute="bottom" constant="20" id="Zr3-VR-Lcc"/>
-                            <constraint firstItem="ZUU-ru-jEQ" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="aVU-lh-B5z"/>
                             <constraint firstItem="3xK-Pi-Qal" firstAttribute="top" secondItem="rso-5a-nyJ" secondAttribute="bottom" constant="8" id="aXQ-Ph-SVJ"/>
                             <constraint firstItem="Z72-XO-r8D" firstAttribute="leading" secondItem="Oqy-yU-Mwh" secondAttribute="trailing" constant="12" id="bDJ-KQ-Jce"/>
                             <constraint firstItem="gjt-zg-tCa" firstAttribute="top" secondItem="J2Q-Jx-RCt" secondAttribute="bottom" constant="18" id="beT-Gh-MfT"/>
@@ -916,8 +935,11 @@
                             <constraint firstItem="rso-5a-nyJ" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="ezK-2r-5yT"/>
                             <constraint firstItem="9sX-qc-cPp" firstAttribute="leading" secondItem="ccp-8a-79m" secondAttribute="trailing" constant="8" id="hto-O7-inb"/>
                             <constraint firstItem="J2Q-Jx-RCt" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="204" id="iRT-q5-5pC"/>
+                            <constraint firstAttribute="bottom" secondItem="ZUU-ru-jEQ" secondAttribute="bottom" id="mIQ-KR-jSF"/>
+                            <constraint firstItem="ZUU-ru-jEQ" firstAttribute="top" secondItem="Oqy-yU-Mwh" secondAttribute="bottom" constant="20" id="nV9-Qh-DoN"/>
                             <constraint firstItem="Oqy-yU-Mwh" firstAttribute="leading" secondItem="tcp-Og-jxF" secondAttribute="trailing" constant="12" id="orc-4s-2uf"/>
                             <constraint firstItem="oS3-2p-Kj9" firstAttribute="top" secondItem="3xK-Pi-Qal" secondAttribute="bottom" id="rtM-Qm-qa2"/>
+                            <constraint firstItem="ZUU-ru-jEQ" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="sF9-EF-kCy"/>
                             <constraint firstItem="tcp-Og-jxF" firstAttribute="leading" secondItem="gjt-zg-tCa" secondAttribute="trailing" constant="12" id="wkE-Gl-0SX"/>
                             <constraint firstItem="gjt-zg-tCa" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="xvh-AC-jZ2"/>
                         </constraints>
@@ -929,8 +951,8 @@
                         <outlet property="playPauseButton" destination="Oqy-yU-Mwh" id="G2b-65-KwS"/>
                         <outlet property="playlistButton" destination="W3q-Vw-E4r" id="3Vs-nF-khf"/>
                         <outlet property="playlistOutlineView" destination="mzH-Gz-28f" id="qoP-1u-lvK"/>
+                        <outlet property="playlistScrollView" destination="ZUU-ru-jEQ" id="C98-Cx-A4h"/>
                         <outlet property="playlistTableColumn" destination="wnY-SM-EmK" id="qTi-TM-z4Q"/>
-                        <outlet property="playlistView" destination="ZUU-ru-jEQ" id="Cag-bO-hAz"/>
                         <outlet property="positionLabel" destination="J2Q-Jx-RCt" id="E4A-A7-Ret"/>
                         <outlet property="timeSlider" destination="ccp-8a-79m" id="7Ou-1s-woR"/>
                         <outlet property="titleLabel" destination="3xK-Pi-Qal" id="s26-NB-fqd"/>

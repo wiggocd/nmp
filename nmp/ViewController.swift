@@ -8,17 +8,20 @@
 
 import Cocoa
 
-class ViewController: NSViewController {
+class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource {
     var notificationCenter: NotificationCenter!
     var player: AudioPlayer!
     var positionTimer: Timer!
     var playlistItems: [PlaylistItem] = []
+    var lastSelectedPlaylistItem = 0
+    var playlistItemClickTimer = Timer()
     
     let shadowRadius = CGFloat(8)
     let coverImageSize = NSSize(width: 640, height: 640)
     let UICornerRadius = CGFloat(4)
     let bgBlurRadius = CGFloat(50)
     let coverImageCornerRadius = CGFloat(10)
+    let doubleClickInterval = 0.2
     
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var detailsLabel: NSTextField!
@@ -28,9 +31,8 @@ class ViewController: NSViewController {
     @IBOutlet weak var positionLabel: NSTextField!
     @IBOutlet weak var durationLabel: NSTextField!
     @IBOutlet weak var playlistButton: NSButton!
-    @IBOutlet weak var playlistView: NSScrollView!
+    @IBOutlet weak var playlistScrollView: NSScrollView!
     @IBOutlet weak var playlistOutlineView: NSOutlineView!
-    @IBOutlet weak var playlistTableColumn: NSTableColumn!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +41,8 @@ class ViewController: NSViewController {
         self.player = AudioPlayer()
         setUIDefaults()
         addObservers()
+        playlistOutlineView.delegate = self
+        playlistOutlineView.dataSource = self
     }
 
     override var representedObject: Any? {
@@ -134,11 +138,43 @@ class ViewController: NSViewController {
         }
     }
     
-    func addPlaylistItemsToView(items: [PlaylistItem]) {
-        for item in items {
-            let cell = playlistOutlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "DataCell"), owner: self) as? NSTableCellView // Returns nil
+    func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
+        if ((item as? PlaylistItem) != nil) {
+            return 1
+        } else {
+            return playlistItems.count
+        }
+    }
+    
+    func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
+        return false
+    }
+    
+    func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
+        if let item = item as? PlaylistItem {
+            return item
+        } else {
+            return playlistItems[index]
+        }
+    }
+    
+    func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
+        let cell = outlineView.makeView(withIdentifier: tableColumn!.identifier, owner: nil) as? NSTableCellView // Returns nil if no view cell is in place within interface builder
+        
+        if let item = item as? PlaylistItem {
             cell?.textField?.stringValue = item.name
         }
+        
+        return cell
+    }
+    
+    // Todo: handle playlist item clicks and drags
+    
+    @IBAction func playlistItemClicked(_ sender: NSOutlineView) {
+        if sender.selectedRow == lastSelectedPlaylistItem {
+            
+        }
+        lastSelectedPlaylistItem = sender.selectedRow
     }
     
     @IBAction func openAction(_ sender: Any) {
@@ -187,7 +223,7 @@ class ViewController: NSViewController {
             }
             
             createPlaylistItems(urls: player.playlist)
-            addPlaylistItemsToView(items: playlistItems)
+            playlistOutlineView.reloadData()
         } else {
             setUIDefaults()
 //            titleLabel.isHidden = true
@@ -219,16 +255,16 @@ class ViewController: NSViewController {
     }
     
     @IBAction func playlistAction(_ sender: Any) {
-        if playlistView.isHidden {
-            playlistView.isHidden = false
+        if playlistScrollView.isHidden {
+            playlistScrollView.isHidden = false
         } else {
-            playlistView.isHidden = true
+            playlistScrollView.isHidden = true
         }
     }
     
 }
 
-class PlaylistItem {
+class PlaylistItem: NSObject {
     var name: String
     var playlistIndex: Int
     
