@@ -178,8 +178,12 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
     override func keyDown(with event: NSEvent) {
         let keyCode = event.keyCode
         switch keyCode {
+        case Keycode.space:
+            player.playpause()
         case Keycode.returnKey:
             player.playlistIndex = playlistOutlineView.selectedRow
+        case Keycode.delete:
+            player.removeMedia(atIndex: playlistOutlineView.selectedRow)
         default:
             break
         }
