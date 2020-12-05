@@ -32,7 +32,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 do {
                     player = try AVAudioPlayer(contentsOf: currentUrl)
                     mediaChanged()
-                    print(player.url)
                 } catch let error {
                     print(error.localizedDescription)
                 }
