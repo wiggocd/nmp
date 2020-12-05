@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		405BC659257BDF80008BB376 /* Keycodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405BC658257BDF80008BB376 /* Keycodes.swift */; };
 		40A65F6D2569CF7D0072FB51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F6C2569CF7D0072FB51 /* AppDelegate.swift */; };
 		40A65F6F2569CF7D0072FB51 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F6E2569CF7D0072FB51 /* ViewController.swift */; };
 		40A65F712569CF7E0072FB51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40A65F702569CF7E0072FB51 /* Assets.xcassets */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		405BC658257BDF80008BB376 /* Keycodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keycodes.swift; sourceTree = "<group>"; };
 		40A65F692569CF7D0072FB51 /* nmp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nmp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40A65F6C2569CF7D0072FB51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		40A65F6E2569CF7D0072FB51 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				40A65F722569CF7E0072FB51 /* Main.storyboard */,
 				40A65F752569CF7E0072FB51 /* Info.plist */,
 				40A65F762569CF7E0072FB51 /* nmp.entitlements */,
+				405BC658257BDF80008BB376 /* Keycodes.swift */,
 			);
 			path = nmp;
 			sourceTree = "<group>";
@@ -265,6 +268,7 @@
 			files = (
 				40A65F9D2569D3720072FB51 /* Player.swift in Sources */,
 				40A65F6F2569CF7D0072FB51 /* ViewController.swift in Sources */,
+				405BC659257BDF80008BB376 /* Keycodes.swift in Sources */,
 				40A65F6D2569CF7D0072FB51 /* AppDelegate.swift in Sources */,
 				40A65F9B2569D2840072FB51 /* Library.swift in Sources */,
 				40A65F9F2569D38F0072FB51 /* Filesystem.swift in Sources */,

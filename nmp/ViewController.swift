@@ -80,11 +80,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
         let size = NSSize(width: coverImageSize.width * scale, height: coverImageSize.height * scale)
         
         coverImageView.image = NSImage(cgImage: image, size: size).roundCorners(withRadius: coverImageCornerRadius)
-        
-        let shadow = NSShadow()
-        shadow.shadowColor = NSColor.lightGray
-        shadow.shadowBlurRadius = 10
-        coverImageView.shadow = shadow
+        setCoverImageShadow()
     }
     
     func resetCoverImage() {
@@ -92,12 +88,19 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
         image.size = coverImageSize
         image.lockFocus()
         NSColor(red: 0, green: 0, blue: 0, alpha: 0.1).set()
-        
+
         let imageRect = NSRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
         imageRect.fill()
         image.unlockFocus()
-        
+
         coverImageView.image = image.roundCorners(withRadius: coverImageCornerRadius)
+    }
+    
+    func setCoverImageShadow() {
+        let shadow = NSShadow()
+        shadow.shadowColor = NSColor.lightGray
+        shadow.shadowBlurRadius = 10
+        coverImageView.shadow = shadow
     }
     
     func setBackgroundView() {
@@ -172,6 +175,16 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
         return cell
     }
     
+    override func keyDown(with event: NSEvent) {
+        let keyCode = event.keyCode
+        switch keyCode {
+        case Keycode.returnKey:
+            player.playlistIndex = playlistOutlineView.selectedRow
+        default:
+            break
+        }
+    }
+    
     // Todo: handle playlist item clicks and drags
     
     @IBAction func playlistOutlineViewAction(_ sender: Any) {
@@ -223,6 +236,8 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
                 if player.metadata.artwork != nil {
                     setCoverImage(image: player.metadata.artwork)
                     setBackgroundView()
+                } else {
+                    resetCoverImage()
                 }
             }
         }

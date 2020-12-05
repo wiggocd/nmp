@@ -24,7 +24,21 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     var metadata: AudioMetadata!
     var lastIndex = 0
-    var currentUrl: URL!
+    var currentUrl: URL! {
+        didSet {
+            if currentUrl == nil {
+                player = nil
+            } else {
+                do {
+                    player = try AVAudioPlayer(contentsOf: currentUrl)
+                    mediaChanged()
+                    print(player.url)
+                } catch let error {
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
     
     @Published var state = PlayerState.idle {
         didSet { stateChanged() }
@@ -38,119 +52,102 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     func addMedia(urls: [URL?]) {
         for url in urls {
             if url!.isFileURL && allowedFileTypes.contains(url!.pathExtension) {
-                self.playlist.append(url!)
+                playlist.append(url!)
             }
         }
         
-        if self.playerHasMedia() == false {
-            self.play()
+        if playerHasMedia() == false {
+            playlistIndex = 0
+            play()
         }
-        
-        self.mediaChanged()
     }
     
     func updatePlayer() {
-        self.currentUrl = self.playlist[self.playlistIndex]
-        self.metadata = AudioMetadata(playerItem: AVPlayerItem(url: self.currentUrl))
-        self.lastIndex = self.playlistIndex
+        metadata = AudioMetadata(playerItem: AVPlayerItem(url: currentUrl))
+        lastIndex = playlistIndex
         
-        do {
-            self.player = try AVAudioPlayer(contentsOf: self.currentUrl)
-            self.player.delegate = self
-        } catch let error {
-            print(error.localizedDescription)
-        }
+        player.delegate = self
         
-        self.notificationCenter.post(name: .mediaChanged, object: nil)
+        notificationCenter.post(name: .mediaChanged, object: nil)
     }
 
     func play() {
-        if self.playlistHasMedia() {
-            if self.player == nil || self.playerHasMedia() == false || self.playlistIndex != self.lastIndex {
-                self.updatePlayer()
+        if playlistHasMedia() {
+            if player == nil || playerHasMedia() == false || playlistIndex != lastIndex {
+                updatePlayer()
             }
             
-            self.player.play()
-            self.state = .playing
+            player.play()
+            state = .playing
         }
     }
     
     func pause() {
-        if self.playerHasMedia() {
-            switch self.state {
+        if playerHasMedia() {
+            switch state {
             case .idle, .paused:
                 break
             case .playing:
-                self.player.pause()
+                player.pause()
             }
         }
         
-        if self.state == .playing {
-            self.state = .paused
+        if state == .playing {
+            state = .paused
         }
     }
     
     func playpause() {
-        if self.isPlaying() {
-            self.pause()
+        if isPlaying() {
+            pause()
         } else {
-            self.play()
+            play()
         }
     }
     
     func stop() {
-        if self.player != nil {
-            self.player.stop()
-            self.state = .idle
+        if player != nil {
+            player.stop()
+            state = .idle
         }
     }
     
     func nextTrack() {
-        if self.playlistHasMedia() && self.playlist.count - 1 >= self.playlistIndex + 1 {
-            let wasPlaying = self.isPlaying()
-            self.playlistIndex += 1
-            self.updatePlayer()
+        if playlistHasMedia() && playlist.count - 1 >= playlistIndex + 1 {
+            let wasPlaying = isPlaying()
+            playlistIndex += 1
             
             if wasPlaying {
-                self.play()
+                play()
             }
         }
     }
     
     func previousTrack() {
-        if self.playlistHasMedia() && self.playlistIndex > 0 {
-            let wasPlaying = self.isPlaying()
-            self.playlistIndex -= 1
-            self.updatePlayer()
+        if playlistHasMedia() && playlistIndex > 0 {
+            let wasPlaying = isPlaying()
+            playlistIndex -= 1
             
             if wasPlaying {
-                self.play()
+                play()
             }
         }
     }
     
     func isPlaying() -> Bool {
-        return self.player != nil && self.player.isPlaying
+        return player != nil && player.isPlaying
     }
     
     func playlistHasMedia(fromCurrentIndex: Bool = true) -> Bool {
         if fromCurrentIndex {
-            if self.playlist.count - self.playlistIndex > 0 {
-                return true
-            } else {
-                return false
-            }
+            return playlist.count - playlistIndex > 0
         } else {
-            if self.playlist.count > 0 {
-                return true
-            } else {
-                return false
-            }
+            return playlist.count > 0
         }
     }
     
     func playerHasMedia() -> Bool {
-        if self.player == nil || self.player.currentDevice == nil {
+        if player == nil || player.currentDevice == nil {
             return false
         } else {
             return true
@@ -158,83 +155,80 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func duration() -> Double {
-        if self.player != nil {
-            return self.player.duration
+        if player != nil {
+            return player.duration
         } else {
             return 0.0
         }
     }
     
     func position() -> TimeInterval {
-        if self.player != nil {
-            return self.player.currentTime
+        if player != nil {
+            return player.currentTime
         } else {
             return 0.0
         }
     }
     
     func setPosition(position: Double) {
-        if self.player != nil && position < self.duration() {
-            self.player.currentTime = position
+        if player != nil && position < duration() {
+            player.currentTime = position
         }
     }
     
     func finishPlayback() {
-        self.stop()
-        self.updatePlayer()
-        self.setPosition(position: 0.0)
+        stop()
+        updatePlayer()
+        setPosition(position: 0.0)
     }
     
     func clear() {
-        if self.player != nil && self.playlistHasMedia() {
-            self.stop()
-            self.player = nil
-            self.playlist = []
-            self.playlistIndex = 0
-            self.currentUrl = nil
-            self.metadata = nil
-            self.mediaChanged()
+        if player != nil && playlistHasMedia() {
+            stop()
+            currentUrl = nil
+            playlist = []
+            playlistIndex = 0
+            currentUrl = nil
+            metadata = nil
         }
     }
     
     func mediaChanged() {
-        self.notificationCenter.post(name: .mediaChanged, object: nil)
-    }
-    
-    private func stateChanged() {
-        switch self.state {
-        case .idle:
-            self.notificationCenter.post(name: .playbackStopped, object: nil)
-        case .playing:
-            notificationCenter.post(name: .playbackStarted, object: nil)
-        case .paused:
-            notificationCenter.post(name: .playbackPaused, object: nil)
-        }
+        notificationCenter.post(name: .mediaChanged, object: nil)
     }
     
     func seekTrack(index: Int) {
-        if index < playlist.count {
-            do {
-                player = try AVAudioPlayer(contentsOf: playlist[index])
-            } catch let error {
-                print(error.localizedDescription)
-            }
+        if index >= 0 && index < playlist.count {
+            currentUrl = playlist[index]
+            updatePlayer()
             
-            let lastState = state
+            let wasPlaying = isPlaying()
             play()
-            if lastState != .playing {
+            if wasPlaying {
                 pause()
             }
         }
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        self.playlistIndex += 1
-        if self.playlistHasMedia() {
-            self.play()
+        playlistIndex += 1
+        lastIndex = playlistIndex
+        if playlistHasMedia() {
+            play()
         } else {
-            self.playlistIndex -= 1
-            self.finishPlayback()
+            playlistIndex -= 1
+            finishPlayback()
+        }
+    }
+    
+    private func stateChanged() {
+        switch state {
+        case .idle:
+            notificationCenter.post(name: .playbackStopped, object: nil)
+        case .playing:
+            notificationCenter.post(name: .playbackStarted, object: nil)
+        case .paused:
+            notificationCenter.post(name: .playbackPaused, object: nil)
         }
     }
 }

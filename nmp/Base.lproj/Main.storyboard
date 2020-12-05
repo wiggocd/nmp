@@ -767,7 +767,7 @@
                                     <constraint firstAttribute="height" constant="137" id="pW3-Mj-6bl"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="137" id="qSY-kQ-VQ4"/>
                                 </constraints>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="9Nz-Xx-T4y"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" id="9Nz-Xx-T4y"/>
                             </imageView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oS3-2p-Kj9">
                                 <rect key="frame" x="197" y="182" width="50" height="16"/>
@@ -953,7 +953,6 @@
                         <outlet property="playlistButton" destination="W3q-Vw-E4r" id="3Vs-nF-khf"/>
                         <outlet property="playlistOutlineView" destination="mzH-Gz-28f" id="qoP-1u-lvK"/>
                         <outlet property="playlistScrollView" destination="ZUU-ru-jEQ" id="C98-Cx-A4h"/>
-                        <outlet property="playlistTableColumn" destination="wnY-SM-EmK" id="qTi-TM-z4Q"/>
                         <outlet property="positionLabel" destination="J2Q-Jx-RCt" id="E4A-A7-Ret"/>
                         <outlet property="timeSlider" destination="ccp-8a-79m" id="7Ou-1s-woR"/>
                         <outlet property="titleLabel" destination="3xK-Pi-Qal" id="s26-NB-fqd"/>
