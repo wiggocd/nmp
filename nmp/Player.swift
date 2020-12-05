@@ -12,8 +12,16 @@ import AVFoundation
 class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     var player: AVAudioPlayer!
     private var notificationCenter: NotificationCenter!
-    var playlist: [URL] = []
-    var playlistIndex = 0
+    var playlist: [URL] = [] {
+        didSet {
+            notificationCenter.post(name: .playlistChanged, object: nil)
+        }
+    }
+    var playlistIndex = 0 {
+        didSet {
+            seekTrack(index: playlistIndex)
+        }
+    }
     var metadata: AudioMetadata!
     var lastIndex = 0
     var currentUrl: URL!
@@ -204,6 +212,22 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
     
+    func seekTrack(index: Int) {
+        if index < playlist.count {
+            do {
+                player = try AVAudioPlayer(contentsOf: playlist[index])
+            } catch let error {
+                print(error.localizedDescription)
+            }
+            
+            let lastState = state
+            play()
+            if lastState != .playing {
+                pause()
+            }
+        }
+    }
+    
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         self.playlistIndex += 1
         if self.playlistHasMedia() {
@@ -222,6 +246,14 @@ enum PlayerState {
 }
 
 extension Notification.Name {
+    static var playlistChanged: Notification.Name {
+        return .init("AudioPlayer.playlistChanged")
+    }
+    
+    static var mediaChanged: Notification.Name {
+        return .init("AudioPlayer.mediaChanged")
+    }
+    
     static var playbackStarted: Notification.Name {
         return .init("AudioPlayer.playbackStarted")
     }
@@ -232,10 +264,6 @@ extension Notification.Name {
     
     static var playbackStopped: Notification.Name {
         return .init("AudioPlayer.playbackStopped")
-    }
-    
-    static var mediaChanged: Notification.Name {
-        return .init("AudioPlayer.mediaChanged)")
     }
     
     static var trackPositionChanged: Notification.Name {

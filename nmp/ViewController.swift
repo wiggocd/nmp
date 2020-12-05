@@ -37,12 +37,10 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.notificationCenter = NotificationCenter.default
-        self.player = AudioPlayer()
+        notificationCenter = NotificationCenter.default
+        player = AudioPlayer()
         setUIDefaults()
         addObservers()
-        playlistOutlineView.delegate = self
-        playlistOutlineView.dataSource = self
     }
 
     override var representedObject: Any? {
@@ -52,6 +50,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
     }
     
     func addObservers() {
+        notificationCenter.addObserver(self, selector: #selector(playlistChanged), name: .playlistChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(mediaChanged), name: .mediaChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(playbackStarted), name: .playbackStarted, object: nil)
         notificationCenter.addObserver(self, selector: #selector(playbackPaused), name: .playbackPaused, object: nil)
@@ -70,6 +69,8 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
         timeSlider.minValue = 0
         timeSlider.maxValue = 0
         timeSlider.doubleValue = 0.0
+        playlistOutlineView.delegate = self
+        playlistOutlineView.dataSource = self
         
         resetCoverImage()
     }
@@ -106,33 +107,34 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
     }
     
     func play() {
-        self.player.play()
-        self.startPositionTimer()
+        player.play()
+        startPositionTimer()
     }
     
     func pause() {
-        self.player.pause()
-        if self.positionTimer != nil {
-            self.positionTimer.invalidate()
-            self.positionTimer = nil
+        player.pause()
+        if positionTimer != nil {
+            positionTimer.invalidate()
+            positionTimer = nil
         }
     }
     
     func playpause() {
-        if self.player.state == .playing {
-            self.pause()
+        if player.state == .playing {
+            pause()
         } else {
-            self.play()
+            play()
         }
     }
     
     func startPositionTimer() {
-        if self.positionTimer == nil || !self.positionTimer.isValid {
-            self.positionTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.updatePosition), userInfo: nil, repeats: true)
+        if positionTimer == nil || !positionTimer.isValid {
+            positionTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updatePosition), userInfo: nil, repeats: true)
         }
     }
     
     func createPlaylistItems(urls: [URL]) {
+        playlistItems = []
         for i in 0...urls.count-1 {
             playlistItems.append(PlaylistItem(name: fileDisplayName(path: urls[i].path), playlistIndex: i))
         }
@@ -159,22 +161,27 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
     }
     
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        let cell = outlineView.makeView(withIdentifier: tableColumn!.identifier, owner: nil) as? NSTableCellView // Returns nil if no view cell is in place within interface builder
+        let cell = outlineView.makeView(withIdentifier: tableColumn!.identifier, owner: tableColumn?.headerCell) as? NSTableCellView // Returns nil if no view cell is in place within interface builder
         
         if let item = item as? PlaylistItem {
             cell?.textField?.stringValue = item.name
         }
+        
+        cell?.textField?.textColor = NSColor.controlTextColor
         
         return cell
     }
     
     // Todo: handle playlist item clicks and drags
     
-    @IBAction func playlistItemClicked(_ sender: NSOutlineView) {
-        if sender.selectedRow == lastSelectedPlaylistItem {
-            
+    @IBAction func playlistOutlineViewAction(_ sender: Any) {
+        
+    }
+    
+    @IBAction func playlistOutlineViewDoubleAction(_ sender: Any) {
+        if let sender = sender as? NSOutlineView {
+            player.playlistIndex = sender.selectedRow
         }
-        lastSelectedPlaylistItem = sender.selectedRow
     }
     
     @IBAction func openAction(_ sender: Any) {
@@ -182,60 +189,45 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
     }
     
     @IBAction func playPauseAction(_ sender: Any) {
-        self.playpause()
+        playpause()
     }
     
     @IBAction func nextTrackAction(_ sender: Any) {
-        self.player.nextTrack()
+        player.nextTrack()
     }
     
     @IBAction func previousTrackAction(_ sender: Any) {
-        self.player.previousTrack()
+        player.previousTrack()
     }
     
     @IBAction func timeSliderMoved(_ sender: Any) {
-        self.player.setPosition(position: timeSlider.doubleValue)
-        self.positionLabel.stringValue = to_hhmmss(seconds: player.position())
+        player.setPosition(position: timeSlider.doubleValue)
+        positionLabel.stringValue = to_hhmmss(seconds: player.position())
     }
     
     @objc func updatePosition() {
-        self.timeSlider.doubleValue = player.position()
-        self.positionLabel.stringValue = to_hhmmss(seconds: player.position())
+        timeSlider.doubleValue = player.position()
+        positionLabel.stringValue = to_hhmmss(seconds: player.position())
+    }
+    
+    @objc func playlistChanged(_ notification: Notification) {
+        createPlaylistItems(urls: player.playlist)
+        playlistOutlineView.reloadData()
     }
     
     @objc func mediaChanged(_ notification: Notification) {
-        if self.player.playlistHasMedia() {
-//            titleLabel.isHidden = false
-//            detailsLabel.isHidden = false
-//            playlistView.isHidden = false
-//            coverImageView.isHidden = false
-//            timeSlider.isHidden = false
-//            positionLabel.isHidden = false
-//            durationLabel.isHidden = false
-            
-            if self.player.metadata != nil {
+        if player.playlistHasMedia() {
+            if player.metadata != nil {
                 titleLabel.stringValue = player.metadata.title
                 detailsLabel.stringValue = player.metadata.detailsString()
-                if self.player.metadata.artwork != nil {
+                if player.metadata.artwork != nil {
                     setCoverImage(image: player.metadata.artwork)
                     setBackgroundView()
                 }
             }
-            
-            createPlaylistItems(urls: player.playlist)
-            playlistOutlineView.reloadData()
-        } else {
-            setUIDefaults()
-//            titleLabel.isHidden = true
-//            detailsLabel.isHidden = true
-//            playlistView.isHidden = true
-//            coverImageView.isHidden = true
-//            timeSlider.isHidden = true
-//            positionLabel.isHidden = true
-//            durationLabel.isHidden = true
         }
         
-        timeSlider.maxValue = self.player.duration()
+        timeSlider.maxValue = player.duration()
         timeSlider.reset()
         positionLabel.stringValue = to_hhmmss(seconds: 0.0)
         durationLabel.stringValue = to_hhmmss(seconds: player.duration())
@@ -303,7 +295,7 @@ extension NSImage {
 fileprivate extension NSImage {
     var cgImage: CGImage? {
         var rect = CGRect(origin: .zero, size: size)
-        return self.cgImage(forProposedRect: &rect, context: nil, hints: nil)
+        return cgImage(forProposedRect: &rect, context: nil, hints: nil)
     }
 }
 

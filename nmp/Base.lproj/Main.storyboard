@@ -817,7 +817,7 @@
                             </slider>
                             <scrollView hidden="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZUU-ru-jEQ">
                                 <rect key="frame" x="0.0" y="0.0" width="444" height="100"/>
-                                <clipView key="contentView" drawsBackground="NO" id="vu6-q2-hY3">
+                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="vu6-q2-hY3">
                                     <rect key="frame" x="1" y="1" width="442" height="98"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -825,7 +825,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="442" height="98"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
-                                            <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
                                                 <tableColumn width="439" minWidth="16" maxWidth="1000" id="wnY-SM-EmK">
@@ -888,11 +888,12 @@
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
-                                                <action selector="doubleClickedItem:" target="XfG-lQ-9wD" id="tyS-qX-eS5"/>
+                                                <action selector="playlistOutlineViewAction:" target="XfG-lQ-9wD" id="9cE-fT-1Qh"/>
+                                                <action trigger="doubleAction" selector="playlistOutlineViewDoubleAction:" target="XfG-lQ-9wD" id="hIT-CV-hGT"/>
                                             </connections>
                                         </outlineView>
                                     </subviews>
-                                    <nil key="backgroundColor"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="uIz-Vr-VZp">
                                     <rect key="frame" x="1" y="83" width="442" height="16"/>
