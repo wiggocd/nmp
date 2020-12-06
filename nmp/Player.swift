@@ -62,6 +62,13 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func updatePlayer() {
+        updateMetadata()
+        lastIndex = playlistIndex
+        player.delegate = self
+        notificationCenter.post(name: .mediaChanged, object: nil)
+    }
+    
+    func updateMetadata() {
         metadata = AudioMetadata(playerItem: AVPlayerItem(url: currentUrl))
         if metadata.artwork == nil {
             let pathComponents = currentUrl.pathComponents
@@ -73,6 +80,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             }
             
             let directoryURL = URL(fileURLWithPath: directoryPath)
+            
             if directoryURL.hasDirectoryPath {
                 let coverArtURL = getCoverArt(fromDirectory: directoryURL)
                 if coverArtURL != nil {
@@ -97,12 +105,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 }
             }
         }
-        
-        lastIndex = playlistIndex
-        
-        player.delegate = self
-        
-        notificationCenter.post(name: .mediaChanged, object: nil)
     }
 
     func play() {

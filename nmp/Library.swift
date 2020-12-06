@@ -50,6 +50,17 @@ class AudioMetadata {
     }
 }
 
+class PlaylistItem: NSObject {
+    var name: String
+    var playlistIndex: Int
+    
+    init(name: String = "", playlistIndex: Int = 0) {
+        self.name = name
+        self.playlistIndex = playlistIndex
+    }
+}
+
+
 func filterToSupportedOnly(urls: [URL?]) -> [URL?] {
     var ret: [URL] = []
     
