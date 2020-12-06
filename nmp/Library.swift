@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AppKit
 import AVFoundation
 
 let progName = "nmp"
@@ -17,6 +18,7 @@ let pathSep = "/"
 let extSep = "."
 let alpha = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 let alphaReverse = alpha.reversed()
+let REORDER_PASTEBOARD_TYPE = NSPasteboard.PasteboardType((Bundle.main.bundleIdentifier ?? "")+".item")
 
 class AudioMetadata {
     var title: String = ""

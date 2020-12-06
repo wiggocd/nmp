@@ -8,13 +8,14 @@
 
 import Cocoa
 
-class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource {
+class ViewController: NSViewController, NSOutlineViewDelegate {
     var notificationCenter: NotificationCenter!
     var player: AudioPlayer!
     var positionTimer: Timer!
     var playlistItems: [PlaylistItem] = []
     var lastSelectedPlaylistItem = 0
     var playlistItemClickTimer = Timer()
+    var draggedNode: AnyObject! = nil
     
     let shadowRadius = CGFloat(8)
     let coverImageSize = NSSize(width: 640, height: 640)
@@ -41,24 +42,13 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
         player = AudioPlayer()
         setUIDefaults()
         addObservers()
+        initialiseDragDrop()
     }
 
     override var representedObject: Any? {
         didSet {
         // Update the view, if already loaded.
         }
-    }
-    
-    func addObservers() {
-        notificationCenter.addObserver(self, selector: #selector(playlistChanged), name: .playlistChanged, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(mediaChanged), name: .mediaChanged, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(playbackStarted), name: .playbackStarted, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(playbackPaused), name: .playbackPaused, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(playbackStopped), name: .playbackStopped, object: nil)
-    }
-    
-    func removeObserver() {
-        notificationCenter.removeObserver(self)
     }
     
     func setUIDefaults() {
@@ -73,6 +63,24 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
         playlistOutlineView.dataSource = self
         
         resetCoverImage()
+    }
+    
+    func addObservers() {
+        notificationCenter.addObserver(self, selector: #selector(playlistChanged), name: .playlistChanged, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(mediaChanged), name: .mediaChanged, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(playbackStarted), name: .playbackStarted, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(playbackPaused), name: .playbackPaused, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(playbackStopped), name: .playbackStopped, object: nil)
+    }
+    
+    func initialiseDragDrop() {
+        playlistOutlineView.registerForDraggedTypes([REORDER_PASTEBOARD_TYPE])
+        playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation(), forLocal: false)
+        playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation.every, forLocal: true)
+    }
+    
+    func removeObserver() {
+        notificationCenter.removeObserver(self)
     }
     
     func setCoverImage(image: CGImage) {
