@@ -815,7 +815,7 @@
                                     <action selector="timeSliderMoved:" target="XfG-lQ-9wD" id="5C3-ol-DdW"/>
                                 </connections>
                             </slider>
-                            <scrollView hidden="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZUU-ru-jEQ">
+                            <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZUU-ru-jEQ">
                                 <rect key="frame" x="0.0" y="0.0" width="444" height="100"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="vu6-q2-hY3">
                                     <rect key="frame" x="1" y="1" width="442" height="98"/>
@@ -888,12 +888,11 @@
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
-                                                <action selector="playlistOutlineViewAction:" target="XfG-lQ-9wD" id="9cE-fT-1Qh"/>
                                                 <action trigger="doubleAction" selector="playlistOutlineViewDoubleAction:" target="XfG-lQ-9wD" id="hIT-CV-hGT"/>
                                             </connections>
                                         </outlineView>
                                     </subviews>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <nil key="backgroundColor"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="uIz-Vr-VZp">
                                     <rect key="frame" x="1" y="83" width="442" height="16"/>

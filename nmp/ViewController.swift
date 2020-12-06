@@ -175,13 +175,20 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
         return cell
     }
     
+    func play(atIndex index: Int) {
+        player.playlistIndex = index
+        player.play()
+    }
+    
+    // Todo: add drag and drop data sources
+    
     override func keyDown(with event: NSEvent) {
         let keyCode = event.keyCode
         switch keyCode {
         case Keycode.space:
             player.playpause()
         case Keycode.returnKey:
-            player.playlistIndex = playlistOutlineView.selectedRow
+            play(atIndex: playlistOutlineView.selectedRow)
         case Keycode.delete:
             player.removeMedia(atIndex: playlistOutlineView.selectedRow)
         default:
@@ -189,15 +196,9 @@ class ViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewData
         }
     }
     
-    // Todo: handle playlist item clicks and drags
-    
-    @IBAction func playlistOutlineViewAction(_ sender: Any) {
-        
-    }
-    
     @IBAction func playlistOutlineViewDoubleAction(_ sender: Any) {
         if let sender = sender as? NSOutlineView {
-            player.playlistIndex = sender.selectedRow
+            play(atIndex: sender.selectedRow)
         }
     }
     

@@ -88,3 +88,33 @@ func recurseSubdirectories(urls: [URL?]) -> [URL?] {
 func fileDisplayName(path: String) -> String {
     return fileManager.displayName(atPath: path)
 }
+
+func getCoverArt(fromDirectory dir: URL) -> URL? {
+    if dir.hasDirectoryPath {
+        do {
+            let dirPath = dir.path
+            let contents = try fileManager.contentsOfDirectory(atPath: dirPath)
+            var images: [String] = []
+            
+            for relativePath in contents {
+                let split = relativePath.split(separator: ".")
+                if imageFileTypes.contains(split[split.count-1].lowercased()) {
+                    images.append(relativePath)
+                }
+            }
+            
+            for relativePath in images {
+                let lower = relativePath.lowercased()
+                for keyword in coverArtKeywords {
+                    if lower.contains(keyword) {
+                        return URL(fileURLWithPath: dirPath+pathSep+relativePath)
+                    }
+                }
+            }
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
+    return nil
+}

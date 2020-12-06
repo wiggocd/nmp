@@ -11,7 +11,10 @@ import AVFoundation
 
 let progName = "nmp"
 let allowedFileTypes = ["wav", "mp2", "mp3", "m4a"]
+let imageFileTypes = ["jpg", "jpeg", "png"]
+let coverArtKeywords = ["cover", "front", "folder"]
 let pathSep = "/"
+let extSep = "."
 let alpha = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 let alphaReverse = alpha.reversed()
 

@@ -63,6 +63,41 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     func updatePlayer() {
         metadata = AudioMetadata(playerItem: AVPlayerItem(url: currentUrl))
+        if metadata.artwork == nil {
+            let pathComponents = currentUrl.pathComponents
+            let directoryComponents = pathComponents.dropLast()
+            var directoryPath = ""
+            
+            for component in directoryComponents {
+                directoryPath += component+pathSep
+            }
+            
+            let directoryURL = URL(fileURLWithPath: directoryPath)
+            if directoryURL.hasDirectoryPath {
+                let coverArtURL = getCoverArt(fromDirectory: directoryURL)
+                if coverArtURL != nil {
+                    var dataProvider: CGDataProvider!
+                    do {
+                        dataProvider = CGDataProvider(data: try Data(contentsOf: coverArtURL!) as CFData)
+                    } catch let error {
+                        print(error.localizedDescription)
+                    }
+                    
+                    if dataProvider != nil {
+                        let colorRendering = CGColorRenderingIntent(rawValue: 32)
+                        
+                        if colorRendering != nil {
+                            if coverArtURL?.pathExtension == "jpg" || coverArtURL?.pathExtension == "jpeg" {
+                                metadata.artwork = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
+                            } else if coverArtURL?.pathExtension == "png" {
+                                metadata.artwork = CGImage(pngDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
         lastIndex = playlistIndex
         
         player.delegate = self
@@ -72,10 +107,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
 
     func play() {
         if playlistHasMedia() {
-            if player == nil || playerHasMedia() == false || playlistIndex != lastIndex {
-                updatePlayer()
-            }
-            
             player.play()
             state = .playing
         }
