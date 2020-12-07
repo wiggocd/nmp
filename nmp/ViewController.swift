@@ -79,6 +79,10 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         positionLabel.textColor = defaultTimeColor
         durationLabel.textColor = defaultTimeColor
         
+        playlistOutlineView.indentationPerLevel = 0
+        playlistOutlineView.roundCorners(withRadius: UICornerRadius)
+        playlistScrollView.roundCorners(withRadius: UICornerRadius)
+        
         resetCoverImage()
     }
     
