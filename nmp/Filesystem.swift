@@ -20,7 +20,7 @@ func open() -> [URL?] {
     dialog.canChooseDirectories = true
     dialog.canCreateDirectories = false
     dialog.allowsMultipleSelection = true
-    dialog.allowedFileTypes = allowedFileTypes
+    dialog.allowedFileTypes = audioFileTypes
     
     dialog.runModal()
     

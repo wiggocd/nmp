@@ -50,7 +50,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     func addMedia(urls: [URL?]) {
         for url in urls {
-            if url!.isFileURL && allowedFileTypes.contains(url!.pathExtension) {
+            if url!.isFileURL && audioFileTypes.contains(url!.pathExtension) {
                 playlist.append(url!)
             }
         }
@@ -230,7 +230,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func removeMedia(atIndex index: Int) {
-        if index >= 0 || index < playlist.count {
+        if index >= 0 && index < playlist.count {
             if index == playlistIndex {
                 if index > playlist.count - 2 {
                     playlist.remove(at: index)

@@ -117,15 +117,15 @@
 				40A65F6E2569CF7D0072FB51 /* ViewController.swift */,
 				40D8C014257CDD420048757E /* ViewActions.swift */,
 				40D8C01C257CDEAE0048757E /* ViewDataSource.swift */,
+				40D8C018257CDDB00048757E /* ViewSelectors.swift */,
 				40A65F9C2569D3720072FB51 /* Player.swift */,
 				40D8C01A257CDDE80048757E /* Extensions.swift */,
 				40A65F9E2569D38F0072FB51 /* Filesystem.swift */,
+				405BC658257BDF80008BB376 /* Keycodes.swift */,
 				40A65F702569CF7E0072FB51 /* Assets.xcassets */,
 				40A65F722569CF7E0072FB51 /* Main.storyboard */,
 				40A65F752569CF7E0072FB51 /* Info.plist */,
 				40A65F762569CF7E0072FB51 /* nmp.entitlements */,
-				405BC658257BDF80008BB376 /* Keycodes.swift */,
-				40D8C018257CDDB00048757E /* ViewSelectors.swift */,
 			);
 			path = nmp;
 			sourceTree = "<group>";

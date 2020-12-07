@@ -15,7 +15,11 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
     var playlistItems: [PlaylistItem] = []
     var lastSelectedPlaylistItem = 0
     var playlistItemClickTimer = Timer()
-    var draggedNode: AnyObject! = nil
+    var draggedNode: AnyObject!
+    var backgroundImageView: NSImageView!
+    var defaultTitleColor: NSColor!
+    var defaultDetailsColor: NSColor!
+    var defaultTimeColor: NSColor!
     
     let shadowRadius = CGFloat(8)
     let coverImageSize = NSSize(width: 640, height: 640)
@@ -23,6 +27,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
     let bgBlurRadius = CGFloat(50)
     let coverImageCornerRadius = CGFloat(10)
     let doubleClickInterval = 0.2
+    let pasteboardTypes = getPasteboardTypes()
     
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var detailsLabel: NSTextField!
@@ -40,6 +45,13 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         
         notificationCenter = NotificationCenter.default
         player = AudioPlayer()
+        
+        defaultTitleColor = titleLabel.textColor
+        defaultDetailsColor = detailsLabel.textColor
+        defaultTimeColor = positionLabel.textColor
+        
+        view.wantsLayer = true
+        
         setUIDefaults()
         addObservers()
         initialiseDragDrop()
@@ -62,6 +74,11 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         playlistOutlineView.delegate = self
         playlistOutlineView.dataSource = self
         
+        titleLabel.textColor = defaultTitleColor
+        detailsLabel.textColor = defaultDetailsColor
+        positionLabel.textColor = defaultTimeColor
+        durationLabel.textColor = defaultTimeColor
+        
         resetCoverImage()
     }
     
@@ -74,7 +91,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func initialiseDragDrop() {
-        playlistOutlineView.registerForDraggedTypes([REORDER_PASTEBOARD_TYPE])
+        playlistOutlineView.registerForDraggedTypes(pasteboardTypes)
         playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation(), forLocal: false)
         playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation.every, forLocal: true)
     }
@@ -102,18 +119,45 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         image.unlockFocus()
 
         coverImageView.image = image.roundCorners(withRadius: coverImageCornerRadius)
+        titleLabel.textColor = defaultTitleColor
+        detailsLabel.textColor = defaultDetailsColor
     }
     
     func setCoverImageShadow() {
         let shadow = NSShadow()
-        shadow.shadowColor = NSColor.lightGray
+        shadow.shadowColor = NSColor(white: 0.2, alpha: 0.5)
         shadow.shadowBlurRadius = 10
         coverImageView.shadow = shadow
     }
     
     func setBackgroundView() {
-        if coverImageView != nil && coverImageView.image != nil {
+        if player.metadata.artwork != nil && coverImageView != nil {
             // Todo: add blurred background from artwork
+            let artwork = player.metadata.artwork
+            let blurredImage = CIImage(cgImage: artwork!).blurred(radius: 64)
+            
+            if blurredImage != nil {
+                let cropRect = CIVector(x: 125, y: 125, z: CGFloat(artwork!.width) / CGFloat(2), w: CGFloat(artwork!.height) / CGFloat(2))
+                let croppedImage = blurredImage?.cropped(toRect: cropRect)
+                
+                if croppedImage != nil {
+                    let transformedImage = croppedImage?.transformed(by: CGAffineTransform(scaleX: 2, y: 2))
+                    
+                    if transformedImage != nil {
+                        let bgImage = transformedImage?.nsImage().darkened(byBlackAlpha: 0.4)
+                        view.layer?.contents = bgImage
+                        
+                        titleLabel.textColor = .white
+                        detailsLabel.textColor = .lightGray
+                        positionLabel.textColor = .gray
+                        durationLabel.textColor = .gray
+                        
+                        return
+                    }
+                }
+            }
+            
+            view.layer?.contents = nil
         }
     }
     
@@ -145,9 +189,11 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func createPlaylistItems(urls: [URL]) {
-        playlistItems = []
-        for i in 0...urls.count-1 {
-            playlistItems.append(PlaylistItem(name: fileDisplayName(path: urls[i].path), playlistIndex: i))
+        if urls.count > 0 {
+            playlistItems = []
+            for i in 0...urls.count-1 {
+                playlistItems.append(PlaylistItem(name: fileDisplayName(path: urls[i].path), playlistIndex: i))
+            }
         }
     }
     
@@ -164,7 +210,11 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         case Keycode.returnKey:
             play(atIndex: playlistOutlineView.selectedRow)
         case Keycode.delete:
-            player.removeMedia(atIndex: playlistOutlineView.selectedRow)
+            for row in playlistOutlineView.selectedRowIndexes {
+                if row != player.playlistIndex {
+                    player.removeMedia(atIndex: row)
+                }
+            }
         default:
             break
         }

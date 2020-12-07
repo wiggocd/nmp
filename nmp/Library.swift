@@ -11,7 +11,7 @@ import AppKit
 import AVFoundation
 
 let progName = "nmp"
-let allowedFileTypes = ["wav", "mp2", "mp3", "m4a"]
+let audioFileTypes = ["wav", "mp2", "mp3", "m4a"]
 let imageFileTypes = ["jpg", "jpeg", "png"]
 let coverArtKeywords = ["cover", "front", "folder"]
 let pathSep = "/"
@@ -67,7 +67,7 @@ func filterToSupportedOnly(urls: [URL?]) -> [URL?] {
     var ret: [URL] = []
     
     for url in urls {
-        if allowedFileTypes.contains(url!.pathExtension) {
+        if audioFileTypes.contains(url!.pathExtension) {
             ret.append(url!)
         }
     }
@@ -119,4 +119,12 @@ func to_hhmmss(seconds: Double) -> String {
     }
     
     return timeString
+}
+
+func getPasteboardTypes() -> [NSPasteboard.PasteboardType] {
+    var ret: [NSPasteboard.PasteboardType] = [REORDER_PASTEBOARD_TYPE]
+    for object in audioFileTypes {
+        ret.append(NSPasteboard.PasteboardType(object))
+    }
+    return ret
 }
