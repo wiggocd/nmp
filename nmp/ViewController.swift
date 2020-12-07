@@ -20,6 +20,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
     var defaultTitleColor: NSColor!
     var defaultDetailsColor: NSColor!
     var defaultTimeColor: NSColor!
+    var playlistDefaultAppearance: NSAppearance!
     
     let shadowRadius = CGFloat(8)
     let coverImageSize = NSSize(width: 640, height: 640)
@@ -49,6 +50,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         defaultTitleColor = titleLabel.textColor
         defaultDetailsColor = detailsLabel.textColor
         defaultTimeColor = positionLabel.textColor
+        playlistDefaultAppearance = playlistOutlineView.appearance
         
         view.wantsLayer = true
         
@@ -74,16 +76,29 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         playlistOutlineView.delegate = self
         playlistOutlineView.dataSource = self
         
-        titleLabel.textColor = defaultTitleColor
-        detailsLabel.textColor = defaultDetailsColor
-        positionLabel.textColor = defaultTimeColor
-        durationLabel.textColor = defaultTimeColor
+        setDefaultAppearances()
         
         playlistOutlineView.indentationPerLevel = 0
         playlistOutlineView.roundCorners(withRadius: UICornerRadius)
         playlistScrollView.roundCorners(withRadius: UICornerRadius)
         
         resetCoverImage()
+    }
+    
+    func setDefaultAppearances() {
+        titleLabel.textColor = defaultTitleColor
+        detailsLabel.textColor = defaultDetailsColor
+        positionLabel.textColor = defaultTimeColor
+        durationLabel.textColor = defaultTimeColor
+        playlistOutlineView.appearance = playlistDefaultAppearance
+    }
+    
+    func setAlternateAppearances() {
+        titleLabel.textColor = .white
+        detailsLabel.textColor = .lightGray
+        positionLabel.textColor = .gray
+        durationLabel.textColor = .gray
+        playlistOutlineView.appearance = NSAppearance(named: .darkAqua)
     }
     
     func addObservers() {
@@ -123,8 +138,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         image.unlockFocus()
 
         coverImageView.image = image.roundCorners(withRadius: coverImageCornerRadius)
-        titleLabel.textColor = defaultTitleColor
-        detailsLabel.textColor = defaultDetailsColor
+        setDefaultAppearances()
     }
     
     func setCoverImageShadow() {
@@ -151,10 +165,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
                         let bgImage = transformedImage?.nsImage().darkened(byBlackAlpha: 0.4)
                         view.layer?.contents = bgImage
                         
-                        titleLabel.textColor = .white
-                        detailsLabel.textColor = .lightGray
-                        positionLabel.textColor = .gray
-                        durationLabel.textColor = .gray
+                        setAlternateAppearances()
                         
                         return
                     }
