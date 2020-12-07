@@ -249,12 +249,27 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 }
             } else {
                 playlist.remove(at: index)
+                playlistChanged()
+            }
+        }
+    }
+    
+    func removeMedia(atIndexes indexes: [Int]) {
+        var modifiableIndexes = indexes
+        for i in 1...modifiableIndexes.count-1 {
+            removeMedia(atIndex: modifiableIndexes[i])
+            for n in i...modifiableIndexes.count-1 {
+                modifiableIndexes[n] -= 1
             }
         }
     }
     
     func mediaChanged() {
         notificationCenter.post(name: .mediaChanged, object: nil)
+    }
+    
+    func playlistChanged() {
+        notificationCenter.post(name: .playlistChanged, object: nil)
     }
     
     func seekTrack(index: Int) {
@@ -307,12 +322,12 @@ enum PlayerState {
 }
 
 extension Notification.Name {
-    static var playlistChanged: Notification.Name {
-        return .init("AudioPlayer.playlistChanged")
-    }
-    
     static var mediaChanged: Notification.Name {
         return .init("AudioPlayer.mediaChanged")
+    }
+    
+    static var playlistChanged: Notification.Name {
+        return .init("AudioPlayer.playlistChanged")
     }
     
     static var playbackStarted: Notification.Name {

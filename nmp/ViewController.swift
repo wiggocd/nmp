@@ -225,11 +225,12 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         case Keycode.returnKey:
             play(atIndex: playlistOutlineView.selectedRow)
         case Keycode.delete:
-            for row in playlistOutlineView.selectedRowIndexes {
-                if row != player.playlistIndex {
-                    player.removeMedia(atIndex: row)
-                }
+            var selectedRows: [Int] = []
+            for index in playlistOutlineView.selectedRowIndexes {
+                selectedRows.append(index)
             }
+            print(selectedRows.count)
+            player.removeMedia(atIndexes: selectedRows)
         default:
             break
         }
