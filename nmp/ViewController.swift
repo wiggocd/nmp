@@ -204,8 +204,8 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func createPlaylistItems(urls: [URL]) {
+        playlistItems = []
         if urls.count > 0 {
-            playlistItems = []
             for i in 0...urls.count-1 {
                 playlistItems.append(PlaylistItem(name: fileDisplayName(path: urls[i].path), playlistIndex: i))
             }
@@ -222,11 +222,13 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func removeMediaAtSelectedRows() {
-        var selectedRows: [Int] = []
-        for index in playlistOutlineView.selectedRowIndexes {
-            selectedRows.append(index)
+        if playlistOutlineView.selectedRowIndexes.count > 0 {
+            var selectedRows: [Int] = []
+            for index in playlistOutlineView.selectedRowIndexes {
+                selectedRows.append(index)
+            }
+            player.removeMedia(atIndexes: selectedRows)
         }
-        player.removeMedia(atIndexes: selectedRows)
     }
     
     override func keyDown(with event: NSEvent) {

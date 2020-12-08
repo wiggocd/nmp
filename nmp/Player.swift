@@ -231,26 +231,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     func removeMedia(atIndex index: Int) {
         if index >= 0 && index < playlist.count {
-            if index == playlistIndex {
-                if index > playlist.count - 2 {
-                    playlist.remove(at: index)
-                    currentUrl = nil
-                    playlistIndex = index
-                } else {
-                    playlist.remove(at: index)
-                    playlistIndex = index
-                    
-                    let wasPlaying = isPlaying()
-                    currentUrl = playlist[playlistIndex]
-                    play()
-                    if !wasPlaying {
-                        pause()
-                    }
-                }
-            } else {
-                playlist.remove(at: index)
-                playlistChanged()
-            }
+            playlist.remove(at: index)
+            playlistChanged()
         }
     }
     
