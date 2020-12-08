@@ -256,7 +256,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     func removeMedia(atIndexes indexes: [Int]) {
         var modifiableIndexes = indexes
-        for i in 1...modifiableIndexes.count-1 {
+        for i in 0...modifiableIndexes.count-1 {
             removeMedia(atIndex: modifiableIndexes[i])
             for n in i...modifiableIndexes.count-1 {
                 modifiableIndexes[n] -= 1

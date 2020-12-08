@@ -217,20 +217,27 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         player.play()
     }
     
+    func playAtSelectedRow() {
+        play(atIndex: playlistOutlineView.selectedRow)
+    }
+    
+    func removeMediaAtSelectedRows() {
+        var selectedRows: [Int] = []
+        for index in playlistOutlineView.selectedRowIndexes {
+            selectedRows.append(index)
+        }
+        player.removeMedia(atIndexes: selectedRows)
+    }
+    
     override func keyDown(with event: NSEvent) {
         let keyCode = event.keyCode
         switch keyCode {
         case Keycode.space:
             player.playpause()
         case Keycode.returnKey:
-            play(atIndex: playlistOutlineView.selectedRow)
+            playAtSelectedRow()
         case Keycode.delete:
-            var selectedRows: [Int] = []
-            for index in playlistOutlineView.selectedRowIndexes {
-                selectedRows.append(index)
-            }
-            print(selectedRows.count)
-            player.removeMedia(atIndexes: selectedRows)
+            removeMediaAtSelectedRows()
         default:
             break
         }
