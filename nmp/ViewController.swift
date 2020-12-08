@@ -20,7 +20,23 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
     var defaultTitleColor: NSColor!
     var defaultDetailsColor: NSColor!
     var defaultTimeColor: NSColor!
-    var playlistDefaultAppearance: NSAppearance!
+    var defaultAppearance: NSAppearance!
+    
+    @IBOutlet weak var titleLabel: NSTextField!
+    @IBOutlet weak var detailsLabel: NSTextField!
+    @IBOutlet weak var coverImageView: NSImageView!
+    
+    @IBOutlet weak var openButton: NSButton!
+    @IBOutlet weak var previousTrackButton: NSButton!
+    @IBOutlet weak var playPauseButton: NSButton!
+    @IBOutlet weak var nextTrackButton: NSButton!
+    @IBOutlet weak var playlistButton: NSButton!
+    
+    @IBOutlet weak var timeSlider: NSSlider!
+    @IBOutlet weak var positionLabel: NSTextField!
+    @IBOutlet weak var durationLabel: NSTextField!
+    @IBOutlet weak var playlistScrollView: NSScrollView!
+    @IBOutlet weak var playlistOutlineView: NSOutlineView!
     
     let shadowRadius = CGFloat(8)
     let coverImageSize = NSSize(width: 640, height: 640)
@@ -29,17 +45,9 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
     let coverImageCornerRadius = CGFloat(10)
     let doubleClickInterval = 0.2
     let pasteboardTypes = getPasteboardTypes()
+    let darkAppearance = NSAppearance(named: .darkAqua)
     
-    @IBOutlet weak var titleLabel: NSTextField!
-    @IBOutlet weak var detailsLabel: NSTextField!
-    @IBOutlet weak var coverImageView: NSImageView!
-    @IBOutlet weak var playPauseButton: NSButton!
-    @IBOutlet weak var timeSlider: NSSlider!
-    @IBOutlet weak var positionLabel: NSTextField!
-    @IBOutlet weak var durationLabel: NSTextField!
-    @IBOutlet weak var playlistButton: NSButton!
-    @IBOutlet weak var playlistScrollView: NSScrollView!
-    @IBOutlet weak var playlistOutlineView: NSOutlineView!
+    var buttons: [NSButton] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,9 +58,17 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         defaultTitleColor = titleLabel.textColor
         defaultDetailsColor = detailsLabel.textColor
         defaultTimeColor = positionLabel.textColor
-        playlistDefaultAppearance = playlistOutlineView.appearance
+        defaultAppearance = view.appearance
         
         view.wantsLayer = true
+        
+        buttons = [
+            openButton,
+            previousTrackButton,
+            playPauseButton,
+            nextTrackButton,
+            playlistButton
+        ]
         
         setUIDefaults()
         addObservers()
@@ -90,7 +106,11 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         detailsLabel.textColor = defaultDetailsColor
         positionLabel.textColor = defaultTimeColor
         durationLabel.textColor = defaultTimeColor
-        playlistOutlineView.appearance = playlistDefaultAppearance
+        playlistOutlineView.appearance = defaultAppearance
+        
+        for button in buttons {
+            button.appearance = defaultAppearance
+        }
     }
     
     func setAlternateAppearances() {
@@ -98,7 +118,11 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         detailsLabel.textColor = .lightGray
         positionLabel.textColor = .gray
         durationLabel.textColor = .gray
-        playlistOutlineView.appearance = NSAppearance(named: .darkAqua)
+        playlistOutlineView.appearance = darkAppearance
+        
+        for button in buttons {
+            button.appearance = darkAppearance
+        }
     }
     
     func addObservers() {

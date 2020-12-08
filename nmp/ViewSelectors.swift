@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AppKit
 
 extension ViewController {
     @objc func updatePosition() {
@@ -27,10 +28,13 @@ extension ViewController {
                 if player.metadata.artwork != nil {
                     setCoverImage(image: player.metadata.artwork)
                     setBackgroundView()
+                    playPauseButton.appearance = NSAppearance(named: .darkAqua)
                 } else {
                     resetCoverImage()
                 }
             }
+        } else {
+            setDefaultAppearances()
         }
         
         timeSlider.maxValue = player.duration()
@@ -41,14 +45,14 @@ extension ViewController {
     }
     
     @objc func playbackStarted(_ notification: Notification) {
-        playPauseButton.title = "Pause"
+        playPauseButton.image = NSImage(named: "Pause")
     }
     
     @objc func playbackPaused(_ notification: Notification) {
-        playPauseButton.title = "Play"
+        playPauseButton.image = NSImage(named: "Play")
     }
     
     @objc func playbackStopped(_ notification: Notification) {
-        playPauseButton.title = "Play"
+        playPauseButton.image = NSImage(named: "Play")
     }
 }
