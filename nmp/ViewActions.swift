@@ -10,6 +10,11 @@ import Foundation
 import AppKit
 
 extension ViewController {
+    @IBAction func clearPlaylist(_ sender: Any) {
+        player.clear()
+        setUIDefaults()
+    }
+    
     @IBAction func openAction(_ sender: Any) {
         player.addMedia(urls: openMedia())
     }

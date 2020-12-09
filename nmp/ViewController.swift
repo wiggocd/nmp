@@ -108,6 +108,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         playlistScrollView.roundCorners(withRadius: UICornerRadius)
         
         resetCoverImage()
+        resetBackgroundView()
     }
     
     func setDefaultAppearances() {
@@ -207,6 +208,10 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
             
             view.layer?.contents = nil
         }
+    }
+    
+    func resetBackgroundView() {
+        view.layer?.contents = nil
     }
     
     func play() {

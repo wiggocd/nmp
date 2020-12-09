@@ -186,6 +186,21 @@
                                     </items>
                                 </menu>
                             </menuItem>
+                            <menuItem title="Playlist" id="8D1-KJ-uNc">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Playlist" id="OA9-eR-SUT">
+                                    <items>
+                                        <menuItem title="Clear" id="Iyb-Oq-hPO">
+                                            <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
+                                            <connections>
+                                                <action selector="clearPlaylist:" target="Ady-hI-5gd" id="eYo-oa-bGa"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                             <menuItem title="Help" id="wpr-3q-Mcd">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
