@@ -73,6 +73,15 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         setUIDefaults()
         addObservers()
         initialiseDragDrop()
+        
+        NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+            super.keyDown(with: $0)
+            if self.alternateKeyDown(with: $0) {
+                return nil
+            } else {
+                return $0
+            }
+        }
     }
 
     override var representedObject: Any? {
@@ -255,7 +264,10 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         }
     }
     
-    override func keyDown(with event: NSEvent) {
+    func alternateKeyDown(with event: NSEvent) -> Bool {
+        guard let locWindow = view.window,
+            NSApplication.shared.keyWindow === locWindow else { return false }
+        
         let keyCode = event.keyCode
         switch keyCode {
         case Keycode.space:
@@ -267,5 +279,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         default:
             break
         }
+        
+        return true
     }
 }
