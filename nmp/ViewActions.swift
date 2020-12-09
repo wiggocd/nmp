@@ -16,9 +16,19 @@ extension ViewController {
     
     @IBAction func playlistAction(_ sender: Any) {
         if playlistScrollView.isHidden {
-            playlistScrollView.isHidden = false
+            NSAnimationContext.runAnimationGroup( { context in
+                context.duration = 0.4
+                playlistScrollView.animator().alphaValue = 0
+                self.playlistScrollView.isHidden = false
+                playlistScrollView.animator().alphaValue = 1
+            })
         } else {
-            playlistScrollView.isHidden = true
+            NSAnimationContext.runAnimationGroup( { context in
+                context.duration = 0.4
+                playlistScrollView.animator().alphaValue = 0
+            }) {
+                self.playlistScrollView.isHidden = true
+            }
         }
     }
     
