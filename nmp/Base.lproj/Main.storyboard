@@ -351,12 +351,12 @@ CA
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tcp-Og-jxF">
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tcp-Og-jxF">
                                 <rect key="frame" x="173" y="283" width="28" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="28" id="vCs-Is-te2"/>
                                 </constraints>
-                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="ToStart" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="lNW-mZ-5JN">
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="ToStart" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="lNW-mZ-5JN">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -365,9 +365,9 @@ CA
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="J2Q-Jx-RCt">
-                                <rect key="frame" x="21" y="321" width="74" height="16"/>
+                                <rect key="frame" x="8" y="321" width="87" height="16"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="70" id="IPx-Fc-NPQ"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="83" id="09H-9b-pvS"/>
                                 </constraints>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Pos" id="40c-Wo-HPW">
                                     <font key="font" metaFont="system"/>
@@ -391,20 +391,23 @@ CA
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9sX-qc-cPp">
-                                <rect key="frame" x="346" y="321" width="74" height="16"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9sX-qc-cPp">
+                                <rect key="frame" x="346" y="321" width="87" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="83" id="Bjs-5B-Rkl"/>
+                                </constraints>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Max" id="Ttv-lN-xkG">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gjt-zg-tCa">
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gjt-zg-tCa">
                                 <rect key="frame" x="141" y="283" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="24" id="QFh-ME-ziN"/>
                                 </constraints>
-                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="AddToPlaylist" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="nfI-R9-9VF">
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="AddToPlaylist" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="nfI-R9-9VF">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -412,12 +415,12 @@ CA
                                     <action selector="openAction:" target="XfG-lQ-9wD" id="qps-yM-pAZ"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W3q-Vw-E4r">
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="W3q-Vw-E4r">
                                 <rect key="frame" x="277" y="283" width="28" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="28" id="eNT-lw-nCZ"/>
                                 </constraints>
-                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="Playlist" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="mZD-Ui-F9O">
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="Playlist" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="mZD-Ui-F9O">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -435,12 +438,12 @@ CA
                                     <action selector="timeSliderMoved:" target="XfG-lQ-9wD" id="5C3-ol-DdW"/>
                                 </connections>
                             </slider>
-                            <button horizontalHuggingPriority="249" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oqy-yU-Mwh">
+                            <button horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Oqy-yU-Mwh">
                                 <rect key="frame" x="209" y="283" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="24" id="B2X-hb-iRb"/>
                                 </constraints>
-                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="Play" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="2iH-82-h8c">
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="Play" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="2iH-82-h8c">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -448,12 +451,12 @@ CA
                                     <action selector="playPauseAction:" target="XfG-lQ-9wD" id="URO-Jn-MS1"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z72-XO-r8D">
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Z72-XO-r8D">
                                 <rect key="frame" x="241" y="283" width="28" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="28" id="wRI-z3-AmP"/>
                                 </constraints>
-                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="ToEnd" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="PHd-ui-Byh">
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="ToEnd" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="PHd-ui-Byh">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -469,22 +472,22 @@ CA
                             <constraint firstItem="ccp-8a-79m" firstAttribute="centerX" secondItem="Oqy-yU-Mwh" secondAttribute="centerX" id="7F6-bc-0Lr"/>
                             <constraint firstItem="W3q-Vw-E4r" firstAttribute="leading" secondItem="Z72-XO-r8D" secondAttribute="trailing" constant="8" symbolic="YES" id="7Xe-Tu-Hgs"/>
                             <constraint firstItem="ccp-8a-79m" firstAttribute="leading" secondItem="J2Q-Jx-RCt" secondAttribute="trailing" constant="8" symbolic="YES" id="7tK-zH-5pC"/>
-                            <constraint firstItem="oS3-2p-Kj9" firstAttribute="leading" secondItem="J2Q-Jx-RCt" secondAttribute="leading" id="8i3-rF-bTp"/>
-                            <constraint firstItem="3xK-Pi-Qal" firstAttribute="leading" secondItem="oS3-2p-Kj9" secondAttribute="leading" id="963-W5-dch"/>
+                            <constraint firstItem="oS3-2p-Kj9" firstAttribute="leading" secondItem="J2Q-Jx-RCt" secondAttribute="leading" constant="13" id="8i3-rF-bTp"/>
+                            <constraint firstItem="3xK-Pi-Qal" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="oS3-2p-Kj9" secondAttribute="leading" id="963-W5-dch"/>
                             <constraint firstItem="J2Q-Jx-RCt" firstAttribute="top" secondItem="ccp-8a-79m" secondAttribute="top" id="9Wq-Nw-74O"/>
                             <constraint firstItem="oS3-2p-Kj9" firstAttribute="centerX" secondItem="ccp-8a-79m" secondAttribute="centerX" id="AxU-ee-qkb"/>
                             <constraint firstItem="J2Q-Jx-RCt" firstAttribute="centerY" secondItem="ccp-8a-79m" secondAttribute="centerY" id="Cxh-rE-ZdQ"/>
                             <constraint firstItem="9sX-qc-cPp" firstAttribute="leading" secondItem="ccp-8a-79m" secondAttribute="trailing" constant="8" symbolic="YES" id="DYK-bE-mxd"/>
-                            <constraint firstItem="gjt-zg-tCa" firstAttribute="top" secondItem="ccp-8a-79m" secondAttribute="bottom" constant="15" id="FJN-Ma-DzS"/>
+                            <constraint firstItem="gjt-zg-tCa" firstAttribute="top" secondItem="ccp-8a-79m" secondAttribute="bottom" constant="14" id="FJN-Ma-DzS"/>
                             <constraint firstItem="ccp-8a-79m" firstAttribute="centerX" secondItem="ZUU-ru-jEQ" secondAttribute="centerX" id="HQj-pd-I8M"/>
                             <constraint firstItem="J2Q-Jx-RCt" firstAttribute="top" secondItem="oS3-2p-Kj9" secondAttribute="bottom" constant="6" id="HW0-JP-Gaz"/>
-                            <constraint firstItem="3xK-Pi-Qal" firstAttribute="trailing" secondItem="oS3-2p-Kj9" secondAttribute="trailing" id="KoZ-WM-cmX"/>
+                            <constraint firstItem="3xK-Pi-Qal" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="oS3-2p-Kj9" secondAttribute="trailing" id="KoZ-WM-cmX"/>
                             <constraint firstItem="oS3-2p-Kj9" firstAttribute="top" secondItem="3xK-Pi-Qal" secondAttribute="bottom" id="M12-ba-34F"/>
                             <constraint firstItem="J2Q-Jx-RCt" firstAttribute="baseline" secondItem="9sX-qc-cPp" secondAttribute="baseline" id="Mkz-TH-y2B"/>
                             <constraint firstItem="ZUU-ru-jEQ" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="10" id="Nk3-Xl-VH4"/>
                             <constraint firstItem="ZUU-ru-jEQ" firstAttribute="top" secondItem="J2Q-Jx-RCt" secondAttribute="bottom" constant="54" id="RXf-1x-IQX"/>
                             <constraint firstAttribute="trailing" secondItem="ZUU-ru-jEQ" secondAttribute="trailing" constant="10" id="SZS-4d-af3"/>
-                            <constraint firstAttribute="trailing" secondItem="9sX-qc-cPp" secondAttribute="trailing" constant="22" id="VRi-1V-eLx"/>
+                            <constraint firstAttribute="trailing" secondItem="9sX-qc-cPp" secondAttribute="trailing" constant="10" id="VRi-1V-eLx"/>
                             <constraint firstItem="Z72-XO-r8D" firstAttribute="baseline" secondItem="W3q-Vw-E4r" secondAttribute="baseline" id="YVp-Xf-2EG"/>
                             <constraint firstItem="tcp-Og-jxF" firstAttribute="leading" secondItem="gjt-zg-tCa" secondAttribute="trailing" constant="8" symbolic="YES" id="agF-30-e1h"/>
                             <constraint firstItem="gjt-zg-tCa" firstAttribute="baseline" secondItem="tcp-Og-jxF" secondAttribute="baseline" id="b6n-wm-sf9"/>
@@ -519,7 +522,7 @@ CA
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="74" y="779"/>
+            <point key="canvasLocation" x="73.5" y="779"/>
         </scene>
     </scenes>
     <resources>
