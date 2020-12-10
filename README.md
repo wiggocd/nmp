@@ -1,6 +1,8 @@
 nmp - The New Music Player
 
-Written with AppKit in Swift 5
+For macOS 10.15+
+
+Swift 5 & Cocoa
 
 ## Prerequisites
 
@@ -29,4 +31,4 @@ You can also open up `nmp.xcodeproj` in Xcode or higher and change the build tea
 
 _______
 
-The aim of this project is to create a clean audio playback program using AppKit to render an application targeted for local file playback with a native appearance.
+The aim of this project is to create an audio playback program targeted for local files with a native appearance.
