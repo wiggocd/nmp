@@ -38,6 +38,15 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             }
         }
     }
+    var position: TimeInterval {
+        get {
+            if player != nil {
+                return player.currentTime
+            } else {
+                return 0.0
+            }
+        }
+    }
     
     @Published var state = PlayerState.idle {
         didSet { stateChanged() }
@@ -193,14 +202,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     func duration() -> Double {
         if player != nil {
             return player.duration
-        } else {
-            return 0.0
-        }
-    }
-    
-    func position() -> TimeInterval {
-        if player != nil {
-            return player.currentTime
         } else {
             return 0.0
         }

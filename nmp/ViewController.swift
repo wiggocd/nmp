@@ -22,14 +22,16 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
     var defaultDetailsColor: NSColor!
     var defaultTimeColor: NSColor!
     var defaultAppearance: NSAppearance!
-    var playPauseHotKey: HotKey!
+    var playPauseKey: HotKey!
+    var rewindKey: HotKey!
+    var nextTrackKey: HotKey!
     
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var detailsLabel: NSTextField!
     @IBOutlet weak var coverImageView: NSImageView!
     
     @IBOutlet weak var openButton: NSButton!
-    @IBOutlet weak var previousTrackButton: NSButton!
+    @IBOutlet weak var rewindButton: NSButton!
     @IBOutlet weak var playPauseButton: NSButton!
     @IBOutlet weak var nextTrackButton: NSButton!
     @IBOutlet weak var playlistButton: NSButton!
@@ -48,6 +50,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
     let doubleClickInterval = 0.2
     let pasteboardTypes = getPasteboardTypes()
     let darkAppearance = NSAppearance(named: .darkAqua)
+    let mediaHotKeyModifiers: NSEvent.ModifierFlags = [.command]
     
     var buttons: [NSButton] = []
     
@@ -66,7 +69,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         
         buttons = [
             openButton,
-            previousTrackButton,
+            rewindButton,
             playPauseButton,
             nextTrackButton,
             playlistButton
@@ -75,6 +78,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         setUIDefaults()
         addObservers()
         initialiseDragDrop()
+        addHotKeys()
         
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
             super.keyDown(with: $0)
@@ -84,9 +88,6 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
                 return $0
             }
         }
-        
-        playPauseHotKey = HotKey(key: .f1, modifiers: [.command])
-        playPauseHotKey.keyDownHandler = playPause
     }
 
     override var representedObject: Any? {
@@ -149,14 +150,25 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         notificationCenter.addObserver(self, selector: #selector(playPauseAction), name: .playPause, object: nil)
     }
     
+    func removeObserver() {
+        notificationCenter.removeObserver(self)
+    }
+    
     func initialiseDragDrop() {
         playlistOutlineView.registerForDraggedTypes(pasteboardTypes)
         playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation(), forLocal: false)
         playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation.every, forLocal: true)
     }
     
-    func removeObserver() {
-        notificationCenter.removeObserver(self)
+    func addHotKeys() {
+        playPauseKey = HotKey(key: .f1, modifiers: [.command])
+        playPauseKey.keyDownHandler = playPause
+        
+        rewindKey = HotKey(key: .f2, modifiers: mediaHotKeyModifiers)
+        rewindKey.keyDownHandler = rewind
+        
+        nextTrackKey = HotKey(key: .f3, modifiers: mediaHotKeyModifiers)
+        nextTrackKey.keyDownHandler = nextTrack
     }
     
     func setCoverImage(image: CGImage) {
@@ -238,6 +250,18 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
             pause()
         } else {
             play()
+        }
+    }
+    
+    func nextTrack() {
+        player.nextTrack()
+    }
+    
+    func rewind() {
+        if player.position > 1 {
+            player.setPosition(position: 0)
+        } else {
+            player.previousTrack()
         }
     }
     

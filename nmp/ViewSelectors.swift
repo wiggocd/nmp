@@ -11,8 +11,8 @@ import Cocoa
 
 extension ViewController {
     @objc func updatePosition() {
-        timeSlider.doubleValue = player.position()
-        positionLabel.stringValue = to_hhmmss(seconds: player.position())
+        timeSlider.doubleValue = player.position
+        positionLabel.stringValue = to_hhmmss(seconds: player.position)
     }
     
     @objc func playlistChanged(_ notification: Notification) {

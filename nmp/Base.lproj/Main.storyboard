@@ -361,7 +361,7 @@ CA
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="previousTrackAction:" target="XfG-lQ-9wD" id="yA1-4i-kPj"/>
+                                    <action selector="rewindAction:" target="XfG-lQ-9wD" id="uhN-UV-xwq"/>
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="J2Q-Jx-RCt">
@@ -412,7 +412,7 @@ CA
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="openAction:" target="XfG-lQ-9wD" id="qps-yM-pAZ"/>
+                                    <action selector="openAction:" target="XfG-lQ-9wD" id="Cqs-n7-9fJ"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="W3q-Vw-E4r">
@@ -425,7 +425,7 @@ CA
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="playlistAction:" target="XfG-lQ-9wD" id="oI7-XJ-htF"/>
+                                    <action selector="playlistAction:" target="XfG-lQ-9wD" id="1IJ-Dd-npU"/>
                                 </connections>
                             </button>
                             <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ccp-8a-79m">
@@ -516,7 +516,7 @@ CA
                         <outlet property="playlistOutlineView" destination="mzH-Gz-28f" id="qoP-1u-lvK"/>
                         <outlet property="playlistScrollView" destination="ZUU-ru-jEQ" id="C98-Cx-A4h"/>
                         <outlet property="positionLabel" destination="J2Q-Jx-RCt" id="E4A-A7-Ret"/>
-                        <outlet property="previousTrackButton" destination="tcp-Og-jxF" id="wIK-AM-kDk"/>
+                        <outlet property="rewindButton" destination="tcp-Og-jxF" id="kzg-h6-loN"/>
                         <outlet property="timeSlider" destination="ccp-8a-79m" id="7Ou-1s-woR"/>
                         <outlet property="titleLabel" destination="3xK-Pi-Qal" id="s26-NB-fqd"/>
                     </connections>

@@ -42,16 +42,16 @@ extension ViewController {
     }
     
     @IBAction func nextTrackAction(_ sender: Any) {
-        player.nextTrack()
+        nextTrack()
     }
     
-    @IBAction func previousTrackAction(_ sender: Any) {
-        player.previousTrack()
+    @IBAction func rewindAction(_ sender: Any) {
+        rewind()
     }
     
     @IBAction func timeSliderMoved(_ sender: Any) {
         player.setPosition(position: timeSlider.doubleValue)
-        positionLabel.stringValue = to_hhmmss(seconds: player.position())
+        positionLabel.stringValue = to_hhmmss(seconds: player.position)
     }
     
     @IBAction func playlistOutlineViewDoubleAction(_ sender: Any) {
