@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4048FBF325825C2E0030C337 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4048FBF225825C2E0030C337 /* Application.swift */; };
 		405BC659257BDF80008BB376 /* Keycodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405BC658257BDF80008BB376 /* Keycodes.swift */; };
+		407C9C522582A4D700A9F421 /* HotKey.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 407C9C502582A48D00A9F421 /* HotKey.framework */; };
+		407C9C532582A4D700A9F421 /* HotKey.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 407C9C502582A48D00A9F421 /* HotKey.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40A65F6D2569CF7D0072FB51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F6C2569CF7D0072FB51 /* AppDelegate.swift */; };
 		40A65F6F2569CF7D0072FB51 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F6E2569CF7D0072FB51 /* ViewController.swift */; };
 		40A65F712569CF7E0072FB51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40A65F702569CF7E0072FB51 /* Assets.xcassets */; };
@@ -41,10 +42,24 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		407C9C542582A4D700A9F421 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				407C9C532582A4D700A9F421 /* HotKey.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		4048FBF125825B8D0030C337 /* nmp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "nmp-Bridging-Header.h"; sourceTree = "<group>"; };
-		4048FBF225825C2E0030C337 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		405BC658257BDF80008BB376 /* Keycodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keycodes.swift; sourceTree = "<group>"; };
+		407C9C502582A48D00A9F421 /* HotKey.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HotKey.framework; path = Carthage/Build/Mac/HotKey.framework; sourceTree = SOURCE_ROOT; };
 		40A65F692569CF7D0072FB51 /* nmp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nmp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40A65F6C2569CF7D0072FB51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		40A65F6E2569CF7D0072FB51 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -72,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				407C9C522582A4D700A9F421 /* HotKey.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,6 +108,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		407C9C4F2582A47700A9F421 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				407C9C502582A48D00A9F421 /* HotKey.framework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
 		40A65F602569CF7D0072FB51 = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +123,7 @@
 				40A65F7E2569CF7E0072FB51 /* nmpTests */,
 				40A65F892569CF7E0072FB51 /* nmpUITests */,
 				40A65F6A2569CF7D0072FB51 /* Products */,
+				407C9C4F2582A47700A9F421 /* Frameworks */,
 				4048FBF125825B8D0030C337 /* nmp-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
@@ -117,7 +142,6 @@
 			isa = PBXGroup;
 			children = (
 				40A65F982569D2770072FB51 /* Library.swift */,
-				4048FBF225825C2E0030C337 /* Application.swift */,
 				40A65F6C2569CF7D0072FB51 /* AppDelegate.swift */,
 				40A65F6E2569CF7D0072FB51 /* ViewController.swift */,
 				40D8C014257CDD420048757E /* ViewActions.swift */,
@@ -163,6 +187,7 @@
 				40A65F652569CF7D0072FB51 /* Sources */,
 				40A65F662569CF7D0072FB51 /* Frameworks */,
 				40A65F672569CF7D0072FB51 /* Resources */,
+				407C9C542582A4D700A9F421 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -285,7 +310,6 @@
 			files = (
 				40A65F9D2569D3720072FB51 /* Player.swift in Sources */,
 				40D8C01D257CDEAE0048757E /* ViewDataSource.swift in Sources */,
-				4048FBF325825C2E0030C337 /* Application.swift in Sources */,
 				40D8C01B257CDDE80048757E /* Extensions.swift in Sources */,
 				40A65F6F2569CF7D0072FB51 /* ViewController.swift in Sources */,
 				405BC659257BDF80008BB376 /* Keycodes.swift in Sources */,
@@ -462,6 +486,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = RGVL7GVTMP;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = nmp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -483,6 +511,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = RGVL7GVTMP;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = nmp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

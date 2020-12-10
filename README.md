@@ -2,14 +2,26 @@ nmp - The New Music Player
 
 Written with AppKit in Swift 5
 
+_______
 
-## Building
+## Preinstall
+
+<sub>Run:</sub>
 
 `xcode-select --install` If the command line tools are not already installed
 
+If brew is not installed, follow the instructions at [Homebrew](http://brew.sh)
+
+`brew install carthage` If Carthage is not installed
+
+`carthage update`
+
+
+## Building
+
 `xcodebuild build` 
 
-An application package should be outputted to `build/Release/nmp.app`
+An application package should be built to `build/Release/nmp.app`
 
 You can also open up `nmp.xcodeproj` in Xcode 11.7 or higher and change the build team / signing to build on your machine.
 

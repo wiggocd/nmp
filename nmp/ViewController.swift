@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import HotKey
 
 class ViewController: NSViewController, NSOutlineViewDelegate {
     var notificationCenter: NotificationCenter!
@@ -21,6 +22,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
     var defaultDetailsColor: NSColor!
     var defaultTimeColor: NSColor!
     var defaultAppearance: NSAppearance!
+    var playPauseHotKey: HotKey!
     
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var detailsLabel: NSTextField!
@@ -82,6 +84,9 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
                 return $0
             }
         }
+        
+        playPauseHotKey = HotKey(key: .f1, modifiers: [.command])
+        playPauseHotKey.keyDownHandler = playPause
     }
 
     override var representedObject: Any? {
