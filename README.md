@@ -1,10 +1,14 @@
 nmp - The New Music Player
 
-Written with AppKit in Swift 5
+For macOS 10.15+
 
-_______
+Swift 5 & Cocoa
 
-## Preinstall
+## Prerequisites
+
+- Xcode 11.7+ command line tools
+- Carthage
+  - Homebrew to install Carthage if not installed
 
 <sub>Run:</sub>
 
@@ -23,8 +27,8 @@ If brew is not installed, follow the instructions at [Homebrew](http://brew.sh)
 
 An application package should be built to `build/Release/nmp.app`
 
-You can also open up `nmp.xcodeproj` in Xcode 11.7 or higher and change the build team / signing to build on your machine.
+You can also open up `nmp.xcodeproj` in Xcode or higher and change the build team / signing to build on your machine.
 
 _______
 
-The aim of this project is to create a clean audio playback program using AppKit to render an application targeted for local file playback with a native appearance.
+The aim of this project is to create an audio playback program targeted for local files with a native appearance.
