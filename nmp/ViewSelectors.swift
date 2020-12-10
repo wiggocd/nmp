@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import AppKit
+import Cocoa
 
 extension ViewController {
     @objc func updatePosition() {

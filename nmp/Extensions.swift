@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import AppKit
+import Cocoa
 
 extension NSImage {
     func roundCorners(withRadius radius: CGFloat) -> NSImage {
@@ -105,5 +105,35 @@ extension NSView {
     func roundCorners(withRadius radius: CGFloat) {
         wantsLayer = true
         layer?.cornerRadius = radius
+    }
+}
+
+extension Notification.Name {
+    static var mediaChanged: Notification.Name {
+        return .init("AudioPlayer.mediaChanged")
+    }
+    
+    static var playlistChanged: Notification.Name {
+        return .init("AudioPlayer.playlistChanged")
+    }
+    
+    static var playbackStarted: Notification.Name {
+        return .init("AudioPlayer.playbackStarted")
+    }
+    
+    static var playbackPaused: Notification.Name {
+        return .init("AudioPlayer.playbackPaused")
+    }
+    
+    static var playbackStopped: Notification.Name {
+        return .init("AudioPlayer.playbackStopped")
+    }
+    
+    static var trackPositionChanged: Notification.Name {
+        return .init("AudioPlayer.trackPositionChanged")
+    }
+    
+    static var playPause: Notification.Name {
+        return .init("AudioPlayer.playPause")
     }
 }

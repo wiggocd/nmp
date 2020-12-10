@@ -129,7 +129,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
     
-    func playpause() {
+    func playPause() {
         if isPlaying() {
             pause()
         } else {
@@ -294,37 +294,5 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         case .paused:
             notificationCenter.post(name: .playbackPaused, object: nil)
         }
-    }
-}
-
-enum PlayerState {
-    case idle
-    case playing
-    case paused
-}
-
-extension Notification.Name {
-    static var mediaChanged: Notification.Name {
-        return .init("AudioPlayer.mediaChanged")
-    }
-    
-    static var playlistChanged: Notification.Name {
-        return .init("AudioPlayer.playlistChanged")
-    }
-    
-    static var playbackStarted: Notification.Name {
-        return .init("AudioPlayer.playbackStarted")
-    }
-    
-    static var playbackPaused: Notification.Name {
-        return .init("AudioPlayer.playbackPaused")
-    }
-    
-    static var playbackStopped: Notification.Name {
-        return .init("AudioPlayer.playbackStopped")
-    }
-    
-    static var trackPositionChanged: Notification.Name {
-        return .init("AudioPlayer.trackPositionChanged")
     }
 }

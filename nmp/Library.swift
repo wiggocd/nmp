@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import AppKit
+import Cocoa
 import AVFoundation
 
 let progName = "nmp"
@@ -60,6 +60,12 @@ class PlaylistItem: NSObject {
         self.name = name
         self.playlistIndex = playlistIndex
     }
+}
+
+enum PlayerState {
+    case idle
+    case playing
+    case paused
 }
 
 

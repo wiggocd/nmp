@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import AppKit
+import Cocoa
 
 extension ViewController {
     @IBAction func clearPlaylist(_ sender: Any) {
@@ -38,7 +38,7 @@ extension ViewController {
     }
     
     @IBAction func playPauseAction(_ sender: Any) {
-        playpause()
+        playPause()
     }
     
     @IBAction func nextTrackAction(_ sender: Any) {

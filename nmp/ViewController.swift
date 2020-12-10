@@ -141,6 +141,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         notificationCenter.addObserver(self, selector: #selector(playbackStarted), name: .playbackStarted, object: nil)
         notificationCenter.addObserver(self, selector: #selector(playbackPaused), name: .playbackPaused, object: nil)
         notificationCenter.addObserver(self, selector: #selector(playbackStopped), name: .playbackStopped, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(playPauseAction), name: .playPause, object: nil)
     }
     
     func initialiseDragDrop() {
@@ -227,7 +228,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         }
     }
     
-    func playpause() {
+    func playPause() {
         if player.state == .playing {
             pause()
         } else {
@@ -276,7 +277,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         let keyCode = event.keyCode
         switch keyCode {
         case Keycode.space:
-            player.playpause()
+            player.playPause()
         case Keycode.returnKey:
             playAtSelectedRow()
         case Keycode.delete:

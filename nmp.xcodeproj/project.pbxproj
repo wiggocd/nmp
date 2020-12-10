@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4048FBF325825C2E0030C337 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4048FBF225825C2E0030C337 /* Application.swift */; };
 		405BC659257BDF80008BB376 /* Keycodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405BC658257BDF80008BB376 /* Keycodes.swift */; };
 		40A65F6D2569CF7D0072FB51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F6C2569CF7D0072FB51 /* AppDelegate.swift */; };
 		40A65F6F2569CF7D0072FB51 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F6E2569CF7D0072FB51 /* ViewController.swift */; };
@@ -41,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4048FBF125825B8D0030C337 /* nmp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "nmp-Bridging-Header.h"; sourceTree = "<group>"; };
+		4048FBF225825C2E0030C337 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		405BC658257BDF80008BB376 /* Keycodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keycodes.swift; sourceTree = "<group>"; };
 		40A65F692569CF7D0072FB51 /* nmp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nmp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40A65F6C2569CF7D0072FB51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -96,6 +99,7 @@
 				40A65F7E2569CF7E0072FB51 /* nmpTests */,
 				40A65F892569CF7E0072FB51 /* nmpUITests */,
 				40A65F6A2569CF7D0072FB51 /* Products */,
+				4048FBF125825B8D0030C337 /* nmp-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -113,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				40A65F982569D2770072FB51 /* Library.swift */,
+				4048FBF225825C2E0030C337 /* Application.swift */,
 				40A65F6C2569CF7D0072FB51 /* AppDelegate.swift */,
 				40A65F6E2569CF7D0072FB51 /* ViewController.swift */,
 				40D8C014257CDD420048757E /* ViewActions.swift */,
@@ -280,6 +285,7 @@
 			files = (
 				40A65F9D2569D3720072FB51 /* Player.swift in Sources */,
 				40D8C01D257CDEAE0048757E /* ViewDataSource.swift in Sources */,
+				4048FBF325825C2E0030C337 /* Application.swift in Sources */,
 				40D8C01B257CDDE80048757E /* Extensions.swift in Sources */,
 				40A65F6F2569CF7D0072FB51 /* ViewController.swift in Sources */,
 				405BC659257BDF80008BB376 /* Keycodes.swift in Sources */,
@@ -463,6 +469,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwiggins.nmp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "nmp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -483,6 +490,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwiggins.nmp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "nmp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
