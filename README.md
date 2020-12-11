@@ -4,17 +4,23 @@ For macOS 10.15+
 
 Swift 5 & Cocoa
 
+## Usage
+
+For optimal results, load your music from your home music folder.
+
 ## Prerequisites
 
-- Xcode 11.7+ command line tools
+- Xcode 11.7 or higher from the App Store or [Apple Developer](https://developer.apple.com)
 - Carthage
   - Homebrew to install Carthage if not installed
 
 <sub>Run:</sub>
 
-`xcode-select --install` If the command line tools are not already installed
+Xcode first if the additional components are not installed
 
-If brew is not installed, follow the instructions at [Homebrew](http://brew.sh)
+`xcode-select --install` or try going into Xcode > Preferences > Locations and select the command line tools to install them
+
+If brew is not installed, follow the instructions at [Homebrew](https://brew.sh)
 
 `brew install carthage` If Carthage is not installed
 
@@ -23,11 +29,9 @@ If brew is not installed, follow the instructions at [Homebrew](http://brew.sh)
 
 ## Building
 
-`xcodebuild build` 
+Open up `nmp.xcodeproj` in Xcode and change the build team / signing to build on your machine. To build for deployment, go to Product > Archive in the Xcode project.
 
-An application package should be built to `build/Release/nmp.app`
-
-You can also open up `nmp.xcodeproj` in Xcode or higher and change the build team / signing to build on your machine.
+Run `xcodebuild build` to build: an application package should be built to `build/Release/nmp.app`
 
 _______
 
