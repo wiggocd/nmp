@@ -92,6 +92,10 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
         
         updatePlaylist()
         updateMedia()
+        
+        if let playlistHidden = application?.userDefaults.bool(forKey: "PlaylistIsHidden") {
+            playlistScrollView.isHidden = playlistHidden
+        }
     }
 
     override var representedObject: Any? {
