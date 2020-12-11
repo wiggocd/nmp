@@ -6,9 +6,9 @@ Swift 5 & Cocoa
 
 ## Usage
 
-For optimal results, load your music from your home music folder.
+To download an application package, go to the releases section. For optimal results, load your music from your home music folder.
 
-## Prerequisites
+## Prerequisites to Build
 
 - Xcode 11.7 or higher from the App Store or [Apple Developer](https://developer.apple.com)
 - Carthage
