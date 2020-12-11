@@ -15,9 +15,10 @@ class HelpViewController: DefaultViewController {
     @IBOutlet weak var actionsTableView: NSTableView!
     
     let actionsTableItems = [
-        ("Play/Pause", "(Fn)+Command+F1"),
-        ("Next Track", "(Fn)+Command+F2"),
-        ("Rewind", "(Fn)+Command+F3")
+        ("Play/Pause", "Space"),
+        ("Global Play/Pause", "(Fn)+⌘+F1"),
+        ("Global Next Track", "(Fn)+⌘+F2"),
+        ("Global Rewind", "(Fn)+⌘+F3")
     ]
     
     override func viewDidLoad() {

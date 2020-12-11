@@ -25,6 +25,7 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     var playPauseKey: HotKey!
     var rewindKey: HotKey!
     var nextTrackKey: HotKey!
+    let application = Application.shared as? Application
     
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var detailsLabel: NSTextField!
@@ -88,6 +89,9 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
                 return $0
             }
         }
+        
+        updatePlaylist()
+        updateMedia()
     }
 
     override var representedObject: Any? {
@@ -241,6 +245,15 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
         startPositionTimer()
     }
     
+    func play(atIndex index: Int) {
+        player.trackIndex = index
+        player.play()
+    }
+    
+    func playAtSelectedRow() {
+        play(atIndex: playlistOutlineView.selectedRow)
+    }
+    
     func pause() {
         player.pause()
         if positionTimer != nil {
@@ -269,6 +282,35 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
         }
     }
     
+    func updatePlaylist() {
+        createPlaylistItems(urls: player.playlist)
+        playlistOutlineView.reloadData()
+    }
+    
+    func updateMedia() {
+        if player.playlistHasMedia() {
+            if player.metadata != nil {
+                titleLabel.stringValue = player.metadata.title
+                detailsLabel.stringValue = player.metadata.detailsString()
+                if player.metadata.artwork != nil {
+                    setCoverImage(image: player.metadata.artwork)
+                    setBackgroundView()
+                    playPauseButton.appearance = NSAppearance(named: .darkAqua)
+                } else {
+                    resetCoverImage()
+                }
+            }
+        } else {
+            setDefaultAppearances()
+        }
+        
+        timeSlider.maxValue = player.duration()
+        timeSlider.reset()
+        positionLabel.stringValue = to_hhmmss(seconds: 0.0)
+        durationLabel.stringValue = to_hhmmss(seconds: player.duration())
+        startPositionTimer()
+    }
+    
     func startPositionTimer() {
         if positionTimer == nil || !positionTimer.isValid {
             positionTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updatePosition), userInfo: nil, repeats: true)
@@ -279,18 +321,9 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
         playlistItems = []
         if urls.count > 0 {
             for i in 0...urls.count-1 {
-                playlistItems.append(PlaylistItem(name: fileDisplayName(path: urls[i].path), playlistIndex: i))
+                playlistItems.append(PlaylistItem(name: fileDisplayName(path: urls[i].path), trackIndex: i))
             }
         }
-    }
-    
-    func play(atIndex index: Int) {
-        player.playlistIndex = index
-        player.play()
-    }
-    
-    func playAtSelectedRow() {
-        play(atIndex: playlistOutlineView.selectedRow)
     }
     
     func removeMediaAtSelectedRows() {
@@ -305,7 +338,7 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     
     func alternateKeyDown(with event: NSEvent) -> Bool {
         guard let locWindow = view.window,
-            NSApplication.shared.keyWindow === locWindow else { return false }
+            application?.keyWindow === locWindow else { return false }
         
         let keyCode = event.keyCode
         switch keyCode {

@@ -11,5 +11,5 @@ import Cocoa
 
 @objc(Application)
 class Application: NSApplication {
-    
+    let userDefaults = UserDefaults.standard
 }
