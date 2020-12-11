@@ -124,6 +124,8 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         durationLabel.textColor = defaultTimeColor
         playlistOutlineView.appearance = defaultAppearance
         
+        playlistOutlineView.backgroundColor = playlistOutlineView.backgroundColor.withAlphaComponent(1)
+        
         for button in buttons {
             button.appearance = defaultAppearance
         }
@@ -135,6 +137,8 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
         positionLabel.textColor = .gray
         durationLabel.textColor = .gray
         playlistOutlineView.appearance = darkAppearance
+        
+        playlistOutlineView.backgroundColor = playlistOutlineView.backgroundColor.withAlphaComponent(0.06)
         
         for button in buttons {
             button.appearance = darkAppearance
@@ -214,7 +218,7 @@ class ViewController: NSViewController, NSOutlineViewDelegate {
                     let transformedImage = croppedImage?.transformed(by: CGAffineTransform(scaleX: 2, y: 2))
                     
                     if transformedImage != nil {
-                        let bgImage = transformedImage?.nsImage().darkened(byBlackAlpha: 0.4)
+                        let bgImage = transformedImage?.nsImage().darkened(byBlackAlpha: 0.5)
                         view.layer?.contents = bgImage
                         
                         setAlternateAppearances()
