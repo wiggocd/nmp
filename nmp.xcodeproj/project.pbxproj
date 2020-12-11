@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4037A74F2583A8250013E06F /* DefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4037A74E2583A8250013E06F /* DefaultViewController.swift */; };
 		405BC659257BDF80008BB376 /* Keycodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405BC658257BDF80008BB376 /* Keycodes.swift */; };
+		405C16C125838CE0004C2B05 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405C16C025838CE0004C2B05 /* HelpViewController.swift */; };
+		405C16C325838EB1004C2B05 /* HelpViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405C16C225838EB1004C2B05 /* HelpViewDataSource.swift */; };
 		407C9C522582A4D700A9F421 /* HotKey.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 407C9C502582A48D00A9F421 /* HotKey.framework */; };
 		407C9C532582A4D700A9F421 /* HotKey.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 407C9C502582A48D00A9F421 /* HotKey.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40A65F6D2569CF7D0072FB51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F6C2569CF7D0072FB51 /* AppDelegate.swift */; };
@@ -19,6 +22,7 @@
 		40A65F9B2569D2840072FB51 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F982569D2770072FB51 /* Library.swift */; };
 		40A65F9D2569D3720072FB51 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F9C2569D3720072FB51 /* Player.swift */; };
 		40A65F9F2569D38F0072FB51 /* Filesystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F9E2569D38F0072FB51 /* Filesystem.swift */; };
+		40CEB16A2583C690000872C3 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CEB1692583C690000872C3 /* Application.swift */; };
 		40D8C015257CDD420048757E /* ViewActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D8C014257CDD420048757E /* ViewActions.swift */; };
 		40D8C019257CDDB00048757E /* ViewSelectors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D8C018257CDDB00048757E /* ViewSelectors.swift */; };
 		40D8C01B257CDDE80048757E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D8C01A257CDDE80048757E /* Extensions.swift */; };
@@ -57,8 +61,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4037A74E2583A8250013E06F /* DefaultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultViewController.swift; sourceTree = "<group>"; };
 		4048FBF125825B8D0030C337 /* nmp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "nmp-Bridging-Header.h"; sourceTree = "<group>"; };
 		405BC658257BDF80008BB376 /* Keycodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keycodes.swift; sourceTree = "<group>"; };
+		405C16C025838CE0004C2B05 /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
+		405C16C225838EB1004C2B05 /* HelpViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewDataSource.swift; sourceTree = "<group>"; };
 		407C9C502582A48D00A9F421 /* HotKey.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HotKey.framework; path = Carthage/Build/Mac/HotKey.framework; sourceTree = SOURCE_ROOT; };
 		40A65F692569CF7D0072FB51 /* nmp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nmp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40A65F6C2569CF7D0072FB51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +83,7 @@
 		40A65F982569D2770072FB51 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		40A65F9C2569D3720072FB51 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		40A65F9E2569D38F0072FB51 /* Filesystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filesystem.swift; sourceTree = "<group>"; };
+		40CEB1692583C690000872C3 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		40D8C014257CDD420048757E /* ViewActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewActions.swift; sourceTree = "<group>"; };
 		40D8C018257CDDB00048757E /* ViewSelectors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewSelectors.swift; sourceTree = "<group>"; };
 		40D8C01A257CDDE80048757E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -142,11 +150,15 @@
 			isa = PBXGroup;
 			children = (
 				40A65F982569D2770072FB51 /* Library.swift */,
+				40CEB1692583C690000872C3 /* Application.swift */,
 				40A65F6C2569CF7D0072FB51 /* AppDelegate.swift */,
+				4037A74E2583A8250013E06F /* DefaultViewController.swift */,
 				40A65F6E2569CF7D0072FB51 /* ViewController.swift */,
 				40D8C014257CDD420048757E /* ViewActions.swift */,
 				40D8C01C257CDEAE0048757E /* ViewDataSource.swift */,
 				40D8C018257CDDB00048757E /* ViewSelectors.swift */,
+				405C16C025838CE0004C2B05 /* HelpViewController.swift */,
+				405C16C225838EB1004C2B05 /* HelpViewDataSource.swift */,
 				40A65F9C2569D3720072FB51 /* Player.swift */,
 				40D8C01A257CDDE80048757E /* Extensions.swift */,
 				40A65F9E2569D38F0072FB51 /* Filesystem.swift */,
@@ -308,15 +320,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				405C16C125838CE0004C2B05 /* HelpViewController.swift in Sources */,
 				40A65F9D2569D3720072FB51 /* Player.swift in Sources */,
 				40D8C01D257CDEAE0048757E /* ViewDataSource.swift in Sources */,
 				40D8C01B257CDDE80048757E /* Extensions.swift in Sources */,
 				40A65F6F2569CF7D0072FB51 /* ViewController.swift in Sources */,
 				405BC659257BDF80008BB376 /* Keycodes.swift in Sources */,
 				40A65F6D2569CF7D0072FB51 /* AppDelegate.swift in Sources */,
+				4037A74F2583A8250013E06F /* DefaultViewController.swift in Sources */,
+				40CEB16A2583C690000872C3 /* Application.swift in Sources */,
 				40A65F9B2569D2840072FB51 /* Library.swift in Sources */,
 				40D8C019257CDDB00048757E /* ViewSelectors.swift in Sources */,
 				40A65F9F2569D38F0072FB51 /* Filesystem.swift in Sources */,
+				405C16C325838EB1004C2B05 /* HelpViewDataSource.swift in Sources */,
 				40D8C015257CDD420048757E /* ViewActions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

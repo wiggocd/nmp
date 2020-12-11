@@ -2,7 +2,7 @@
 //  Player.swift
 //  nmp
 //
-//  Created by Kate Wiggins on 14/11/2020.
+//  Created by C. Wiggins on 14/11/2020.
 //  Copyright © 2020 C. Wiggins. All rights reserved.
 //
 
