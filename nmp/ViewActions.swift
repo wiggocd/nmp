@@ -26,7 +26,7 @@ extension ViewController {
                 playlistScrollView.animator().alphaValue = 0
                 self.playlistScrollView.isHidden = false
                 playlistScrollView.animator().alphaValue = 1
-                self.application?.userDefaults.set(false, forKey: "PlaylistIsHidden")
+                self.application?.userDefaults.set(false, forKey: "PlaylistHidden")
             })
         } else {
             NSAnimationContext.runAnimationGroup( { context in
@@ -34,7 +34,7 @@ extension ViewController {
                 playlistScrollView.animator().alphaValue = 0
             }) {
                 self.playlistScrollView.isHidden = true
-                self.application?.userDefaults.set(true, forKey: "PlaylistIsHidden")
+                self.application?.userDefaults.set(true, forKey: "PlaylistHidden")
             }
         }
     }

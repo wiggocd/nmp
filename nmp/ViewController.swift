@@ -321,7 +321,7 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     }
     
     func setPlaylistHiddenFromDefaults() {
-        if let playlistHidden = application?.userDefaults.bool(forKey: "PlaylistIsHidden") {
+        if let playlistHidden = application?.userDefaults.bool(forKey: "PlaylistHidden") {
             playlistScrollView.isHidden = playlistHidden
         }
     }
