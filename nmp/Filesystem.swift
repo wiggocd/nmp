@@ -9,8 +9,6 @@
 import Foundation
 import Cocoa
 
-let fileManager = FileManager()
-
 func open() -> [URL?] {
     let dialog = NSOpenPanel()
     
@@ -22,9 +20,36 @@ func open() -> [URL?] {
     dialog.allowsMultipleSelection = true
     dialog.allowedFileTypes = audioFileTypes
     
-    dialog.runModal()
+    let response = dialog.runModal()
+    
+    if response.rawValue == NSApplication.ModalResponse.OK.rawValue {
+        for url in dialog.urls {
+            saveURLToBookmarks(url: url, userDefaults: UserDefaults.standard)
+        }
+    }
     
     return dialog.urls
+}
+
+func saveURLToBookmarks(url: URL, userDefaults: UserDefaults) {
+    do {
+        let bookmark = try url.bookmarkData(options: .securityScopeAllowOnlyReadAccess, includingResourceValuesForKeys: nil, relativeTo: nil)
+        userDefaults.set(bookmark, forKey: "bookmark")
+    } catch let error {
+        print("Error saving bookmark: \(error.localizedDescription)")
+    }
+}
+
+func loadBookmarkData() {
+    if let bookmarkData = UserDefaults.standard.object(forKey: "bookmark") as? Data {
+        do {
+            var dataIsStale = false
+            let url = try URL(resolvingBookmarkData: bookmarkData, options: .withoutUI, relativeTo: nil, bookmarkDataIsStale: &dataIsStale)
+            _ = url.startAccessingSecurityScopedResource()
+        } catch let error {
+            print("Error loading bookmark: \(error.localizedDescription)")
+        }
+    }
 }
 
 func openMedia() -> [URL?] {
@@ -34,7 +59,7 @@ func openMedia() -> [URL?] {
 func isDirectory(path: String) -> Bool {
     var isDir: ObjCBool = false
     
-    if fileManager.fileExists(atPath: path, isDirectory: &isDir) {
+    if FileManager.default.fileExists(atPath: path, isDirectory: &isDir) {
         return isDir.boolValue
     }
     
@@ -46,7 +71,7 @@ func ls(path: String) -> [String] {
     var ret: [String] = []
     
     do {
-        ret = try fileManager.contentsOfDirectory(atPath: path)
+        ret = try FileManager.default.contentsOfDirectory(atPath: path)
     } catch let error {
         print(error.localizedDescription)
     }
@@ -86,14 +111,14 @@ func recurseSubdirectories(urls: [URL?]) -> [URL?] {
 }
 
 func fileDisplayName(path: String) -> String {
-    return fileManager.displayName(atPath: path)
+    return FileManager.default.displayName(atPath: path)
 }
 
 func getCoverArt(fromDirectory dir: URL) -> URL? {
     if dir.hasDirectoryPath {
         do {
             let dirPath = dir.path
-            let contents = try fileManager.contentsOfDirectory(atPath: dirPath)
+            let contents = try FileManager.default.contentsOfDirectory(atPath: dirPath)
             var images: [String] = []
             
             for relativePath in contents {

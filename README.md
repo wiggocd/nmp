@@ -6,7 +6,7 @@ Swift 5 & Cocoa
 
 ## Usage
 
-To download an application package, go to the releases section. For optimal results, load your music from your home music folder.
+To download an application package, go to the releases section.
 
 ## Prerequisites to Build
 

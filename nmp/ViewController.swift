@@ -61,6 +61,7 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
         super.viewDidLoad()
         
         notificationCenter = NotificationCenter.default
+        loadBookmarkData()
         player = AudioPlayer()
         
         defaultTitleColor = titleLabel.textColor
