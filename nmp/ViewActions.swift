@@ -52,13 +52,22 @@ extension ViewController {
     }
     
     @IBAction func timeSliderMoved(_ sender: Any) {
-        player.setPosition(position: timeSlider.doubleValue)
-        positionLabel.stringValue = to_hhmmss(seconds: player.position)
+        if let sender = sender as? NSSlider {
+            player.setPosition(position: sender.doubleValue)
+            positionLabel.stringValue = to_hhmmss(seconds: player.position)
+        }
     }
     
     @IBAction func playlistOutlineViewDoubleAction(_ sender: Any) {
         if let sender = sender as? NSOutlineView {
             play(atIndex: sender.selectedRow)
+        }
+    }
+
+    @IBAction func volumeSliderMoved(_ sender: Any) {
+        if let sender = sender as? NSSlider {
+            player.volume = sender.floatValue
+            application?.userDefaults.set(sender.floatValue, forKey: "Volume")
         }
     }
 }

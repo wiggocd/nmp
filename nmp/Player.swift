@@ -59,6 +59,12 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
     
+    var volume: Float = 1.0 {
+        didSet {
+            player.volume = volume
+        }
+    }
+    
     @Published var state = PlayerState.idle {
         didSet { stateChanged() }
     }

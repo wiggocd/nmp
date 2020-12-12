@@ -38,6 +38,7 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     @IBOutlet weak var playlistButton: NSButton!
     
     @IBOutlet weak var timeSlider: NSSlider!
+    @IBOutlet weak var volumeSlider: NSSlider!
     @IBOutlet weak var positionLabel: NSTextField!
     @IBOutlet weak var durationLabel: NSTextField!
     @IBOutlet weak var playlistScrollView: NSScrollView!
@@ -92,10 +93,8 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
         
         updatePlaylist()
         updateMedia()
-        
-        if let playlistHidden = application?.userDefaults.bool(forKey: "PlaylistIsHidden") {
-            playlistScrollView.isHidden = playlistHidden
-        }
+        setVolumeFromDefaults()
+        setPlaylistHiddenFromDefaults()
     }
 
     override var representedObject: Any? {
@@ -313,6 +312,18 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
         positionLabel.stringValue = to_hhmmss(seconds: 0.0)
         durationLabel.stringValue = to_hhmmss(seconds: player.duration())
         startPositionTimer()
+    }
+    
+    func setVolumeFromDefaults() {
+        if let volume = application?.userDefaults.float(forKey: "Volume") {
+            volumeSlider.floatValue = volume
+        }
+    }
+    
+    func setPlaylistHiddenFromDefaults() {
+        if let playlistHidden = application?.userDefaults.bool(forKey: "PlaylistIsHidden") {
+            playlistScrollView.isHidden = playlistHidden
+        }
     }
     
     func startPositionTimer() {
