@@ -16,6 +16,7 @@ class HelpViewController: DefaultViewController {
     
     let actionsTableItems = [
         ("Play/Pause", "Space"),
+        ("Clear Playlist", "Shift+⌘+←"),
         ("Global Play/Pause", "(Fn)+⌘+F1"),
         ("Global Next Track", "(Fn)+⌘+F2"),
         ("Global Rewind", "(Fn)+⌘+F3")

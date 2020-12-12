@@ -25,7 +25,6 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     var playPauseKey: HotKey!
     var rewindKey: HotKey!
     var nextTrackKey: HotKey!
-    let application = Application.shared as? Application
     
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var detailsLabel: NSTextField!
@@ -44,11 +43,13 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     @IBOutlet weak var playlistScrollView: NSScrollView!
     @IBOutlet weak var playlistOutlineView: NSOutlineView!
     
+    let application = Application.shared as? Application
     let shadowRadius = CGFloat(8)
     let coverImageSize = NSSize(width: 640, height: 640)
     let UICornerRadius = CGFloat(4)
     let bgBlurRadius = CGFloat(50)
     let coverImageCornerRadius = CGFloat(10)
+    let backgroundDarknessAlpha = CGFloat(0.5)
     let doubleClickInterval = 0.2
     let pasteboardTypes = getPasteboardTypes()
     let darkAppearance = NSAppearance(named: .darkAqua)
@@ -225,7 +226,7 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
                     let transformedImage = croppedImage?.transformed(by: CGAffineTransform(scaleX: 2, y: 2))
                     
                     if transformedImage != nil {
-                        let bgImage = transformedImage?.nsImage().darkened(byBlackAlpha: 0.5)
+                        let bgImage = transformedImage?.nsImage().darkened(byBlackAlpha: backgroundDarknessAlpha)
                         view.layer?.contents = bgImage
                         
                         setAlternateAppearances()

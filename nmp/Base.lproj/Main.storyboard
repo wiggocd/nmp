@@ -200,6 +200,7 @@
                                             <string key="keyEquivalent" base64-UTF8="YES">
 CA
 </string>
+                                            <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                             <connections>
                                                 <action selector="clearPlaylist:" target="Ady-hI-5gd" id="eYo-oa-bGa"/>
                                             </connections>
@@ -659,9 +660,12 @@ CA
                             </slider>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="3xK-Pi-Qal" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="2Pb-fe-qFw"/>
                             <constraint firstAttribute="bottom" secondItem="ZUU-ru-jEQ" secondAttribute="bottom" constant="10" id="2u6-EL-ssT"/>
                             <constraint firstItem="rso-5a-nyJ" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" symbolic="YES" id="493-8y-XsV"/>
                             <constraint firstItem="tcp-Og-jxF" firstAttribute="firstBaseline" secondItem="Oqy-yU-Mwh" secondAttribute="firstBaseline" id="5Ci-pL-rmO"/>
+                            <constraint firstItem="rso-5a-nyJ" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="7J3-QP-VcD"/>
+                            <constraint firstItem="oS3-2p-Kj9" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="7Me-fq-6DC"/>
                             <constraint firstItem="W3q-Vw-E4r" firstAttribute="leading" secondItem="Z72-XO-r8D" secondAttribute="trailing" constant="8" symbolic="YES" id="7Xe-Tu-Hgs"/>
                             <constraint firstItem="ccp-8a-79m" firstAttribute="leading" secondItem="J2Q-Jx-RCt" secondAttribute="trailing" constant="8" symbolic="YES" id="7tK-zH-5pC"/>
                             <constraint firstItem="oS3-2p-Kj9" firstAttribute="leading" secondItem="J2Q-Jx-RCt" secondAttribute="leading" constant="13" id="8i3-rF-bTp"/>
@@ -684,6 +688,7 @@ CA
                             <constraint firstItem="ZUU-ru-jEQ" firstAttribute="top" secondItem="aTV-ju-zgQ" secondAttribute="bottom" constant="22" id="Ufz-Z8-B3q"/>
                             <constraint firstAttribute="trailing" secondItem="9sX-qc-cPp" secondAttribute="trailing" constant="10" id="VRi-1V-eLx"/>
                             <constraint firstItem="Z72-XO-r8D" firstAttribute="baseline" secondItem="W3q-Vw-E4r" secondAttribute="baseline" id="YVp-Xf-2EG"/>
+                            <constraint firstItem="ccp-8a-79m" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="ZC7-tG-XjM"/>
                             <constraint firstItem="tcp-Og-jxF" firstAttribute="leading" secondItem="gjt-zg-tCa" secondAttribute="trailing" constant="8" symbolic="YES" id="agF-30-e1h"/>
                             <constraint firstItem="gjt-zg-tCa" firstAttribute="baseline" secondItem="tcp-Og-jxF" secondAttribute="baseline" id="b6n-wm-sf9"/>
                             <constraint firstItem="3xK-Pi-Qal" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="23" id="blK-Mp-Aoj"/>
@@ -691,6 +696,7 @@ CA
                             <constraint firstItem="Z72-XO-r8D" firstAttribute="firstBaseline" secondItem="W3q-Vw-E4r" secondAttribute="firstBaseline" id="dIA-1e-bqi"/>
                             <constraint firstItem="Oqy-yU-Mwh" firstAttribute="baseline" secondItem="Z72-XO-r8D" secondAttribute="baseline" id="eWg-Fi-jIs"/>
                             <constraint firstItem="gjt-zg-tCa" firstAttribute="firstBaseline" secondItem="tcp-Og-jxF" secondAttribute="firstBaseline" id="erl-aG-O1p"/>
+                            <constraint firstItem="ZUU-ru-jEQ" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="goa-fY-xKj"/>
                             <constraint firstItem="Oqy-yU-Mwh" firstAttribute="firstBaseline" secondItem="Z72-XO-r8D" secondAttribute="firstBaseline" id="gyT-uM-IiC"/>
                             <constraint firstItem="aTV-ju-zgQ" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="101" id="hXz-ha-P38"/>
                             <constraint firstItem="Oqy-yU-Mwh" firstAttribute="leading" secondItem="tcp-Og-jxF" secondAttribute="trailing" constant="8" symbolic="YES" id="izC-QC-wL6"/>
