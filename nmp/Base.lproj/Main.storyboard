@@ -561,6 +561,9 @@ CA
                             </textField>
                             <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ccp-8a-79m">
                                 <rect key="frame" x="99" y="319" width="243" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="184" id="d24-s7-GjB"/>
+                                </constraints>
                                 <sliderCell key="cell" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="0IZ-5K-Ekm"/>
                                 <connections>
                                     <action selector="timeSliderMoved:" target="XfG-lQ-9wD" id="5C3-ol-DdW"/>
@@ -634,7 +637,7 @@ CA
                             <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aTV-ju-zgQ">
                                 <rect key="frame" x="99" y="288" width="72" height="19"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="68" id="ZrD-SP-3Pp"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="ZrD-SP-3Pp"/>
                                 </constraints>
                                 <sliderCell key="cell" state="on" alignment="left" maxValue="1" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="qx9-ga-poh"/>
                                 <connections>
