@@ -10,6 +10,10 @@ import Foundation
 import Cocoa
 
 extension ViewController {
+    @IBAction func removePlaylistItems(_ sender: Any) {
+        removeMediaAtSelectedRows()
+    }
+    
     @IBAction func clearPlaylist(_ sender: Any) {
         player.clear()
         setUIDefaults()

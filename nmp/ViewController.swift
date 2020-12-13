@@ -385,8 +385,6 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
             player.playPause()
         case Keycode.returnKey:
             playAtSelectedRow()
-        case Keycode.delete:
-            removeMediaAtSelectedRows()
         default:
             break
         }

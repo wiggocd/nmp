@@ -196,6 +196,14 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Playlist" id="OA9-eR-SUT">
                                     <items>
+                                        <menuItem title="Remove Items" id="PT5-nx-p3d">
+                                            <string key="keyEquivalent" base64-UTF8="YES">
+CA
+</string>
+                                            <connections>
+                                                <action selector="removePlaylistItems:" target="Ady-hI-5gd" id="9jQ-RS-ePd"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem title="Clear" id="Iyb-Oq-hPO">
                                             <string key="keyEquivalent" base64-UTF8="YES">
 CA
