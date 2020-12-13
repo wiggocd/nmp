@@ -34,14 +34,14 @@ func open() -> [URL?] {
 func saveURLToBookmarks(url: URL, userDefaults: UserDefaults) {
     do {
         let bookmark = try url.bookmarkData(options: .securityScopeAllowOnlyReadAccess, includingResourceValuesForKeys: nil, relativeTo: nil)
-        userDefaults.set(bookmark, forKey: "bookmark")
+        userDefaults.set(bookmark, forKey: urlBookmarkKey)
     } catch let error {
         print("Error saving bookmark: \(error.localizedDescription)")
     }
 }
 
 func loadBookmarkData() {
-    if let bookmarkData = UserDefaults.standard.object(forKey: "bookmark") as? Data {
+    if let bookmarkData = UserDefaults.standard.object(forKey: urlBookmarkKey) as? Data {
         do {
             var dataIsStale = false
             let url = try URL(resolvingBookmarkData: bookmarkData, options: .withoutUI, relativeTo: nil, bookmarkDataIsStale: &dataIsStale)

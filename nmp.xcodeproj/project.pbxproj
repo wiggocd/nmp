@@ -13,6 +13,7 @@
 		405C16C325838EB1004C2B05 /* HelpViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405C16C225838EB1004C2B05 /* HelpViewDataSource.swift */; };
 		407C9C522582A4D700A9F421 /* HotKey.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 407C9C502582A48D00A9F421 /* HotKey.framework */; };
 		407C9C532582A4D700A9F421 /* HotKey.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 407C9C502582A48D00A9F421 /* HotKey.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		40A2E5B125862B1D006763BD /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A2E5B025862B1D006763BD /* Views.swift */; };
 		40A65F6D2569CF7D0072FB51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F6C2569CF7D0072FB51 /* AppDelegate.swift */; };
 		40A65F6F2569CF7D0072FB51 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F6E2569CF7D0072FB51 /* ViewController.swift */; };
 		40A65F712569CF7E0072FB51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40A65F702569CF7E0072FB51 /* Assets.xcassets */; };
@@ -67,6 +68,7 @@
 		405C16C025838CE0004C2B05 /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		405C16C225838EB1004C2B05 /* HelpViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewDataSource.swift; sourceTree = "<group>"; };
 		407C9C502582A48D00A9F421 /* HotKey.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HotKey.framework; path = Carthage/Build/Mac/HotKey.framework; sourceTree = SOURCE_ROOT; };
+		40A2E5B025862B1D006763BD /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		40A65F692569CF7D0072FB51 /* nmp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nmp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40A65F6C2569CF7D0072FB51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		40A65F6E2569CF7D0072FB51 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				40D8C014257CDD420048757E /* ViewActions.swift */,
 				40D8C01C257CDEAE0048757E /* ViewDataSource.swift */,
 				40D8C018257CDDB00048757E /* ViewSelectors.swift */,
+				40A2E5B025862B1D006763BD /* Views.swift */,
 				405C16C025838CE0004C2B05 /* HelpViewController.swift */,
 				405C16C225838EB1004C2B05 /* HelpViewDataSource.swift */,
 				40A65F9C2569D3720072FB51 /* Player.swift */,
@@ -328,6 +331,7 @@
 				405BC659257BDF80008BB376 /* Keycodes.swift in Sources */,
 				40A65F6D2569CF7D0072FB51 /* AppDelegate.swift in Sources */,
 				4037A74F2583A8250013E06F /* DefaultViewController.swift in Sources */,
+				40A2E5B125862B1D006763BD /* Views.swift in Sources */,
 				40CEB16A2583C690000872C3 /* Application.swift in Sources */,
 				40A65F9B2569D2840072FB51 /* Library.swift in Sources */,
 				40D8C019257CDDB00048757E /* ViewSelectors.swift in Sources */,

@@ -141,3 +141,10 @@ extension Notification.Name {
         return .init("ViewController.nextTrack")
     }
 }
+
+extension NSTextView {
+    func disableWrapping() {
+        isHorizontallyResizable = true
+        textContainer?.widthTracksTextView = false
+    }
+}

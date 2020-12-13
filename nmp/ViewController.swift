@@ -25,9 +25,12 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     var playPauseKey: HotKey!
     var rewindKey: HotKey!
     var nextTrackKey: HotKey!
+    var titleScrollTimer: Timer!
     
-    @IBOutlet weak var titleLabel: NSTextField!
-    @IBOutlet weak var detailsLabel: NSTextField!
+    @IBOutlet var titleTextView: NSTextView!
+    @IBOutlet var detailsTextView: NSTextView!
+    @IBOutlet weak var titleScrollView: NonUserScrollableScrollView!
+    @IBOutlet weak var detailsScrollView: NonUserScrollableScrollView!
     @IBOutlet weak var coverImageView: NSImageView!
     
     @IBOutlet weak var openButton: NSButton!
@@ -64,8 +67,8 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
         loadBookmarkData()
         player = AudioPlayer()
         
-        defaultTitleColor = titleLabel.textColor
-        defaultDetailsColor = detailsLabel.textColor
+        defaultTitleColor = titleTextView.textColor
+        defaultDetailsColor = detailsTextView.textColor
         defaultTimeColor = positionLabel.textColor
         defaultAppearance = view.appearance
         
@@ -79,6 +82,7 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
             playlistButton
         ]
         
+        initialiseTextViews()
         setUIDefaults()
         addObservers()
         initialiseDragDrop()
@@ -98,6 +102,11 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
         setVolumeFromDefaults()
         setPlaylistHiddenFromDefaults()
     }
+    
+    override func viewWillDisappear() {
+        super.viewWillDisappear()
+        stopTimers()
+    }
 
     override var representedObject: Any? {
         didSet {
@@ -105,9 +114,21 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
         }
     }
     
+    func initialiseTextViews() {
+//        titleScrollTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+//            let visibleRect = self.titleTextView.visibleRect
+//            let newRect = NSRect(x: visibleRect.minX + 10, y: visibleRect.minY + 10, width: visibleRect.width, height: visibleRect.height)
+//            self.titleTextView.scrollToVisible(newRect)
+//        }
+    }
+    
+    func stopTimers() {
+//        titleScrollTimer.invalidate()
+    }
+    
     func setUIDefaults() {
-        titleLabel.stringValue = "Not Playing"
-        detailsLabel.stringValue = "No Media"
+        titleTextView.string = "Not Playing"
+        detailsTextView.string = "No Media"
         positionLabel.stringValue = to_hhmmss(seconds: 0.0)
         durationLabel.stringValue = to_hhmmss(seconds: 0.0)
         timeSlider.minValue = 0
@@ -127,8 +148,8 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     }
     
     func setDefaultAppearances() {
-        titleLabel.textColor = defaultTitleColor
-        detailsLabel.textColor = defaultDetailsColor
+        titleTextView.textColor = defaultTitleColor
+        detailsTextView.textColor = defaultDetailsColor
         positionLabel.textColor = defaultTimeColor
         durationLabel.textColor = defaultTimeColor
         playlistOutlineView.appearance = defaultAppearance
@@ -141,8 +162,8 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     }
     
     func setAlternateAppearances() {
-        titleLabel.textColor = .white
-        detailsLabel.textColor = .lightGray
+        titleTextView.textColor = .white
+        detailsTextView.textColor = .lightGray
         positionLabel.textColor = .gray
         durationLabel.textColor = .gray
         playlistOutlineView.appearance = darkAppearance
@@ -295,8 +316,8 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     func updateMedia() {
         if player.playlistHasMedia() {
             if player.metadata != nil {
-                titleLabel.stringValue = player.metadata.title
-                detailsLabel.stringValue = player.metadata.detailsString()
+                titleTextView.string = player.metadata.title
+                detailsTextView.string = player.metadata.detailsString()
                 if player.metadata.artwork != nil {
                     setCoverImage(image: player.metadata.artwork)
                     setBackgroundView()
