@@ -115,6 +115,7 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     }
     
     func initialiseTextViews() {
+        // Todo: setup auto scrolling of titles
 //        titleScrollTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
 //            let visibleRect = self.titleTextView.visibleRect
 //            let newRect = NSRect(x: visibleRect.minX + 10, y: visibleRect.minY + 10, width: visibleRect.width, height: visibleRect.height)
