@@ -16,7 +16,7 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     var playlistItems: [PlaylistItem] = []
     var lastSelectedPlaylistItem = 0
     var playlistItemClickTimer = Timer()
-    var draggedNode: AnyObject!
+    var draggedNodes: [AnyObject]!
     var backgroundImageView: NSImageView!
     var defaultTitleColor: NSColor!
     var defaultDetailsColor: NSColor!

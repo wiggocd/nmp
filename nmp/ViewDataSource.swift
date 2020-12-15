@@ -10,8 +10,6 @@ import Foundation
 import Cocoa
 
 extension ViewController: NSOutlineViewDataSource, NSPasteboardItemDataProvider {
-    // MARK: Todo: View Drag & Drop
-    
     // MARK: View cells
     
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
@@ -55,7 +53,7 @@ extension ViewController: NSOutlineViewDataSource, NSPasteboardItemDataProvider 
     }
     
     func outlineView(_ outlineView: NSOutlineView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItems draggedItems: [Any]) {
-        draggedNode = draggedItems[0] as AnyObject
+        draggedNodes = draggedItems as [AnyObject]
         session.draggingPasteboard.setData(Data(), forType: REORDER_PASTEBOARD_TYPE)
     }
     
@@ -63,8 +61,8 @@ extension ViewController: NSOutlineViewDataSource, NSPasteboardItemDataProvider 
         var ret: NSDragOperation = NSDragOperation()
         
         if index != NSOutlineViewDropOnItemIndex {
-            if item as AnyObject? !== draggedNode {
-                if let _ = draggedNode as? PlaylistItem {
+            if item as AnyObject? !== draggedNodes as AnyObject? {
+                if let _ = draggedNodes as? [PlaylistItem] {
                     ret = NSDragOperation.generic
                 }
             } else if info.draggingPasteboard.pasteboardItems != nil {
@@ -78,22 +76,22 @@ extension ViewController: NSOutlineViewDataSource, NSPasteboardItemDataProvider 
     func outlineView(_ outlineView: NSOutlineView, acceptDrop info: NSDraggingInfo, item: Any?, childIndex index: Int) -> Bool {
         var ret: Bool = false
         
-        if draggedNode != nil {
-            if !(draggedNode is PlaylistItem) {
+        if draggedNodes != nil {
+            if !(draggedNodes is [PlaylistItem]) {
                 return false
             }
             
-            let srcItem = draggedNode as! PlaylistItem
+            let srcItems = draggedNodes as! [PlaylistItem]
             let destItem: PlaylistItem? = item as? PlaylistItem
-            let oldIndex = outlineView.row(forItem: srcItem)
+            let oldIndex = outlineView.row(forItem: srcItems[0])
             var toIndex = index > oldIndex ? index - 1 : index
             
             if toIndex == NSOutlineViewDropOnItemIndex {        // Should never occur
                 toIndex = 0
             }
             
-            if oldIndex != toIndex || srcItem != destItem {
-                player.movePlaylistItem(fromIndex: oldIndex, toIndex: toIndex)
+            if oldIndex != toIndex || srcItems[0] != destItem {
+                player.movePlaylistItems(fromIndex: oldIndex, toIndex: toIndex, count: srcItems.count)
                 playlistOutlineView.reloadData()
                 ret = true
             }
@@ -118,7 +116,7 @@ extension ViewController: NSOutlineViewDataSource, NSPasteboardItemDataProvider 
     }
     
     func outlineView(_ outlineView: NSOutlineView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, operation: NSDragOperation) {
-        draggedNode = nil
+        draggedNodes = nil
     }
     
     // MARK: NSPasteboardItemDataProvider

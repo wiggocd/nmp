@@ -333,10 +333,26 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
     
-    func movePlaylistItem(fromIndex: Int, toIndex: Int) {
-        let item = playlist[fromIndex]
-        playlist.remove(at: fromIndex)
-        playlist.insert(item, at: toIndex)
+    func movePlaylistItems(fromIndex: Int, toIndex: Int, count: Int) {
+        if count == 1 {
+            let item = playlist[fromIndex]
+            playlist.remove(at: fromIndex)
+            playlist.insert(item, at: toIndex)
+        } else {
+            var items: [URL] = []
+            let range = fromIndex...fromIndex+count-1
+            for i in range {
+                items.append(playlist[i])
+            }
+            
+            playlist.removeSubrange(range)
+            
+            if toIndex > playlist.count-1 {
+                playlist += items
+            } else {
+                playlist.insert(contentsOf: items, at: toIndex)
+            }
+        }
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
