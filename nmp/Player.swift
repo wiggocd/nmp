@@ -334,9 +334,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func movePlaylistItem(fromIndex: Int, toIndex: Int) {
-        let tmp = playlist[toIndex]
-        playlist[toIndex] = playlist[fromIndex]
-        playlist[fromIndex] = tmp
+        let item = playlist[fromIndex]
+        playlist.remove(at: fromIndex)
+        playlist.insert(item, at: toIndex)
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {

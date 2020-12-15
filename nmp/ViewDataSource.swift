@@ -10,6 +10,8 @@ import Foundation
 import Cocoa
 
 extension ViewController: NSOutlineViewDataSource, NSPasteboardItemDataProvider {
+    // MARK: Todo: View Drag & Drop
+    
     // MARK: View cells
     
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
@@ -44,7 +46,7 @@ extension ViewController: NSOutlineViewDataSource, NSPasteboardItemDataProvider 
         return cell
     }
     
-    // MARK: Drag & Drop
+    // MARK: Playlist Drag & Drop
     
     func outlineView(_ outlineView: NSOutlineView, pasteboardWriterForItem item: Any) -> NSPasteboardWriting? {
         let pbItem: NSPasteboardItem = NSPasteboardItem()
@@ -103,7 +105,7 @@ extension ViewController: NSOutlineViewDataSource, NSPasteboardItemDataProvider 
     // MARK: NSPasteboardItemDataProvider
     
     func pasteboard(_ pasteboard: NSPasteboard?, item: NSPasteboardItem, provideDataForType type: NSPasteboard.PasteboardType) {
-        let string = "Outline Pasteboard Item"
+        let string = "Pasteboard Item"
         item.setString(string, forType: type)
     }
 }
