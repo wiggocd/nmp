@@ -12,4 +12,24 @@ import Cocoa
 @objc(Application)
 class Application: NSApplication {
     let userDefaults = UserDefaults.standard
+    
+    var colorBg: Bool! {
+        didSet {
+            userDefaults.set(colorBg, forKey: "colorBg")
+        }
+    }
+    
+    override init() {
+        super.init()
+        
+        if userDefaults.value(forKey: "colorBg") == nil {
+            colorBg = true
+        } else {
+            colorBg = userDefaults.bool(forKey: "colorBg")
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
 }

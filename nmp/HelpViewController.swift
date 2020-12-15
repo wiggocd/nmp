@@ -9,9 +9,7 @@
 import Foundation
 import Cocoa
 
-class HelpViewController: DefaultViewController {
-    let application = Application.shared as? Application
-    
+class HelpViewController: NSViewController {
     @IBOutlet weak var actionsTableView: NSTableView!
     
     let actionsTableItems = [

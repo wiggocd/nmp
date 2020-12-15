@@ -22,7 +22,11 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
-                                        <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW"/>
+                                        <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW">
+                                            <connections>
+                                                <segue destination="I3Y-hx-WWj" kind="show" id="SSw-9a-4ni"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
                                         <menuItem title="Services" id="NMo-om-nkz">
                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -265,7 +269,7 @@ CA
         <!--nmp - Help-->
         <scene sceneID="8oa-s7-ItT">
             <objects>
-                <viewController title="nmp - Help" id="FGe-s0-uhe" customClass="HelpViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="nmp - Help" showSeguePresentationStyle="single" id="FGe-s0-uhe" customClass="HelpViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="ncO-5O-GFM">
                         <rect key="frame" x="0.0" y="0.0" width="396" height="250"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -406,7 +410,7 @@ CA
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="obU-9Q-eqi">
                                 <rect key="frame" x="18" y="174" width="360" height="32"/>
-                                <textFieldCell key="cell" alignment="center" title="Go to File &gt; Open or click the open icon to add media to the playlist" id="ZB5-Bi-Y6U">
+                                <textFieldCell key="cell" alignment="center" title="Go to File &gt; Open, click the open icon or drag and drop to add media to the playlist" id="ZB5-Bi-Y6U">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -438,11 +442,67 @@ CA
             </objects>
             <point key="canvasLocation" x="518" y="634"/>
         </scene>
+        <!--Tab View Controller-->
+        <scene sceneID="iQI-xB-MVs">
+            <objects>
+                <customObject id="xPj-9P-gx3" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <tabViewController showSeguePresentationStyle="single" selectedTabViewItemIndex="0" tabStyle="toolbar" id="I3Y-hx-WWj" customClass="TabViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabViewItems>
+                        <tabViewItem identifier="" id="2rp-7N-lM0"/>
+                    </tabViewItems>
+                    <tabView key="tabView" type="noTabsNoBorder" id="68u-0l-M6m">
+                        <rect key="frame" x="0.0" y="0.0" width="448" height="105"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <font key="font" metaFont="system"/>
+                        <connections>
+                            <outlet property="delegate" destination="I3Y-hx-WWj" id="Wqh-kl-8bL"/>
+                        </connections>
+                    </tabView>
+                    <connections>
+                        <outlet property="tabView" destination="68u-0l-M6m" id="Dy4-wk-c0x"/>
+                        <segue destination="cNZ-pI-VMz" kind="relationship" relationship="tabItems" id="Ddz-q6-clw"/>
+                    </connections>
+                </tabViewController>
+            </objects>
+            <point key="canvasLocation" x="-431" y="562"/>
+        </scene>
+        <!--Options-->
+        <scene sceneID="TTl-6d-kpy">
+            <objects>
+                <viewController title="Options" id="cNZ-pI-VMz" customClass="OptionsViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="EAp-XX-t9o">
+                        <rect key="frame" x="0.0" y="0.0" width="448" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="W3J-PU-rkG">
+                                <rect key="frame" x="159" y="264" width="131" height="18"/>
+                                <buttonCell key="cell" type="check" title="Color Background" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="cMC-0N-bsm">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="colorBgAction:" target="cNZ-pI-VMz" id="v1i-vr-wOu"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="W3J-PU-rkG" firstAttribute="centerX" secondItem="EAp-XX-t9o" secondAttribute="centerX" constant="0.5" id="u50-v9-cym"/>
+                            <constraint firstItem="W3J-PU-rkG" firstAttribute="top" secondItem="EAp-XX-t9o" secondAttribute="top" constant="20" id="z3j-bF-s1F"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="colorBgButton" destination="W3J-PU-rkG" id="8mc-fy-iVs"/>
+                    </connections>
+                </viewController>
+                <customObject id="FVn-eP-gaq" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-431" y="899"/>
+        </scene>
         <!--nmp-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <viewController title="nmp" storyboardIdentifier="ViewController" id="XfG-lQ-9wD" customClass="ViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="nmp" storyboardIdentifier="PlayerViewController" showSeguePresentationStyle="single" id="XfG-lQ-9wD" customClass="PlayerViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="441" height="540"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -766,7 +826,6 @@ CA
                     </view>
                     <connections>
                         <outlet property="coverImageView" destination="rso-5a-nyJ" id="duH-WX-yo2"/>
-                        <outlet property="detailsScrollView" destination="bVE-4L-UX9" id="0Ng-EH-6ei"/>
                         <outlet property="detailsTextView" destination="EPq-UA-Tq7" id="2la-TZ-kL1"/>
                         <outlet property="durationLabel" destination="9sX-qc-cPp" id="jnT-Gs-oGe"/>
                         <outlet property="nextTrackButton" destination="Z72-XO-r8D" id="bO8-HM-hFU"/>
@@ -778,7 +837,6 @@ CA
                         <outlet property="positionLabel" destination="J2Q-Jx-RCt" id="E4A-A7-Ret"/>
                         <outlet property="rewindButton" destination="tcp-Og-jxF" id="kzg-h6-loN"/>
                         <outlet property="timeSlider" destination="ccp-8a-79m" id="7Ou-1s-woR"/>
-                        <outlet property="titleScrollView" destination="4WO-dU-R2m" id="ZLN-Tk-zU7"/>
                         <outlet property="titleTextView" destination="K5v-5H-Rv8" id="0yS-Zk-uQc"/>
                         <outlet property="volumeSlider" destination="aTV-ju-zgQ" id="C0a-hq-LKE"/>
                     </connections>

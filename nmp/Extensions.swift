@@ -109,6 +109,10 @@ extension NSView {
 }
 
 extension Notification.Name {
+    static var preferencesChanged: Notification.Name {
+        return .init("Application.preferencesChanged")
+    }
+    
     static var mediaChanged: Notification.Name {
         return .init("AudioPlayer.mediaChanged")
     }

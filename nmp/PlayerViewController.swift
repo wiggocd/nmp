@@ -9,8 +9,19 @@
 import Cocoa
 import HotKey
 
-class ViewController: DefaultViewController, NSOutlineViewDelegate {
-    var notificationCenter: NotificationCenter!
+class PlayerViewController: NSViewController, NSOutlineViewDelegate {
+    let notificationCenter = NotificationCenter.default
+    let application = Application.shared as? Application
+    let shadowRadius = CGFloat(8)
+    let coverImageSize = NSSize(width: 640, height: 640)
+    let UICornerRadius = CGFloat(4)
+    let bgBlurRadius = CGFloat(50)
+    let coverImageCornerRadius = CGFloat(10)
+    let backgroundDarknessAlpha = CGFloat(0.5)
+    let doubleClickInterval = 0.2
+    let darkAppearance = NSAppearance(named: .darkAqua)
+    let mediaHotKeyModifiers: NSEvent.ModifierFlags = [.command]
+    
     var player: AudioPlayer!
     var positionTimer: Timer!
     var playlistItems: [PlaylistItem] = []
@@ -29,8 +40,6 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     
     @IBOutlet var titleTextView: NSTextView!
     @IBOutlet var detailsTextView: NSTextView!
-    @IBOutlet weak var titleScrollView: NonUserScrollableScrollView!
-    @IBOutlet weak var detailsScrollView: NonUserScrollableScrollView!
     @IBOutlet weak var coverImageView: NSImageView!
     
     @IBOutlet weak var openButton: NSButton!
@@ -46,24 +55,11 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     @IBOutlet weak var playlistScrollView: NSScrollView!
     @IBOutlet weak var playlistOutlineView: NSOutlineView!
     
-    let application = Application.shared as? Application
-    let shadowRadius = CGFloat(8)
-    let coverImageSize = NSSize(width: 640, height: 640)
-    let UICornerRadius = CGFloat(4)
-    let bgBlurRadius = CGFloat(50)
-    let coverImageCornerRadius = CGFloat(10)
-    let backgroundDarknessAlpha = CGFloat(0.5)
-    let doubleClickInterval = 0.2
-    let darkAppearance = NSAppearance(named: .darkAqua)
-    let mediaHotKeyModifiers: NSEvent.ModifierFlags = [.command]
-    
     var buttons: [NSButton] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        notificationCenter = NotificationCenter.default
-        loadBookmarkData()
         player = AudioPlayer()
         
         defaultTitleColor = titleTextView.textColor
@@ -81,7 +77,6 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
             playlistButton
         ]
         
-        initialiseTextViews()
         setUIDefaults()
         addObservers()
         initialiseDragDrop()
@@ -103,28 +98,10 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
         initialiseDragDrop()
     }
     
-    override func viewWillDisappear() {
-        super.viewWillDisappear()
-        stopTimers()
-    }
-
     override var representedObject: Any? {
         didSet {
         // Update the view, if already loaded.
         }
-    }
-    
-    func initialiseTextViews() {
-        // Todo: setup auto scrolling of titles
-//        titleScrollTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-//            let visibleRect = self.titleTextView.visibleRect
-//            let newRect = NSRect(x: visibleRect.minX + 10, y: visibleRect.minY + 10, width: visibleRect.width, height: visibleRect.height)
-//            self.titleTextView.scrollToVisible(newRect)
-//        }
-    }
-    
-    func stopTimers() {
-//        titleScrollTimer.invalidate()
     }
     
     func setUIDefaults() {
@@ -137,8 +114,6 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
         timeSlider.doubleValue = 0.0
         playlistOutlineView.delegate = self
         playlistOutlineView.dataSource = self
-        
-        setDefaultAppearances()
         
         playlistOutlineView.indentationPerLevel = 0
         playlistOutlineView.roundCorners(withRadius: UICornerRadius)
@@ -177,6 +152,7 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     }
     
     func addObservers() {
+        notificationCenter.addObserver(self, selector: #selector(refresh), name: .preferencesChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(playlistChanged), name: .playlistChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(mediaChanged), name: .mediaChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(playbackStarted), name: .playbackStarted, object: nil)
@@ -236,35 +212,38 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     }
     
     func setBackgroundView() {
-        if player.metadata.artwork != nil && coverImageView != nil {
-            // Todo: add blurred background from artwork
-            let artwork = player.metadata.artwork
-            let blurredImage = CIImage(cgImage: artwork!).blurred(radius: 64)
-            
-            if blurredImage != nil {
-                let cropRect = CIVector(x: 125, y: 125, z: CGFloat(artwork!.width) / CGFloat(2), w: CGFloat(artwork!.height) / CGFloat(2))
-                let croppedImage = blurredImage?.cropped(toRect: cropRect)
+        if application!.colorBg! {
+            if player.metadata.artwork != nil && coverImageView != nil {
+                // Todo: add blurred background from artwork
+                let artwork = player.metadata.artwork
+                let blurredImage = CIImage(cgImage: artwork!).blurred(radius: 64)
                 
-                if croppedImage != nil {
-                    let transformedImage = croppedImage?.transformed(by: CGAffineTransform(scaleX: 2, y: 2))
+                if blurredImage != nil {
+                    let cropRect = CIVector(x: 125, y: 125, z: CGFloat(artwork!.width) / CGFloat(2), w: CGFloat(artwork!.height) / CGFloat(2))
+                    let croppedImage = blurredImage?.cropped(toRect: cropRect)
                     
-                    if transformedImage != nil {
-                        let bgImage = transformedImage?.nsImage().darkened(byBlackAlpha: backgroundDarknessAlpha)
-                        view.layer?.contents = bgImage
+                    if croppedImage != nil {
+                        let transformedImage = croppedImage?.transformed(by: CGAffineTransform(scaleX: 2, y: 2))
                         
-                        setAlternateAppearances()
-                        
-                        return
+                        if transformedImage != nil {
+                            let bgImage = transformedImage?.nsImage().darkened(byBlackAlpha: backgroundDarknessAlpha)
+                            view.layer?.contents = bgImage
+                            
+                            setAlternateAppearances()
+                            
+                            return
+                        }
                     }
                 }
             }
-            
-            view.layer?.contents = nil
         }
+        
+        resetBackgroundView()
     }
     
     func resetBackgroundView() {
         view.layer?.contents = nil
+        setDefaultAppearances()
     }
     
     func play() {
@@ -322,7 +301,6 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
                 if player.metadata.artwork != nil {
                     setCoverImage(image: player.metadata.artwork)
                     setBackgroundView()
-                    playPauseButton.appearance = NSAppearance(named: .darkAqua)
                 } else {
                     resetCoverImage()
                 }

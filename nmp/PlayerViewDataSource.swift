@@ -9,7 +9,7 @@
 import Foundation
 import Cocoa
 
-extension ViewController: NSOutlineViewDataSource, NSPasteboardItemDataProvider {
+extension PlayerViewController: NSOutlineViewDataSource, NSPasteboardItemDataProvider {
     // MARK: View cells
     
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {

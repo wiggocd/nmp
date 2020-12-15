@@ -9,7 +9,7 @@
 import Foundation
 import Cocoa
 
-extension ViewController {
+extension PlayerViewController {
     @IBAction func removePlaylistItems(_ sender: Any) {
         removeMediaAtSelectedRows()
     }

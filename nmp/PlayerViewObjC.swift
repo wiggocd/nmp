@@ -9,7 +9,11 @@
 import Foundation
 import Cocoa
 
-extension ViewController {
+extension PlayerViewController {
+    @objc func refresh() {
+        setBackgroundView()
+    }
+    
     @objc func updatePosition() {
         timeSlider.doubleValue = player.position
         positionLabel.stringValue = to_hhmmss(seconds: player.position)
