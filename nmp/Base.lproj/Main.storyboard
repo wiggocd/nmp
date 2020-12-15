@@ -24,7 +24,7 @@
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
                                         <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW">
                                             <connections>
-                                                <segue destination="I3Y-hx-WWj" kind="show" id="SSw-9a-4ni"/>
+                                                <segue destination="z4u-Ez-vEZ" kind="show" id="4iS-VG-flo"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
@@ -175,6 +175,11 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Window" systemMenu="window" id="Td7-aD-5lo">
                                     <items>
+                                        <menuItem title="Player" keyEquivalent="P" id="3rD-9n-VFR">
+                                            <connections>
+                                                <segue destination="XfG-lQ-9wD" kind="show" id="bT4-uI-51G"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem title="Minimize" keyEquivalent="m" id="OY7-WF-poV">
                                             <connections>
                                                 <action selector="performMiniaturize:" target="Ady-hI-5gd" id="VwT-WD-YPe"/>
@@ -266,10 +271,10 @@ CA
             </objects>
             <point key="canvasLocation" x="74.5" y="250"/>
         </scene>
-        <!--nmp - Help-->
+        <!--nmp Help-->
         <scene sceneID="8oa-s7-ItT">
             <objects>
-                <viewController title="nmp - Help" showSeguePresentationStyle="single" id="FGe-s0-uhe" customClass="HelpViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="nmp Help" showSeguePresentationStyle="single" id="FGe-s0-uhe" customClass="HelpViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="ncO-5O-GFM">
                         <rect key="frame" x="0.0" y="0.0" width="396" height="250"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -440,63 +445,31 @@ CA
                 </viewController>
                 <customObject id="mG8-HT-OkK" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="518" y="634"/>
+            <point key="canvasLocation" x="611" y="634"/>
         </scene>
         <!--Tab View Controller-->
-        <scene sceneID="iQI-xB-MVs">
+        <scene sceneID="Kc4-Gk-sqR">
             <objects>
-                <customObject id="xPj-9P-gx3" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <tabViewController showSeguePresentationStyle="single" selectedTabViewItemIndex="0" tabStyle="toolbar" id="I3Y-hx-WWj" customClass="TabViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
+                <tabViewController selectedTabViewItemIndex="0" tabStyle="toolbar" id="z4u-Ez-vEZ" sceneMemberID="viewController">
                     <tabViewItems>
-                        <tabViewItem identifier="" id="2rp-7N-lM0"/>
+                        <tabViewItem label="General" image="NSPreferencesGeneral" id="5a0-4a-3f3"/>
                     </tabViewItems>
-                    <tabView key="tabView" type="noTabsNoBorder" id="68u-0l-M6m">
-                        <rect key="frame" x="0.0" y="0.0" width="448" height="105"/>
+                    <tabView key="tabView" type="noTabsNoBorder" id="DPd-Nq-UM0">
+                        <rect key="frame" x="0.0" y="0.0" width="447" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <font key="font" metaFont="system"/>
                         <connections>
-                            <outlet property="delegate" destination="I3Y-hx-WWj" id="Wqh-kl-8bL"/>
+                            <outlet property="delegate" destination="z4u-Ez-vEZ" id="j9a-yT-T0P"/>
                         </connections>
                     </tabView>
                     <connections>
-                        <outlet property="tabView" destination="68u-0l-M6m" id="Dy4-wk-c0x"/>
-                        <segue destination="cNZ-pI-VMz" kind="relationship" relationship="tabItems" id="Ddz-q6-clw"/>
+                        <outlet property="tabView" destination="DPd-Nq-UM0" id="RaW-3D-iDY"/>
+                        <segue destination="HgX-Ny-4cZ" kind="relationship" relationship="tabItems" id="5xk-Zo-2h9"/>
                     </connections>
                 </tabViewController>
+                <customObject id="fuw-mb-JIz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-431" y="562"/>
-        </scene>
-        <!--Options-->
-        <scene sceneID="TTl-6d-kpy">
-            <objects>
-                <viewController title="Options" id="cNZ-pI-VMz" customClass="OptionsViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="EAp-XX-t9o">
-                        <rect key="frame" x="0.0" y="0.0" width="448" height="300"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="W3J-PU-rkG">
-                                <rect key="frame" x="159" y="264" width="131" height="18"/>
-                                <buttonCell key="cell" type="check" title="Color Background" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="cMC-0N-bsm">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="colorBgAction:" target="cNZ-pI-VMz" id="v1i-vr-wOu"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="W3J-PU-rkG" firstAttribute="centerX" secondItem="EAp-XX-t9o" secondAttribute="centerX" constant="0.5" id="u50-v9-cym"/>
-                            <constraint firstItem="W3J-PU-rkG" firstAttribute="top" secondItem="EAp-XX-t9o" secondAttribute="top" constant="20" id="z3j-bF-s1F"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="colorBgButton" destination="W3J-PU-rkG" id="8mc-fy-iVs"/>
-                    </connections>
-                </viewController>
-                <customObject id="FVn-eP-gaq" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-431" y="899"/>
+            <point key="canvasLocation" x="-490" y="659"/>
         </scene>
         <!--nmp-->
         <scene sceneID="hIz-AP-VOD">
@@ -844,9 +817,45 @@ CA
             </objects>
             <point key="canvasLocation" x="74.5" y="779"/>
         </scene>
+        <!--Options View Controller-->
+        <scene sceneID="fGz-x9-Kiv">
+            <objects>
+                <viewController title="Options View Controller" id="HgX-Ny-4cZ" customClass="OptionsViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="3wv-DY-s7j">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="stP-hq-Cc1">
+                                <rect key="frame" x="160" y="264" width="131" height="18"/>
+                                <buttonCell key="cell" type="check" title="Color Background" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VrH-Fs-sqZ">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="colorBgAction:" target="HgX-Ny-4cZ" id="KHL-dm-ZMJ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="stP-hq-Cc1" firstAttribute="centerX" secondItem="3wv-DY-s7j" secondAttribute="centerX" id="OtU-LG-B9L"/>
+                            <constraint firstItem="stP-hq-Cc1" firstAttribute="top" secondItem="3wv-DY-s7j" secondAttribute="top" constant="20" symbolic="YES" id="nVf-7z-Ujj"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="colorBgButton" destination="stP-hq-Cc1" id="qX6-i5-g4r"/>
+                    </connections>
+                </viewController>
+                <customObject id="4Vt-fH-T2v" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-489" y="1142"/>
+        </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="bT4-uI-51G"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="AddToPlaylist" width="90" height="90"/>
+        <image name="NSPreferencesGeneral" width="32" height="32"/>
         <image name="Play" width="90" height="90"/>
         <image name="Playlist" width="90" height="90"/>
         <image name="ToEnd" width="90" height="90"/>

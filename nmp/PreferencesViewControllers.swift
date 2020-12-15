@@ -9,10 +9,6 @@
 import Foundation
 import Cocoa
 
-class TabViewController: NSTabViewController {
-    
-}
-
 class OptionsViewController: NSViewController {
     let application = NSApplication.shared as? Application
     let notificationCenter = NotificationCenter.default
