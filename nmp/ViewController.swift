@@ -54,7 +54,6 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     let coverImageCornerRadius = CGFloat(10)
     let backgroundDarknessAlpha = CGFloat(0.5)
     let doubleClickInterval = 0.2
-    let pasteboardTypes = getPasteboardTypes()
     let darkAppearance = NSAppearance(named: .darkAqua)
     let mediaHotKeyModifiers: NSEvent.ModifierFlags = [.command]
     
@@ -101,6 +100,7 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
         updateMedia()
         setVolumeFromDefaults()
         setPlaylistHiddenFromDefaults()
+        initialiseDragDrop()
     }
     
     override func viewWillDisappear() {
@@ -190,7 +190,7 @@ class ViewController: DefaultViewController, NSOutlineViewDelegate {
     }
     
     func initialiseDragDrop() {
-        playlistOutlineView.registerForDraggedTypes(pasteboardTypes)
+        playlistOutlineView.registerForDraggedTypes(playlistPasteboardTypes)
         playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation(), forLocal: false)
         playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation.every, forLocal: true)
     }

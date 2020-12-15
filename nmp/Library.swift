@@ -20,6 +20,8 @@ let extSep = "."
 let alpha = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 let alphaReverse = alpha.reversed()
 let REORDER_PASTEBOARD_TYPE = NSPasteboard.PasteboardType((Bundle.main.bundleIdentifier ?? "")+".item")
+let FILENAMES_PASTEBOARD_TYPE = NSPasteboard.PasteboardType.fileURL
+let playlistPasteboardTypes = [REORDER_PASTEBOARD_TYPE, FILENAMES_PASTEBOARD_TYPE]
 
 class AudioMetadata {
     var title: String = ""
@@ -126,12 +128,4 @@ func to_hhmmss(seconds: Double) -> String {
     }
     
     return timeString
-}
-
-func getPasteboardTypes() -> [NSPasteboard.PasteboardType] {
-    var ret: [NSPasteboard.PasteboardType] = [REORDER_PASTEBOARD_TYPE]
-    for object in audioFileTypes {
-        ret.append(NSPasteboard.PasteboardType(object))
-    }
-    return ret
 }

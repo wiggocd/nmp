@@ -62,11 +62,13 @@ extension ViewController: NSOutlineViewDataSource, NSPasteboardItemDataProvider 
     func outlineView(_ outlineView: NSOutlineView, validateDrop info: NSDraggingInfo, proposedItem item: Any?, proposedChildIndex index: Int) -> NSDragOperation {
         var ret: NSDragOperation = NSDragOperation()
         
-        // let baseItem = item as? PlaylistItem
-        
-        if item as AnyObject? !== draggedNode && index != NSOutlineViewDropOnItemIndex {
-            if let _ = draggedNode as? PlaylistItem {
-                ret = NSDragOperation.generic
+        if index != NSOutlineViewDropOnItemIndex {
+            if item as AnyObject? !== draggedNode {
+                if let _ = draggedNode as? PlaylistItem {
+                    ret = NSDragOperation.generic
+                }
+            } else if info.draggingPasteboard.pasteboardItems != nil {
+                ret = NSDragOperation.copy
             }
         }
         
@@ -76,23 +78,40 @@ extension ViewController: NSOutlineViewDataSource, NSPasteboardItemDataProvider 
     func outlineView(_ outlineView: NSOutlineView, acceptDrop info: NSDraggingInfo, item: Any?, childIndex index: Int) -> Bool {
         var ret: Bool = false
         
-        if !(draggedNode is PlaylistItem) {
-            return false
-        }
-        
-        let srcItem = draggedNode as! PlaylistItem
-        let destItem: PlaylistItem? = item as? PlaylistItem
-        let oldIndex = outlineView.row(forItem: srcItem)
-        var toIndex = index > oldIndex ? index - 1 : index
-        
-        if toIndex == NSOutlineViewDropOnItemIndex {        // Should never occur
-            toIndex = 0
-        }
-        
-        if oldIndex != toIndex || srcItem != destItem {
-            player.movePlaylistItem(fromIndex: oldIndex, toIndex: toIndex)
-            playlistOutlineView.reloadData()
-            ret = true
+        if draggedNode != nil {
+            if !(draggedNode is PlaylistItem) {
+                return false
+            }
+            
+            let srcItem = draggedNode as! PlaylistItem
+            let destItem: PlaylistItem? = item as? PlaylistItem
+            let oldIndex = outlineView.row(forItem: srcItem)
+            var toIndex = index > oldIndex ? index - 1 : index
+            
+            if toIndex == NSOutlineViewDropOnItemIndex {        // Should never occur
+                toIndex = 0
+            }
+            
+            if oldIndex != toIndex || srcItem != destItem {
+                player.movePlaylistItem(fromIndex: oldIndex, toIndex: toIndex)
+                playlistOutlineView.reloadData()
+                ret = true
+            }
+        } else {
+            if info.draggingPasteboard.pasteboardItems != nil {
+                let pbItems = info.draggingPasteboard.pasteboardItems
+                var urls: [URL?] = []
+                for item in pbItems! {
+                    if let data = item.propertyList(forType: FILENAMES_PASTEBOARD_TYPE) as? String {
+                        if let url = URL(string: data) {
+                            urls.append(url)
+                        }
+                    }
+                }
+                
+                urls = sortUrls(urls: recurseSubdirectories(urls: urls))
+                player.addMedia(urls: urls, updateIndexIfNew: true, shouldPlay: true)
+            }
         }
         
         return ret

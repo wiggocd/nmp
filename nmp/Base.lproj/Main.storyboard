@@ -442,7 +442,7 @@ CA
         <scene sceneID="hIz-AP-VOD">
             <objects>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <viewController title="nmp" storyboardIdentifier="MainViewController" id="XfG-lQ-9wD" customClass="ViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="nmp" storyboardIdentifier="ViewController" id="XfG-lQ-9wD" customClass="ViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="441" height="540"/>
                         <autoresizingMask key="autoresizingMask"/>
