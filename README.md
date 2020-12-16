@@ -6,7 +6,7 @@ Swift 5 & Cocoa
 
 ## Usage
 
-To download an application package, go to the releases section.
+To download an application package, go to the releases page.
 
 ## Prerequisites to Build
 
@@ -35,4 +35,4 @@ Run `xcodebuild build` to build: an application package should be built to `buil
 
 _______
 
-The aim of this project is to create an audio playback program targeted for local files with a native appearance.
+The aim of this project is to create an audio playback program targeted for local files with a relatively nice appearance :)
