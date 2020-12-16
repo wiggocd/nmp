@@ -61,9 +61,14 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     var volume: Float = 1.0 {
         didSet {
-            player.volume = volume
+            if player != nil {
+                player.volume = volume
+            }
         }
     }
+    
+    private var lastVolume: Float = 1.0
+    var muted = false
     
     @Published var state = PlayerState.idle {
         didSet { stateChanged() }
@@ -215,6 +220,17 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
     
+    func toggleMute() {
+        if muted {
+            volume = lastVolume
+            muted = false
+        } else {
+            lastVolume = volume
+            volume = 0
+            muted = true
+        }
+    }
+    
     func nextTrack() {
         if playlistHasMedia() && playlist.count - 1 >= trackIndex + 1 {
             let wasPlaying = isPlaying()
@@ -302,11 +318,13 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func removeMedia(atIndexes indexes: [Int]) {
-        var modifiableIndexes = indexes
-        for i in 0...modifiableIndexes.count-1 {
-            removeMedia(atIndex: modifiableIndexes[i])
-            for n in i...modifiableIndexes.count-1 {
-                modifiableIndexes[n] -= 1
+        if indexes.count > 0 {
+            var modifiableIndexes = indexes
+            for i in 0...modifiableIndexes.count-1 {
+                removeMedia(atIndex: modifiableIndexes[i])
+                for n in i...modifiableIndexes.count-1 {
+                    modifiableIndexes[n] -= 1
+                }
             }
         }
     }

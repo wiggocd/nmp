@@ -16,28 +16,38 @@ class NonUserScrollableScrollView: NSScrollView {
 }
 
 class PlaylistOutlineView: NSOutlineView {
+    let notificationCenter = NotificationCenter.default
     let deleteAnimation: NSTableView.AnimationOptions = .effectFade
     
     var currentRow: Int!
+    var removedIndexes: IndexSet = []
     
     override func menu(for event: NSEvent) -> NSMenu? {
         let point = convert(event.locationInWindow, from: nil)
         currentRow = self.row(at: point)
         
-        let menu = NSMenu()
-        let deleteItem = NSMenuItem(title: "Delete", action: #selector(removeCurrentRow), keyEquivalent: "\u{08}")
-        deleteItem.keyEquivalentModifierMask = [.command]
-        menu.addItem(deleteItem)
+        if currentRow > -1 {
+            let menu = NSMenu()
+            let deleteItem = NSMenuItem(title: "Delete", action: #selector(removeCurrentRow), keyEquivalent: "\u{08}")
+            deleteItem.keyEquivalentModifierMask = [.command]
+            menu.addItem(deleteItem)
+            
+            return menu
+        }
         
-        return menu
+        return nil
     }
     
     func removeSelectedRows() {
+        removedIndexes = selectedRowIndexes
         removeItems(at: selectedRowIndexes, inParent: nil, withAnimation: deleteAnimation)
+        notificationCenter.post(name: .playlistIndexesRemoved, object: self)
     }
     
     @objc func removeCurrentRow() {
-        removeItems(at: [currentRow], inParent: nil, withAnimation: deleteAnimation)
+        removedIndexes = [currentRow] as IndexSet
+        removeItems(at: removedIndexes, inParent: nil, withAnimation: deleteAnimation)
+        notificationCenter.post(name: .playlistIndexesRemoved, object: self)
         currentRow = nil
     }
 }

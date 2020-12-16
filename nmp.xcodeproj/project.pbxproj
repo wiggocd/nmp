@@ -11,8 +11,6 @@
 		405BC659257BDF80008BB376 /* Keycodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405BC658257BDF80008BB376 /* Keycodes.swift */; };
 		405C16C125838CE0004C2B05 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405C16C025838CE0004C2B05 /* HelpViewController.swift */; };
 		405C16C325838EB1004C2B05 /* HelpViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405C16C225838EB1004C2B05 /* HelpViewDataSource.swift */; };
-		407C9C522582A4D700A9F421 /* HotKey.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 407C9C502582A48D00A9F421 /* HotKey.framework */; };
-		407C9C532582A4D700A9F421 /* HotKey.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 407C9C502582A48D00A9F421 /* HotKey.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40A65F6D2569CF7D0072FB51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F6C2569CF7D0072FB51 /* AppDelegate.swift */; };
 		40A65F6F2569CF7D0072FB51 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F6E2569CF7D0072FB51 /* PlayerViewController.swift */; };
 		40A65F712569CF7E0072FB51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40A65F702569CF7E0072FB51 /* Assets.xcassets */; };
@@ -54,7 +52,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				407C9C532582A4D700A9F421 /* HotKey.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -67,7 +64,6 @@
 		405BC658257BDF80008BB376 /* Keycodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keycodes.swift; sourceTree = "<group>"; };
 		405C16C025838CE0004C2B05 /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		405C16C225838EB1004C2B05 /* HelpViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewDataSource.swift; sourceTree = "<group>"; };
-		407C9C502582A48D00A9F421 /* HotKey.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HotKey.framework; path = Carthage/Build/Mac/HotKey.framework; sourceTree = SOURCE_ROOT; };
 		40A65F692569CF7D0072FB51 /* nmp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nmp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40A65F6C2569CF7D0072FB51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		40A65F6E2569CF7D0072FB51 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
@@ -97,7 +93,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				407C9C522582A4D700A9F421 /* HotKey.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,14 +113,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		407C9C4F2582A47700A9F421 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				407C9C502582A48D00A9F421 /* HotKey.framework */,
-			);
-			path = Frameworks;
-			sourceTree = "<group>";
-		};
 		40A65F602569CF7D0072FB51 = {
 			isa = PBXGroup;
 			children = (
@@ -133,7 +120,6 @@
 				40A65F7E2569CF7E0072FB51 /* nmpTests */,
 				40A65F892569CF7E0072FB51 /* nmpUITests */,
 				40A65F6A2569CF7D0072FB51 /* Products */,
-				407C9C4F2582A47700A9F421 /* Frameworks */,
 				4048FBF125825B8D0030C337 /* nmp-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
@@ -507,15 +493,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = RGVL7GVTMP;
 				ENABLE_HARDENED_RUNTIME = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-				);
 				INFOPLIST_FILE = nmp/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwiggins.nmp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -534,15 +512,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = RGVL7GVTMP;
 				ENABLE_HARDENED_RUNTIME = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-				);
 				INFOPLIST_FILE = nmp/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cwiggins.nmp;
 				PRODUCT_NAME = "$(TARGET_NAME)";

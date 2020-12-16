@@ -10,7 +10,6 @@ import Foundation
 import Cocoa
 import AVFoundation
 
-let progName = "nmp"
 let urlBookmarkKey = "Bookmark"
 let audioFileTypes = ["wav", "mp2", "mp3", "m4a"]
 let imageFileTypes = ["jpg", "jpeg", "png"]

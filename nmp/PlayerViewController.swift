@@ -7,7 +7,7 @@
 //
 
 import Cocoa
-import HotKey
+import MediaPlayer
 
 class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     let notificationCenter = NotificationCenter.default
@@ -21,6 +21,8 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     let doubleClickInterval = 0.2
     let darkAppearance = NSAppearance(named: .darkAqua)
     let mediaHotKeyModifiers: NSEvent.ModifierFlags = [.command]
+    let remoteCommandCenter = MPRemoteCommandCenter.shared()
+    let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
     
     var player: AudioPlayer!
     var positionTimer: Timer!
@@ -33,10 +35,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     var defaultDetailsColor: NSColor!
     var defaultTimeColor: NSColor!
     var defaultAppearance: NSAppearance!
-    var playPauseKey: HotKey!
-    var rewindKey: HotKey!
-    var nextTrackKey: HotKey!
-    var titleScrollTimer: Timer!
     
     @IBOutlet var titleTextView: NSTextView!
     @IBOutlet var detailsTextView: NSTextView!
@@ -80,7 +78,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         setUIDefaults()
         addObservers()
         initialiseDragDrop()
-        addHotKeys()
         
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
             super.keyDown(with: $0)
@@ -93,6 +90,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         
         updatePlaylist()
         updateMedia()
+        initialisePlayerSession()
         setVolumeFromDefaults()
         setPlaylistHiddenFromDefaults()
         initialiseDragDrop()
@@ -159,6 +157,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         notificationCenter.addObserver(self, selector: #selector(playbackPaused), name: .playbackPaused, object: nil)
         notificationCenter.addObserver(self, selector: #selector(playbackStopped), name: .playbackStopped, object: nil)
         notificationCenter.addObserver(self, selector: #selector(playPauseAction), name: .playPause, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(playlistIndexesRemoved), name: .playlistIndexesRemoved, object: playlistOutlineView)
     }
     
     func removeObserver() {
@@ -171,15 +170,30 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation.every, forLocal: true)
     }
     
-    func addHotKeys() {
-        playPauseKey = HotKey(key: .f1, modifiers: [.command])
-        playPauseKey.keyDownHandler = playPause
+    func initialisePlayerSession() {
+        remoteCommandCenter.togglePlayPauseCommand.isEnabled = true
+        remoteCommandCenter.togglePlayPauseCommand.addTarget(self, action: #selector(togglePlayPauseCommandAction))
         
-        rewindKey = HotKey(key: .f2, modifiers: mediaHotKeyModifiers)
-        rewindKey.keyDownHandler = rewind
+        remoteCommandCenter.playCommand.isEnabled = true
+        remoteCommandCenter.playCommand.addTarget(self, action: #selector(playCommandAction))
         
-        nextTrackKey = HotKey(key: .f3, modifiers: mediaHotKeyModifiers)
-        nextTrackKey.keyDownHandler = nextTrack
+        remoteCommandCenter.pauseCommand.isEnabled = true
+        remoteCommandCenter.pauseCommand.addTarget(self, action: #selector(pauseCommandAction))
+        
+        remoteCommandCenter.previousTrackCommand.isEnabled = true
+        remoteCommandCenter.previousTrackCommand.addTarget(self, action: #selector(previousTrackCommandAction))
+            
+        remoteCommandCenter.nextTrackCommand.isEnabled = true
+        remoteCommandCenter.nextTrackCommand.addTarget(self, action: #selector(nextTrackCommandAction))
+        
+        preparePlayback()
+    }
+    
+    func preparePlayback() {
+        player.toggleMute()
+        play()
+        pause()
+        player.toggleMute()
     }
     
     func setCoverImage(image: CGImage) {
@@ -249,11 +263,14 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     func play() {
         player.play()
         startPositionTimer()
+        nowPlayingInfoCenter.playbackState = .playing
     }
     
     func play(atIndex index: Int) {
         player.trackIndex = index
         player.play()
+        startPositionTimer()
+        nowPlayingInfoCenter.playbackState = .playing
     }
     
     func playAtSelectedRow() {
@@ -266,6 +283,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             positionTimer.invalidate()
             positionTimer = nil
         }
+        nowPlayingInfoCenter.playbackState = .paused
     }
     
     func playPause() {
@@ -360,7 +378,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         let keyCode = event.keyCode
         switch keyCode {
         case Keycode.space:
-            player.playPause()
+            playPause()
         case Keycode.returnKey:
             playAtSelectedRow()
         case Keycode.delete:

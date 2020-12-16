@@ -144,6 +144,10 @@ extension Notification.Name {
     static var nextTrack: Notification.Name {
         return .init("ViewController.nextTrack")
     }
+    
+    static var playlistIndexesRemoved: Notification.Name {
+        return .init("ViewController.playlistIndexesRemoved")
+    }
 }
 
 extension NSTextView {

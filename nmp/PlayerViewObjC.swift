@@ -8,6 +8,7 @@
 
 import Foundation
 import Cocoa
+import MediaPlayer
 
 extension PlayerViewController {
     @objc func refresh() {
@@ -29,13 +30,73 @@ extension PlayerViewController {
     
     @objc func playbackStarted(_ notification: Notification) {
         playPauseButton.image = NSImage(named: "Pause")
+        nowPlayingInfoCenter.playbackState = .playing
     }
     
     @objc func playbackPaused(_ notification: Notification) {
         playPauseButton.image = NSImage(named: "Play")
+        nowPlayingInfoCenter.playbackState = .paused
     }
     
     @objc func playbackStopped(_ notification: Notification) {
         playPauseButton.image = NSImage(named: "Play")
+        nowPlayingInfoCenter.playbackState = .stopped
+    }
+    
+    @objc func togglePlayPauseCommandAction() -> MPRemoteCommandHandlerStatus {
+        if self.player.playlistHasMedia() {
+            self.playPause()
+            return .success
+        } else {
+            return .noActionableNowPlayingItem
+        }
+    }
+    
+    @objc func playCommandAction() -> MPRemoteCommandHandlerStatus {
+        if self.player.playlistHasMedia() {
+            self.play()
+            return .success
+        } else {
+            return .noActionableNowPlayingItem
+        }
+    }
+    
+    @objc func pauseCommandAction() -> MPRemoteCommandHandlerStatus {
+        if self.player.playlistHasMedia() {
+            self.pause()
+            return .success
+        } else {
+            return .noActionableNowPlayingItem
+        }
+    }
+    
+    @objc func previousTrackCommandAction() -> MPRemoteCommandHandlerStatus {
+        if self.player.playlistHasMedia() {
+            self.player.previousTrack()
+            return .success
+        } else {
+            return .noActionableNowPlayingItem
+        }
+    }
+    
+    @objc func nextTrackCommandAction() -> MPRemoteCommandHandlerStatus {
+        if self.player.playlistHasMedia() {
+            self.nextTrack()
+            return .success
+        } else {
+            return .noActionableNowPlayingItem
+        }
+    }
+    
+    @objc func playlistIndexesRemoved(_ sender: Any?) {
+        if let sender = sender as AnyObject? {
+            if let object = sender.object as? PlaylistOutlineView {
+                var indexes: [Int] = []
+                for index in object.removedIndexes {
+                    indexes.append(index)
+                }
+                player.removeMedia(atIndexes: indexes)
+            }
+        }
     }
 }
