@@ -226,7 +226,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         remoteCommandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(changePlaybackPositionCommandAction))
         
         preparePlayback()
-        
         nowPlayingInfoCenter.nowPlayingInfo = [:]
     }
     

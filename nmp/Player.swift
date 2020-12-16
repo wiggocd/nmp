@@ -19,7 +19,15 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             notificationCenter.post(name: .playlistChanged, object: nil)
             var strings: [String] = []
             for item in playlist {
-                strings.append(item.absoluteString)
+                if let bookmarkData = UserDefaults.standard.object(forKey: urlBookmarkKey) as? Data {
+                    do {
+                        var dataIsStale = false
+                        _ = try URL(resolvingBookmarkData: bookmarkData, options: .withoutUI, relativeTo: nil, bookmarkDataIsStale: &dataIsStale)
+                        strings.append(item.absoluteString)
+                    } catch {
+                        return
+                    }
+                }
             }
             application?.userDefaults.set(strings, forKey: "Playlist")
         }
@@ -41,6 +49,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             } else {
                 do {
                     player = try AVAudioPlayer(contentsOf: currentUrl)
+                    player.volume = volume
                     mediaChanged()
                 } catch let error {
                     print(error.localizedDescription)
