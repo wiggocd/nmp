@@ -205,14 +205,6 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Playlist" id="OA9-eR-SUT">
                                     <items>
-                                        <menuItem title="Remove Items" id="PT5-nx-p3d">
-                                            <string key="keyEquivalent" base64-UTF8="YES">
-CA
-</string>
-                                            <connections>
-                                                <action selector="removePlaylistItems:" target="Ady-hI-5gd" id="9jQ-RS-ePd"/>
-                                            </connections>
-                                        </menuItem>
                                         <menuItem title="Clear" id="Iyb-Oq-hPO">
                                             <string key="keyEquivalent" base64-UTF8="YES">
 CA
@@ -486,7 +478,7 @@ CA
                                     <rect key="frame" x="0.0" y="0.0" width="421" height="257"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" outlineTableColumn="wnY-SM-EmK" id="mzH-Gz-28f">
+                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" outlineTableColumn="wnY-SM-EmK" id="mzH-Gz-28f" customClass="PlaylistOutlineView" customModule="nmp" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="421" height="257"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="2" height="3"/>

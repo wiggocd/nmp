@@ -53,7 +53,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     @IBOutlet weak var positionLabel: NSTextField!
     @IBOutlet weak var durationLabel: NSTextField!
     @IBOutlet weak var playlistScrollView: NSScrollView!
-    @IBOutlet weak var playlistOutlineView: NSOutlineView!
+    @IBOutlet weak var playlistOutlineView: PlaylistOutlineView!
     
     var buttons: [NSButton] = []
     
@@ -363,6 +363,10 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             player.playPause()
         case Keycode.returnKey:
             playAtSelectedRow()
+        case Keycode.delete:
+            if event.modifierFlags.contains(.command) {
+                playlistOutlineView.removeSelectedRows()
+            }
         default:
             break
         }

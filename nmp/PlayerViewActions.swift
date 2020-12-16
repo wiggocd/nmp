@@ -74,4 +74,6 @@ extension PlayerViewController {
             application?.userDefaults.set(sender.floatValue, forKey: "Volume")
         }
     }
+    
+    
 }
