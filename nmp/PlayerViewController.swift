@@ -132,7 +132,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             durationLabel.textColor = defaultTimeColor
             
             playlistOutlineView.appearance = NSApp.appearance
-            if let showTransparentAppearance = application?.userDefaults.bool(forKey: "showTransparentAppearance") {
+            if let showTransparentAppearance = application?.userDefaults.bool(forKey: "ShowTransparentAppearance") {
                 if showTransparentAppearance || hasShownTransparentAppearance {
                     playlistOutlineView.backgroundColor = .controlBackgroundColor
                 }
@@ -160,7 +160,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             durationLabel.textColor = .gray
             
             playlistOutlineView.appearance = darkAppearance
-            if let showTransparentAppearance = application?.userDefaults.bool(forKey: "showTransparentAppearance") {
+            if let showTransparentAppearance = application?.userDefaults.bool(forKey: "ShowTransparentAppearance") {
                 hasShownTransparentAppearance = true
                 if showTransparentAppearance {
                     let appearance = NSApp.effectiveAppearance
