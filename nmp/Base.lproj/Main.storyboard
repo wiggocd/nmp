@@ -450,7 +450,7 @@ CA
         <!--Tab View Controller-->
         <scene sceneID="Kc4-Gk-sqR">
             <objects>
-                <tabViewController selectedTabViewItemIndex="0" tabStyle="toolbar" id="z4u-Ez-vEZ" sceneMemberID="viewController">
+                <tabViewController showSeguePresentationStyle="single" selectedTabViewItemIndex="0" tabStyle="toolbar" id="z4u-Ez-vEZ" sceneMemberID="viewController">
                     <tabViewItems>
                         <tabViewItem label="General" image="NSPreferencesGeneral" id="5a0-4a-3f3"/>
                     </tabViewItems>
@@ -817,10 +817,10 @@ CA
             </objects>
             <point key="canvasLocation" x="74.5" y="779"/>
         </scene>
-        <!--Options View Controller-->
+        <!--General Preferences-->
         <scene sceneID="fGz-x9-Kiv">
             <objects>
-                <viewController title="Options View Controller" id="HgX-Ny-4cZ" customClass="OptionsViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="General Preferences" id="HgX-Ny-4cZ" customClass="GeneralPreferencesViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="3wv-DY-s7j">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>

@@ -9,7 +9,7 @@
 import Foundation
 import Cocoa
 
-class OptionsViewController: NSViewController {
+class GeneralPreferencesViewController: NSViewController {
     let application = NSApplication.shared as? Application
     let notificationCenter = NotificationCenter.default
     
