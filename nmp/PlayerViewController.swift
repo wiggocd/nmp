@@ -412,6 +412,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     func setVolumeFromDefaults() {
         if let volume = application?.userDefaults.float(forKey: "Volume") {
             volumeSlider.floatValue = volume
+            player.volume = volume
         }
     }
     

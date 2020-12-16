@@ -16,13 +16,13 @@ class Application: NSApplication {
     
     var colorBg: Bool! {
         didSet {
-            userDefaults.set(colorBg, forKey: "colorBg")
+            userDefaults.set(colorBg, forKey: "ColorBg")
         }
     }
     
     var showTransparentAppearance: Bool! {
         didSet {
-            userDefaults.set(showTransparentAppearance, forKey: "showTransparentAppearance")
+            userDefaults.set(showTransparentAppearance, forKey: "ShowTransparentAppearance")
         }
     }
     
@@ -36,16 +36,20 @@ class Application: NSApplication {
     }
     
     func initialiseUserDefaults() {
-        if userDefaults.value(forKey: "colorBg") == nil {
-            colorBg = true
-        } else {
-            colorBg = userDefaults.bool(forKey: "colorBg")
+        if userDefaults.value(forKey: "Volume") == nil {
+            userDefaults.set(1.0, forKey: "Volume")
         }
         
-        if userDefaults.value(forKey: "showTransparentAppearance") == nil {
+        if userDefaults.value(forKey: "ColorBg") == nil {
+            colorBg = true
+        } else {
+            colorBg = userDefaults.bool(forKey: "ColorBg")
+        }
+        
+        if userDefaults.value(forKey: "ShowTransparentAppearance") == nil {
             showTransparentAppearance = false
         } else {
-            showTransparentAppearance = userDefaults.bool(forKey: "showTransparentAppearance")
+            showTransparentAppearance = userDefaults.bool(forKey: "ShowTransparentAppearance")
         }
     }
     
