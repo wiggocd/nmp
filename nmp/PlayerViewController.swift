@@ -87,7 +87,9 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
                 return $0
             }
         }
-        
+    }
+    
+    override func viewWillAppear() {
         updatePlaylist()
         initialisePlayerSession()
         updateMedia()
@@ -100,6 +102,12 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         didSet {
         // Update the view, if already loaded.
         }
+    }
+    
+    override func viewWillDisappear() {
+        killPlayer()
+        killNowPlaying()
+        killTimers()
     }
     
     func setUIDefaults() {
@@ -404,6 +412,20 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             }
             player.removeMedia(atIndexes: selectedRows)
         }
+    }
+    
+    func killPlayer() {
+        player.stop()
+        player = nil
+    }
+    
+    func killNowPlaying() {
+        nowPlayingInfoCenter.nowPlayingInfo = [:]
+        nowPlayingInfoCenter.playbackState = .unknown
+    }
+    
+    func killTimers() {
+        positionTimer.invalidate()
     }
     
     func alternateKeyDown(with event: NSEvent) -> Bool {
