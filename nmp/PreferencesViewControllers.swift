@@ -14,7 +14,6 @@ class PreferencesTabViewController: NSTabViewController {
     
     override var selectedTabViewItemIndex: Int {
         didSet {
-            print("Index changed")
             application?.userDefaults.set(selectedTabViewItemIndex, forKey: "PreferencesSelectedTabViewItemIndex")
         }
     }

@@ -140,7 +140,12 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             for i in 0...urls.count-1 {
                 let url = urls[i]
                 if url!.isFileURL && audioFileTypes.contains(url!.pathExtension) {
-                    playlist.insert(url!, at: atIndex+i)
+                    let n = atIndex+i
+                    if playlist.count > n {
+                        playlist.insert(url!, at: n)
+                    } else {
+                        addMedia(urls: [url], updateIndexIfNew: updateIndexIfNew, shouldPlay: shouldPlay)
+                    }
                 }
                 
                 if playerHasMedia() == false {
