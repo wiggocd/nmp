@@ -237,13 +237,13 @@ CA
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HM5-Hp-Buj">
-                                            <rect key="frame" x="10" y="10" width="321" height="99"/>
+                                            <rect key="frame" x="10" y="10" width="321" height="49"/>
                                             <clipView key="contentView" id="A8b-QK-RMP">
-                                                <rect key="frame" x="1" y="0.0" width="319" height="98"/>
+                                                <rect key="frame" x="1" y="0.0" width="319" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnSelection="YES" columnResizing="NO" emptySelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="mjt-PA-sGQ" viewBased="YES" id="N36-pr-j6a">
-                                                        <rect key="frame" x="0.0" y="0.0" width="319" height="73"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="319" height="23"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -406,10 +406,10 @@ CA
             </objects>
             <point key="canvasLocation" x="610.5" y="655.5"/>
         </scene>
-        <!--Tab View Controller-->
+        <!--Preferences Tab View Controller-->
         <scene sceneID="Kc4-Gk-sqR">
             <objects>
-                <tabViewController showSeguePresentationStyle="single" selectedTabViewItemIndex="0" tabStyle="toolbar" id="z4u-Ez-vEZ" sceneMemberID="viewController">
+                <tabViewController showSeguePresentationStyle="single" selectedTabViewItemIndex="0" tabStyle="toolbar" id="z4u-Ez-vEZ" customClass="PreferencesTabViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
                     <tabViewItems>
                         <tabViewItem label="General" image="NSPreferencesGeneral" id="5a0-4a-3f3"/>
                         <tabViewItem label="Advanced" identifier="Advanced" image="NSAdvanced" id="JvI-FS-5uJ"/>

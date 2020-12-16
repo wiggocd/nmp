@@ -9,6 +9,30 @@
 import Foundation
 import Cocoa
 
+class PreferencesTabViewController: NSTabViewController {
+    let application = NSApplication.shared as? Application
+    
+    override var selectedTabViewItemIndex: Int {
+        didSet {
+            print("Index changed")
+            application?.userDefaults.set(selectedTabViewItemIndex, forKey: "PreferencesSelectedTabViewItemIndex")
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        initialiseSelectedTab()
+    }
+    
+    func initialiseSelectedTab() {
+        if let index = application?.userDefaults.integer(forKey: "PreferencesSelectedTabViewItemIndex") {
+            selectedTabViewItemIndex = index
+        } else {
+            selectedTabViewItemIndex = 0
+        }
+    }
+}
+
 class GeneralPreferencesViewController: NSViewController {
     let application = NSApplication.shared as? Application
     let notificationCenter = NotificationCenter.default
