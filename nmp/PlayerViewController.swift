@@ -474,7 +474,13 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             playAtSelectedRow()
             return true
         case Keycode.delete:
-            if event.modifierFlags == MODIFIER_ALTERNATE_COMMAND {
+            let flags = event.modifierFlags
+            if flags.contains(.command) &&
+                !flags.contains(.control) &&
+                !flags.contains(.function) &&
+                !flags.contains(.help) &&
+                !flags.contains(.option) &&
+                !flags.contains(.shift) {
                 playlistOutlineView.removeSelectedRows()
                 return true
             }
