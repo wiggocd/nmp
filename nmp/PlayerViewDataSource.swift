@@ -107,6 +107,9 @@ extension PlayerViewController: NSOutlineViewDataSource, NSPasteboardItemDataPro
                     }
                 }
                 
+                for url in urls {
+                    saveURLToBookmarks(url: url!, userDefaults: UserDefaults.standard)
+                }
                 urls = sortUrls(urls: recurseSubdirectories(urls: urls))
                 player.insertMedia(urls: urls, atIndex: index, updateIndexIfNew: true, shouldPlay: true)
             }

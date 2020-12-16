@@ -19,15 +19,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             notificationCenter.post(name: .playlistChanged, object: nil)
             var strings: [String] = []
             for item in playlist {
-                if let bookmarkData = UserDefaults.standard.object(forKey: urlBookmarkKey) as? Data {
-                    do {
-                        var dataIsStale = false
-                        _ = try URL(resolvingBookmarkData: bookmarkData, options: .withoutUI, relativeTo: nil, bookmarkDataIsStale: &dataIsStale)
-                        strings.append(item.absoluteString)
-                    } catch {
-                        return
-                    }
-                }
+                strings.append(item.absoluteString)
             }
             application?.userDefaults.set(strings, forKey: "Playlist")
         }
@@ -97,6 +89,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func loadPlaylistFromDefaults() -> Bool {
+        loadBookmarkData()
         let playlistData = application?.userDefaults.array(forKey: "Playlist") as? [String]
         var urls: [URL] = []
         
@@ -104,6 +97,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             if playlistData!.count > 0 {
                 for item in playlistData! {
                     if let url = URL(string: item) {
+                        _ = url.startAccessingSecurityScopedResource()
                         urls.append(url)
                     }
                 }
@@ -149,6 +143,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             for i in 0...urls.count-1 {
                 let url = urls[i]
                 if url!.isFileURL && audioFileTypes.contains(url!.pathExtension) {
+                    _ = url?.startAccessingSecurityScopedResource()
                     let n = atIndex+i
                     if playlist.count > n {
                         playlist.insert(url!, at: n)

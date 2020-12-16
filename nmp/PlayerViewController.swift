@@ -77,6 +77,15 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         setUIDefaults()
         addObservers()
         initialiseDragAndDrop()
+        
+        NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+            super.keyDown(with: $0)
+            if self.alternateKeyDown(with: $0) {
+                return nil
+            } else {
+                return $0
+            }
+        }
     }
     
     override func viewWillAppear() {
@@ -451,7 +460,10 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         positionTimer.invalidate()
     }
     
-    override func keyDown(with event: NSEvent) {
+    func alternateKeyDown(with event: NSEvent) -> Bool {
+        guard let locWindow = view.window,
+        application?.keyWindow === locWindow else { return false }
+        
         let keyCode = event.keyCode
         switch keyCode {
         case Keycode.space:
@@ -465,5 +477,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         default:
             break
         }
+        
+        return true
     }
 }
