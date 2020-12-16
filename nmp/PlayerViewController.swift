@@ -474,12 +474,14 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             playAtSelectedRow()
             return true
         case Keycode.delete:
-            if event.modifierFlags.contains(.command) {
+            if event.modifierFlags == MODIFIER_ALTERNATE_COMMAND {
                 playlistOutlineView.removeSelectedRows()
+                return true
             }
-            return true
         default:
-            return false
+            break
         }
+        
+        return false
     }
 }

@@ -21,11 +21,12 @@ let alphaReverse = alpha.reversed()
 let REORDER_PASTEBOARD_TYPE = NSPasteboard.PasteboardType((Bundle.main.bundleIdentifier ?? "")+".item")
 let FILENAMES_PASTEBOARD_TYPE = NSPasteboard.PasteboardType.fileURL
 let playlistPasteboardTypes = [REORDER_PASTEBOARD_TYPE, FILENAMES_PASTEBOARD_TYPE]
+let MODIFIER_ALTERNATE_COMMAND = NSEvent.ModifierFlags(rawValue: NSEvent.ModifierFlags.command.rawValue + 264)
 
 class AudioMetadata {
-    var title: String = ""
-    var artist: String = ""
-    var album: String = ""
+    var title: String = " "
+    var artist: String = " "
+    var album: String = " "
     var artwork: CGImage!
     
     init(playerItem: AVPlayerItem) {
@@ -44,13 +45,19 @@ class AudioMetadata {
             case "artwork":
                 self.artwork = CGImage(jpegDataProviderSource: CGDataProvider(data: item.dataValue! as CFData)!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent(rawValue: 32)!)
             default:
-                ()
+                break
             }
         }
     }
     
     func detailsString() -> String {
-        return artist + " - " + album
+        if artist != " " {
+            if album != " " {
+                return artist + " - " + album
+            }
+            return artist
+        }
+        return " "
     }
 }
 
