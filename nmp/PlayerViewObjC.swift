@@ -12,6 +12,9 @@ import MediaPlayer
 
 extension PlayerViewController {
     @objc func refresh() {
+        if application?.showTransparentAppearance == false {
+            hasShownTransparentAppearance = false
+        }
         setBackgroundViewAndAppearance()
     }
     

@@ -783,11 +783,11 @@ CA
             <objects>
                 <viewController title="General Preferences" id="HgX-Ny-4cZ" customClass="GeneralPreferencesViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="3wv-DY-s7j">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="451" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="stP-hq-Cc1">
-                                <rect key="frame" x="160" y="264" width="131" height="18"/>
+                                <rect key="frame" x="18" y="264" width="131" height="18"/>
                                 <buttonCell key="cell" type="check" title="Color Background" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VrH-Fs-sqZ">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -796,14 +796,35 @@ CA
                                     <action selector="colorBgAction:" target="HgX-Ny-4cZ" id="KHL-dm-ZMJ"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ib5-jq-lOi">
+                                <rect key="frame" x="18" y="244" width="171" height="18"/>
+                                <buttonCell key="cell" type="check" title="Transparent Appearance" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="xlH-ef-3dJ">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="transparentAppearanceAction:" target="HgX-Ny-4cZ" id="42R-jg-mRT"/>
+                                </connections>
+                            </button>
+                            <box hidden="YES" horizontalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="6F9-Ub-OsM">
+                                <rect key="frame" x="223" y="20" width="5" height="260"/>
+                            </box>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="stP-hq-Cc1" firstAttribute="centerX" secondItem="3wv-DY-s7j" secondAttribute="centerX" id="OtU-LG-B9L"/>
-                            <constraint firstItem="stP-hq-Cc1" firstAttribute="top" secondItem="3wv-DY-s7j" secondAttribute="top" constant="20" symbolic="YES" id="nVf-7z-Ujj"/>
+                            <constraint firstItem="stP-hq-Cc1" firstAttribute="top" secondItem="6F9-Ub-OsM" secondAttribute="top" id="Bwi-0L-wNj"/>
+                            <constraint firstItem="stP-hq-Cc1" firstAttribute="top" secondItem="3wv-DY-s7j" secondAttribute="top" constant="20" symbolic="YES" id="E6Y-Et-esZ"/>
+                            <constraint firstItem="6F9-Ub-OsM" firstAttribute="centerY" secondItem="3wv-DY-s7j" secondAttribute="centerY" id="LSQ-de-p0F"/>
+                            <constraint firstItem="stP-hq-Cc1" firstAttribute="leading" secondItem="3wv-DY-s7j" secondAttribute="leading" constant="20" symbolic="YES" id="Lta-cy-gdX"/>
+                            <constraint firstItem="Ib5-jq-lOi" firstAttribute="top" secondItem="stP-hq-Cc1" secondAttribute="bottom" constant="6" symbolic="YES" id="N8d-5d-LMF"/>
+                            <constraint firstItem="6F9-Ub-OsM" firstAttribute="leading" secondItem="Ib5-jq-lOi" secondAttribute="trailing" constant="38" id="hGw-Bd-9de"/>
+                            <constraint firstItem="stP-hq-Cc1" firstAttribute="leading" secondItem="Ib5-jq-lOi" secondAttribute="leading" id="rtr-am-XDn"/>
+                            <constraint firstItem="6F9-Ub-OsM" firstAttribute="centerX" secondItem="3wv-DY-s7j" secondAttribute="centerX" id="ufF-y5-mfD"/>
+                            <constraint firstItem="6F9-Ub-OsM" firstAttribute="leading" secondItem="stP-hq-Cc1" secondAttribute="trailing" constant="78" id="z5g-zT-8vA"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="colorBgButton" destination="stP-hq-Cc1" id="qX6-i5-g4r"/>
+                        <outlet property="transparentAppearanceButton" destination="Ib5-jq-lOi" id="ixA-Yv-b7d"/>
                     </connections>
                 </viewController>
                 <customObject id="4Vt-fH-T2v" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -819,7 +840,7 @@ CA
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mpE-4J-reV">
-                                <rect key="frame" x="145" y="252" width="161" height="32"/>
+                                <rect key="frame" x="14" y="252" width="161" height="32"/>
                                 <buttonCell key="cell" type="push" title="Reset User Defaults" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="V2g-na-FEZ">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -828,10 +849,30 @@ CA
                                     <action selector="resetUserDefaultsAction:" target="OUL-xE-SvQ" id="CUO-CH-ZvB"/>
                                 </connections>
                             </button>
+                            <box hidden="YES" horizontalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="LqA-gx-KgT">
+                                <rect key="frame" x="224" y="20" width="5" height="260"/>
+                            </box>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ANM-Zj-61A">
+                                <rect key="frame" x="233" y="246" width="199" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="195" id="r6X-2I-jnA"/>
+                                </constraints>
+                                <textFieldCell key="cell" alignment="right" title="May require application restart to observer changes" id="JpV-cc-MZi">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="mpE-4J-reV" firstAttribute="centerX" secondItem="Ehq-F9-af3" secondAttribute="centerX" id="lM3-tn-X1v"/>
-                            <constraint firstItem="mpE-4J-reV" firstAttribute="top" secondItem="Ehq-F9-af3" secondAttribute="top" constant="20" symbolic="YES" id="vFT-Pv-WuS"/>
+                            <constraint firstItem="ANM-Zj-61A" firstAttribute="firstBaseline" secondItem="mpE-4J-reV" secondAttribute="baseline" id="BS3-U3-Y51"/>
+                            <constraint firstItem="mpE-4J-reV" firstAttribute="top" secondItem="Ehq-F9-af3" secondAttribute="top" constant="20" id="CKD-0V-xeP"/>
+                            <constraint firstItem="mpE-4J-reV" firstAttribute="leading" secondItem="Ehq-F9-af3" secondAttribute="leading" constant="20" id="K2o-q3-939"/>
+                            <constraint firstItem="ANM-Zj-61A" firstAttribute="leading" secondItem="LqA-gx-KgT" secondAttribute="trailing" constant="8" symbolic="YES" id="WhD-LH-dmZ"/>
+                            <constraint firstAttribute="trailing" secondItem="ANM-Zj-61A" secondAttribute="trailing" constant="20" symbolic="YES" id="eBS-Ah-Zgw"/>
+                            <constraint firstItem="LqA-gx-KgT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mpE-4J-reV" secondAttribute="trailing" constant="57" id="gmU-0T-iOp"/>
+                            <constraint firstItem="LqA-gx-KgT" firstAttribute="top" secondItem="mpE-4J-reV" secondAttribute="top" id="q3P-4o-7BP"/>
+                            <constraint firstItem="LqA-gx-KgT" firstAttribute="centerY" secondItem="Ehq-F9-af3" secondAttribute="centerY" id="zle-aD-Xis"/>
                         </constraints>
                     </view>
                 </viewController>

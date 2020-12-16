@@ -34,6 +34,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     var defaultTitleColor: NSColor!
     var defaultDetailsColor: NSColor!
     var defaultTimeColor: NSColor!
+    var hasShownTransparentAppearance = false
     
     @IBOutlet var titleTextView: NSTextView!
     @IBOutlet var detailsTextView: NSTextView!
@@ -140,6 +141,11 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             durationLabel.textColor = defaultTimeColor
             
             playlistOutlineView.appearance = NSApp.appearance
+            if let showTransparentAppearance = application?.userDefaults.bool(forKey: "showTransparentAppearance") {
+                if showTransparentAppearance || hasShownTransparentAppearance {
+                    playlistOutlineView.backgroundColor = .controlBackgroundColor
+                }
+            }
             
             for button in buttons {
                 button.appearance = NSApp.appearance
@@ -163,6 +169,21 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             durationLabel.textColor = .gray
             
             playlistOutlineView.appearance = darkAppearance
+            if let showTransparentAppearance = application?.userDefaults.bool(forKey: "showTransparentAppearance") {
+                hasShownTransparentAppearance = true
+                if showTransparentAppearance {
+                    let appearance = NSApp.effectiveAppearance
+                    if appearance.name == NSAppearance.Name.aqua {
+                        playlistOutlineView.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0.02)
+                    } else {
+                        playlistOutlineView.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0.2)
+                    }
+                } else {
+                    playlistOutlineView.backgroundColor = .controlBackgroundColor
+                }
+            } else {
+                playlistOutlineView.backgroundColor = .controlBackgroundColor
+            }
             
             for button in buttons {
                 button.appearance = darkAppearance

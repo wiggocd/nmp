@@ -14,6 +14,7 @@ class GeneralPreferencesViewController: NSViewController {
     let notificationCenter = NotificationCenter.default
     
     @IBOutlet weak var colorBgButton: NSButton!
+    @IBOutlet weak var transparentAppearanceButton: NSButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,14 +24,32 @@ class GeneralPreferencesViewController: NSViewController {
         } else {
             colorBgButton.state = .off
         }
+        
+        if application!.showTransparentAppearance! {
+            transparentAppearanceButton.state = .on
+        } else {
+            transparentAppearanceButton.state = .off
+        }
     }
     
     @IBAction func colorBgAction(_ sender: Any) {
         if let sender = sender as? NSButton {
-            if sender.state.rawValue == 1 {
+            if sender.state == .on {
                 application?.colorBg = true
             } else {
                 application?.colorBg = false
+            }
+            
+            notificationCenter.post(name: .preferencesChanged, object: nil)
+        }
+    }
+    
+    @IBAction func transparentAppearanceAction(_ sender: Any) {
+        if let sender = sender as? NSButton {
+            if sender.state == .on {
+                application?.showTransparentAppearance = true
+            } else {
+                application?.showTransparentAppearance = false
             }
             
             notificationCenter.post(name: .preferencesChanged, object: nil)
