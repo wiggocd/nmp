@@ -25,7 +25,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
     
     var player: AudioPlayer!
-    var positionTimer: Timer!
+    var positionTimer = Timer()
     var playlistItems: [PlaylistItem] = []
     var lastSelectedPlaylistItem = 0
     var playlistItemClickTimer = Timer()
@@ -35,6 +35,8 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     var defaultDetailsColor: NSColor!
     var defaultTimeColor: NSColor!
     var hasShownTransparentAppearance = false
+    var buttons: [NSButton] = []
+    var timers: [Timer] = []
     
     @IBOutlet var titleTextView: NSTextView!
     @IBOutlet var detailsTextView: NSTextView!
@@ -52,8 +54,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     @IBOutlet weak var durationLabel: NSTextField!
     @IBOutlet weak var playlistScrollView: NSScrollView!
     @IBOutlet weak var playlistOutlineView: PlaylistOutlineView!
-    
-    var buttons: [NSButton] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,12 +74,15 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             playlistButton
         ]
         
+        timers = [
+            positionTimer
+        ]
+        
         setUIDefaults()
         addObservers()
         initialiseDragAndDrop()
         
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-            super.keyDown(with: $0)
             if self.alternateKeyDown(with: $0) {
                 return nil
             } else {
@@ -327,10 +330,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     func pause() {
         player.pause()
-        if positionTimer != nil {
-            positionTimer.invalidate()
-            positionTimer = nil
-        }
+        positionTimer.invalidate()
         nowPlayingInfoCenter.playbackState = .paused
     }
     
@@ -422,9 +422,8 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func startPositionTimer() {
-        if positionTimer == nil || !positionTimer.isValid {
-            positionTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updatePosition), userInfo: nil, repeats: true)
-        }
+        positionTimer.invalidate()
+        positionTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updatePosition), userInfo: nil, repeats: true)
     }
     
     func createPlaylistItems(urls: [URL]) {
@@ -457,27 +456,30 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func killTimers() {
-        positionTimer.invalidate()
+        for timer in timers {
+            timer.invalidate()
+        }
     }
     
     func alternateKeyDown(with event: NSEvent) -> Bool {
         guard let locWindow = view.window,
-        application?.keyWindow === locWindow else { return false }
-        
+            application?.keyWindow === locWindow else { return false }
         let keyCode = event.keyCode
+        
         switch keyCode {
         case Keycode.space:
             playPause()
+            return true
         case Keycode.returnKey:
             playAtSelectedRow()
+            return true
         case Keycode.delete:
             if event.modifierFlags.contains(.command) {
                 playlistOutlineView.removeSelectedRows()
             }
+            return true
         default:
-            break
+            return false
         }
-        
-        return true
     }
 }
