@@ -84,17 +84,11 @@ func recurseSubdirectory(url: URL) -> [URL] {
     let path = url.path
     
     for obj in ls(path: path) {
-        if isDirectory(path: obj) {
-            print("Is directory")
-            ret.append(contentsOf: recurseSubdirectory(url: URL(fileURLWithPath: obj)))
-        } else {
-            ret.append(URL(fileURLWithPath: url.path + pathSep + obj))
-        }
+        ret.append(URL(fileURLWithPath: url.path + pathSep + obj))
     }
     
     return ret
 }
-
 
 func recurseSubdirectories(urls: [URL?]) -> [URL?] {
     var ret: [URL?] = []

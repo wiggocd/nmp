@@ -32,4 +32,8 @@ class Application: NSApplication {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+    
+    func resetUserDefaults() {
+        userDefaults.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+    }
 }

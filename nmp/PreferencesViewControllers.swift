@@ -37,3 +37,12 @@ class GeneralPreferencesViewController: NSViewController {
         }
     }
 }
+
+class AdvancedPreferencesViewController: NSViewController {
+    let application = NSApplication.shared as? Application
+    let notificationCenter = NotificationCenter.default
+    
+    @IBAction func resetUserDefaultsAction(_ sender: Any) {
+        application?.resetUserDefaults()
+    }
+}

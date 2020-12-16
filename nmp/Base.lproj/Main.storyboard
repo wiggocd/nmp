@@ -237,13 +237,13 @@ CA
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HM5-Hp-Buj">
-                                            <rect key="frame" x="10" y="10" width="321" height="79"/>
+                                            <rect key="frame" x="10" y="10" width="321" height="29"/>
                                             <clipView key="contentView" id="A8b-QK-RMP">
-                                                <rect key="frame" x="1" y="0.0" width="319" height="78"/>
+                                                <rect key="frame" x="1" y="0.0" width="319" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnSelection="YES" columnResizing="NO" emptySelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="mjt-PA-sGQ" viewBased="YES" id="N36-pr-j6a">
-                                                        <rect key="frame" x="0.0" y="0.0" width="319" height="53"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="319" height="19"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -412,6 +412,7 @@ CA
                 <tabViewController showSeguePresentationStyle="single" selectedTabViewItemIndex="0" tabStyle="toolbar" id="z4u-Ez-vEZ" sceneMemberID="viewController">
                     <tabViewItems>
                         <tabViewItem label="General" image="NSPreferencesGeneral" id="5a0-4a-3f3"/>
+                        <tabViewItem label="Advanced" identifier="Advanced" image="NSAdvanced" id="JvI-FS-5uJ"/>
                     </tabViewItems>
                     <tabView key="tabView" type="noTabsNoBorder" id="DPd-Nq-UM0">
                         <rect key="frame" x="0.0" y="0.0" width="447" height="300"/>
@@ -424,6 +425,7 @@ CA
                     <connections>
                         <outlet property="tabView" destination="DPd-Nq-UM0" id="RaW-3D-iDY"/>
                         <segue destination="HgX-Ny-4cZ" kind="relationship" relationship="tabItems" id="5xk-Zo-2h9"/>
+                        <segue destination="OUL-xE-SvQ" kind="relationship" relationship="tabItems" id="OJl-2j-Afm"/>
                     </connections>
                 </tabViewController>
                 <customObject id="fuw-mb-JIz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -806,7 +808,36 @@ CA
                 </viewController>
                 <customObject id="4Vt-fH-T2v" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-489" y="1142"/>
+            <point key="canvasLocation" x="-1010" y="1149"/>
+        </scene>
+        <!--Advanced Preferences-->
+        <scene sceneID="oVc-7h-IV1">
+            <objects>
+                <viewController title="Advanced Preferences" id="OUL-xE-SvQ" customClass="AdvancedPreferencesViewController" customModule="nmp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="Ehq-F9-af3">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mpE-4J-reV">
+                                <rect key="frame" x="145" y="252" width="161" height="32"/>
+                                <buttonCell key="cell" type="push" title="Reset User Defaults" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="V2g-na-FEZ">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="resetUserDefaultsAction:" target="OUL-xE-SvQ" id="CUO-CH-ZvB"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="mpE-4J-reV" firstAttribute="centerX" secondItem="Ehq-F9-af3" secondAttribute="centerX" id="lM3-tn-X1v"/>
+                            <constraint firstItem="mpE-4J-reV" firstAttribute="top" secondItem="Ehq-F9-af3" secondAttribute="top" constant="20" symbolic="YES" id="vFT-Pv-WuS"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <customObject id="MHW-TZ-CyC" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1010" y="1542"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
@@ -814,6 +845,7 @@ CA
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AddToPlaylist" width="90" height="90"/>
+        <image name="NSAdvanced" width="32" height="32"/>
         <image name="NSPreferencesGeneral" width="32" height="32"/>
         <image name="Play" width="90" height="90"/>
         <image name="Playlist" width="90" height="90"/>
