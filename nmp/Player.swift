@@ -135,6 +135,22 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
     
+    func insertMedia(urls: [URL?], atIndex: Int, updateIndexIfNew: Bool, shouldPlay: Bool) {
+        if urls.count > 0 {
+            for i in 0...urls.count-1 {
+                let url = urls[i]
+                if url!.isFileURL && audioFileTypes.contains(url!.pathExtension) {
+                    playlist.insert(url!, at: atIndex+i)
+                }
+                
+                if playerHasMedia() == false {
+                    if updateIndexIfNew { trackIndex = 0 }
+                    if shouldPlay { play() }
+                }
+            }
+        }
+    }
+    
     func updatePlayer() {
         if player != nil {
             updateMetadata()

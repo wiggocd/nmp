@@ -108,7 +108,7 @@ extension PlayerViewController: NSOutlineViewDataSource, NSPasteboardItemDataPro
                 }
                 
                 urls = sortUrls(urls: recurseSubdirectories(urls: urls))
-                player.addMedia(urls: urls, updateIndexIfNew: true, shouldPlay: true)
+                player.insertMedia(urls: urls, atIndex: index, updateIndexIfNew: true, shouldPlay: true)
             }
         }
         
