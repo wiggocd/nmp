@@ -89,8 +89,8 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         }
         
         updatePlaylist()
-        updateMedia()
         initialisePlayerSession()
+        updateMedia()
         setVolumeFromDefaults()
         setPlaylistHiddenFromDefaults()
         initialiseDragDrop()
@@ -186,7 +186,12 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         remoteCommandCenter.nextTrackCommand.isEnabled = true
         remoteCommandCenter.nextTrackCommand.addTarget(self, action: #selector(nextTrackCommandAction))
         
+        remoteCommandCenter.changePlaybackPositionCommand.isEnabled = true
+        remoteCommandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(changePlaybackPositionCommandAction))
+        
         preparePlayback()
+        
+        nowPlayingInfoCenter.nowPlayingInfo = [:]
     }
     
     func preparePlayback() {
@@ -332,6 +337,32 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         positionLabel.stringValue = to_hhmmss(seconds: 0.0)
         durationLabel.stringValue = to_hhmmss(seconds: player.duration())
         startPositionTimer()
+        
+        updateNowPlayingInfoCenter()
+    }
+    
+    func updateNowPlayingInfoCenter() {
+        if let audioPlayer = player.player {
+            if player.metadata != nil, let metadata = player.metadata, let artwork = metadata.artwork {
+                let coverArt = MPMediaItemArtwork(boundsSize: coverImageSize) { (size) -> NSImage in
+                    return NSImage(cgImage: artwork, size: size)
+                }
+                
+                let dict: [String: Any] = [
+                    MPMediaItemPropertyArtwork: coverArt,
+                    MPMediaItemPropertyTitle: metadata.title,
+                    MPMediaItemPropertyArtist: metadata.artist,
+                    MPMediaItemPropertyAlbumTitle: metadata.album,
+                    MPNowPlayingInfoPropertyPlaybackRate: audioPlayer.rate,
+                    MPNowPlayingInfoPropertyPlaybackProgress: audioPlayer.currentTime,
+                    MPMediaItemPropertyPlaybackDuration: audioPlayer.duration
+                ]
+                
+                nowPlayingInfoCenter.nowPlayingInfo = dict
+            }
+        } else {
+            nowPlayingInfoCenter.nowPlayingInfo = [:]
+        }
     }
     
     func setVolumeFromDefaults() {

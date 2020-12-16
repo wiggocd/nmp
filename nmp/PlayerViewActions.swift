@@ -58,12 +58,6 @@ extension PlayerViewController {
         }
     }
     
-    @IBAction func playlistOutlineViewDoubleAction(_ sender: Any) {
-        if let sender = sender as? NSOutlineView {
-            play(atIndex: sender.selectedRow)
-        }
-    }
-
     @IBAction func volumeSliderMoved(_ sender: Any) {
         if let sender = sender as? NSSlider {
             player.volume = sender.floatValue
@@ -71,5 +65,9 @@ extension PlayerViewController {
         }
     }
     
-    
+    @IBAction func playlistOutlineViewDoubleAction(_ sender: Any) {
+        if let sender = sender as? NSOutlineView {
+            play(atIndex: sender.selectedRow)
+        }
+    }
 }

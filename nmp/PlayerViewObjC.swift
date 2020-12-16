@@ -18,6 +18,7 @@ extension PlayerViewController {
     @objc func updatePosition() {
         timeSlider.doubleValue = player.position
         positionLabel.stringValue = to_hhmmss(seconds: player.position)
+        nowPlayingInfoCenter.nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = player.position
     }
     
     @objc func playlistChanged(_ notification: Notification) {
@@ -86,6 +87,15 @@ extension PlayerViewController {
         } else {
             return .noActionableNowPlayingItem
         }
+    }
+    
+    @objc func changePlaybackPositionCommandAction(_ sender: Any?) -> MPRemoteCommandHandlerStatus {
+        if let sender = sender as? MPChangePlaybackPositionCommandEvent {
+            player.setPosition(position: sender.positionTime)
+            updatePosition()
+            return .success
+        }
+        return .commandFailed
     }
     
     @objc func playlistIndexesRemoved(_ sender: Any?) {
