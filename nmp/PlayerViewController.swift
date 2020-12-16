@@ -128,33 +128,49 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func setDefaultAppearances() {
-        titleTextView.textColor = defaultTitleColor
-        detailsTextView.textColor = defaultDetailsColor
-        positionLabel.textColor = defaultTimeColor
-        durationLabel.textColor = defaultTimeColor
-        
-        playlistOutlineView.appearance = NSApp.appearance
-        
-        for button in buttons {
-            button.appearance = NSApp.appearance
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = 0.4
+            
+            let lastAlphaValue = view.alphaValue
+            view.alphaValue = 0
+            
+            titleTextView.textColor = defaultTitleColor
+            detailsTextView.textColor = defaultDetailsColor
+            positionLabel.textColor = defaultTimeColor
+            durationLabel.textColor = defaultTimeColor
+            
+            playlistOutlineView.appearance = NSApp.appearance
+            
+            for button in buttons {
+                button.appearance = NSApp.appearance
+            }
+            
+            view.window?.appearance = NSApp.appearance
+            view.animator().alphaValue = lastAlphaValue
         }
-        
-        view.window?.appearance = NSApp.appearance
     }
     
     func setAlternateAppearances() {
-        titleTextView.textColor = .white
-        detailsTextView.textColor = .lightGray
-        positionLabel.textColor = .gray
-        durationLabel.textColor = .gray
-        
-        playlistOutlineView.appearance = darkAppearance
-        
-        for button in buttons {
-            button.appearance = darkAppearance
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = 0.4
+            
+            let lastAlphaValue = view.alphaValue
+            view.alphaValue = 0
+            
+            titleTextView.textColor = .white
+            detailsTextView.textColor = .lightGray
+            positionLabel.textColor = .gray
+            durationLabel.textColor = .gray
+            
+            playlistOutlineView.appearance = darkAppearance
+            
+            for button in buttons {
+                button.appearance = darkAppearance
+            }
+            
+            view.window?.appearance = darkAppearance
+            view.animator().alphaValue = lastAlphaValue
         }
-        
-        view.window?.appearance = darkAppearance
     }
     
     func addObservers() {
