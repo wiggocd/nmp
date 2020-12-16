@@ -413,7 +413,7 @@ CA
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="obU-9Q-eqi">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="obU-9Q-eqi">
                                 <rect key="frame" x="18" y="174" width="360" height="32"/>
                                 <textFieldCell key="cell" alignment="center" title="Go to File &gt; Open, click the open icon or drag and drop to add media to the playlist" id="ZB5-Bi-Y6U">
                                     <font key="font" metaFont="system"/>
