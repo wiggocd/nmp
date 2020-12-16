@@ -11,6 +11,7 @@ import Cocoa
 
 @objc(Application)
 class Application: NSApplication {
+    let notificationCenter = NotificationCenter.default
     let userDefaults = UserDefaults.standard
     
     var colorBg: Bool! {

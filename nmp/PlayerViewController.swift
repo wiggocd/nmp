@@ -34,7 +34,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     var defaultTitleColor: NSColor!
     var defaultDetailsColor: NSColor!
     var defaultTimeColor: NSColor!
-    var defaultAppearance: NSAppearance!
     
     @IBOutlet var titleTextView: NSTextView!
     @IBOutlet var detailsTextView: NSTextView!
@@ -63,7 +62,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         defaultTitleColor = titleTextView.textColor
         defaultDetailsColor = detailsTextView.textColor
         defaultTimeColor = positionLabel.textColor
-        defaultAppearance = view.appearance
         
         view.wantsLayer = true
         
@@ -77,7 +75,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         
         setUIDefaults()
         addObservers()
-        initialiseDragDrop()
+        initialiseDragAndDrop()
         
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
             super.keyDown(with: $0)
@@ -95,7 +93,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         updateMedia()
         setVolumeFromDefaults()
         setPlaylistHiddenFromDefaults()
-        initialiseDragDrop()
+        initialiseDragAndDrop()
     }
     
     override var representedObject: Any? {
@@ -126,7 +124,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         playlistScrollView.roundCorners(withRadius: UICornerRadius)
         
         resetCoverImage()
-        resetBackgroundView()
+        resetBackgroundViewAndAppearance()
     }
     
     func setDefaultAppearances() {
@@ -134,15 +132,14 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         detailsTextView.textColor = defaultDetailsColor
         positionLabel.textColor = defaultTimeColor
         durationLabel.textColor = defaultTimeColor
-        playlistOutlineView.appearance = defaultAppearance
         
-        playlistOutlineView.backgroundColor = playlistOutlineView.backgroundColor.withAlphaComponent(1)
+        playlistOutlineView.appearance = NSApp.appearance
         
         for button in buttons {
-            button.appearance = defaultAppearance
+            button.appearance = NSApp.appearance
         }
         
-        view.window?.appearance = defaultAppearance
+        view.window?.appearance = NSApp.appearance
     }
     
     func setAlternateAppearances() {
@@ -150,9 +147,8 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         detailsTextView.textColor = .lightGray
         positionLabel.textColor = .gray
         durationLabel.textColor = .gray
-        playlistOutlineView.appearance = darkAppearance
         
-        playlistOutlineView.backgroundColor = playlistOutlineView.backgroundColor.withAlphaComponent(0.06)
+        playlistOutlineView.appearance = darkAppearance
         
         for button in buttons {
             button.appearance = darkAppearance
@@ -176,7 +172,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         notificationCenter.removeObserver(self)
     }
     
-    func initialiseDragDrop() {
+    func initialiseDragAndDrop() {
         playlistOutlineView.registerForDraggedTypes(playlistPasteboardTypes)
         playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation(), forLocal: false)
         playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation.every, forLocal: true)
@@ -242,10 +238,9 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         coverImageView.shadow = shadow
     }
     
-    func setBackgroundView() {
+    func setBackgroundViewAndAppearance() {
         if application!.colorBg! {
-            if player.metadata.artwork != nil && coverImageView != nil {
-                // Todo: add blurred background from artwork
+            if player.metadata != nil && player.metadata.artwork != nil && coverImageView != nil {
                 let artwork = player.metadata.artwork
                 let blurredImage = CIImage(cgImage: artwork!).blurred(radius: 64)
                 
@@ -269,10 +264,10 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             }
         }
         
-        resetBackgroundView()
+        resetBackgroundViewAndAppearance()
     }
     
-    func resetBackgroundView() {
+    func resetBackgroundViewAndAppearance() {
         view.layer?.contents = nil
         setDefaultAppearances()
     }
@@ -335,7 +330,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
                 detailsTextView.string = player.metadata.detailsString()
                 if player.metadata.artwork != nil {
                     setCoverImage(image: player.metadata.artwork)
-                    setBackgroundView()
+                    setBackgroundViewAndAppearance()
                 } else {
                     resetCoverImage()
                 }

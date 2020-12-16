@@ -12,7 +12,7 @@ import MediaPlayer
 
 extension PlayerViewController {
     @objc func refresh() {
-        setBackgroundView()
+        setBackgroundViewAndAppearance()
     }
     
     @objc func updatePosition() {

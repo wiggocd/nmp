@@ -21,7 +21,7 @@ extension PlayerViewController {
     
     @IBAction func playlistAction(_ sender: Any) {
         if playlistScrollView.isHidden {
-            NSAnimationContext.runAnimationGroup( { context in
+            NSAnimationContext.runAnimationGroup({ context in
                 context.duration = 0.4
                 playlistScrollView.alphaValue = 0
                 self.playlistScrollView.isHidden = false
@@ -29,7 +29,7 @@ extension PlayerViewController {
                 self.application?.userDefaults.set(false, forKey: "PlaylistHidden")
             })
         } else {
-            NSAnimationContext.runAnimationGroup( { context in
+            NSAnimationContext.runAnimationGroup({ context in
                 context.duration = 0.4
                 playlistScrollView.animator().alphaValue = 0
             }) {
