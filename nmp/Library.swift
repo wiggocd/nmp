@@ -134,3 +134,12 @@ func to_hhmmss(seconds: Double) -> String {
     
     return timeString
 }
+
+func isCommandModifierFlag(flags: NSEvent.ModifierFlags) -> Bool {
+    return flags.contains(.command) &&
+    !flags.contains(.control) &&
+    !flags.contains(.function) &&
+    !flags.contains(.help) &&
+    !flags.contains(.option) &&
+    !flags.contains(.shift)
+}
