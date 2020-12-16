@@ -133,6 +133,8 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         for button in buttons {
             button.appearance = defaultAppearance
         }
+        
+        view.window?.appearance = defaultAppearance
     }
     
     func setAlternateAppearances() {
@@ -147,6 +149,8 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         for button in buttons {
             button.appearance = darkAppearance
         }
+        
+        view.window?.appearance = darkAppearance
     }
     
     func addObservers() {
