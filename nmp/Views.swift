@@ -17,7 +17,7 @@ class NonUserScrollableScrollView: NSScrollView {
 
 class PlaylistOutlineView: NSOutlineView {
     let notificationCenter = NotificationCenter.default
-    let deleteAnimation: NSTableView.AnimationOptions = .effectFade
+    let deleteAnimation: NSTableView.AnimationOptions = .init()
     
     var currentRow: Int!
     var removedIndexes: IndexSet = []
