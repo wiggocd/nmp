@@ -47,7 +47,7 @@ class Application: NSApplication {
         }
         
         if userDefaults.value(forKey: "ShowTransparentAppearance") == nil {
-            showTransparentAppearance = false
+            showTransparentAppearance = true
         } else {
             showTransparentAppearance = userDefaults.bool(forKey: "ShowTransparentAppearance")
         }
