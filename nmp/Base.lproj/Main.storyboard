@@ -442,17 +442,17 @@ CA
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="bVE-4L-UX9" customClass="NonUserScrollableScrollView" customModule="nmp" customModuleProvider="target">
-                                <rect key="frame" x="8" y="338" width="285" height="17"/>
+                                <rect key="frame" x="8" y="339" width="285" height="16"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="41Q-Q6-7UZ">
-                                    <rect key="frame" x="0.0" y="0.0" width="285" height="17"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="285" height="16"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView editable="NO" selectable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="EPq-UA-Tq7">
-                                            <rect key="frame" x="0.0" y="0.0" width="285" height="17"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="285" height="16"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" red="0.1176470588" green="0.1176470588" blue="0.1176470588" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <size key="minSize" width="285" height="17"/>
+                                            <size key="minSize" width="285" height="16"/>
                                             <size key="maxSize" width="1519" height="10000000"/>
                                             <attributedString key="textStorage">
                                                 <fragment content="Details">
@@ -483,14 +483,14 @@ CA
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ccp-8a-79m">
-                                            <rect key="frame" x="18" y="50" width="247" height="20"/>
+                                            <rect key="frame" x="18" y="47" width="247" height="23"/>
                                             <sliderCell key="cell" alignment="left" maxValue="100" doubleValue="100" tickMarkPosition="above" sliderType="linear" id="0IZ-5K-Ekm"/>
                                             <connections>
                                                 <action selector="timeSliderMoved:" target="XfG-lQ-9wD" id="5C3-ol-DdW"/>
                                             </connections>
                                         </slider>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tcp-Og-jxF">
-                                            <rect key="frame" x="131" y="9" width="28" height="24"/>
+                                            <rect key="frame" x="131" y="9" width="28" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="28" id="ZAn-bY-vdT"/>
                                             </constraints>
@@ -503,7 +503,7 @@ CA
                                             </connections>
                                         </button>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gjt-zg-tCa">
-                                            <rect key="frame" x="99" y="9" width="24" height="24"/>
+                                            <rect key="frame" x="99" y="9" width="24" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="iGG-uF-q6o"/>
                                             </constraints>
@@ -516,7 +516,7 @@ CA
                                             </connections>
                                         </button>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="W3q-Vw-E4r">
-                                            <rect key="frame" x="235" y="9" width="28" height="24"/>
+                                            <rect key="frame" x="235" y="9" width="28" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="28" id="6r9-Vo-C5k"/>
                                             </constraints>
@@ -529,7 +529,7 @@ CA
                                             </connections>
                                         </button>
                                         <button horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Oqy-yU-Mwh">
-                                            <rect key="frame" x="167" y="9" width="24" height="24"/>
+                                            <rect key="frame" x="167" y="9" width="24" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="fnj-SY-dc8"/>
                                             </constraints>
@@ -542,7 +542,7 @@ CA
                                             </connections>
                                         </button>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Z72-XO-r8D">
-                                            <rect key="frame" x="199" y="9" width="28" height="24"/>
+                                            <rect key="frame" x="199" y="9" width="28" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="28" id="JrY-E6-3Rw"/>
                                             </constraints>
@@ -555,24 +555,24 @@ CA
                                             </connections>
                                         </button>
                                         <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aTV-ju-zgQ">
-                                            <rect key="frame" x="18" y="11" width="72" height="20"/>
+                                            <rect key="frame" x="18" y="11" width="72" height="17"/>
                                             <sliderCell key="cell" state="on" alignment="left" maxValue="1" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="qx9-ga-poh"/>
                                             <connections>
                                                 <action selector="volumeSliderMoved:" target="XfG-lQ-9wD" id="4IE-Ji-rD4"/>
                                             </connections>
                                         </slider>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9sX-qc-cPp">
-                                            <rect key="frame" x="197" y="41" width="68" height="12"/>
+                                            <rect key="frame" x="197" y="38" width="68" height="15"/>
                                             <textFieldCell key="cell" alignment="right" placeholderString="End" id="Ttv-lN-xkG">
-                                                <font key="font" metaFont="label" size="9"/>
+                                                <font key="font" metaFont="system" size="12"/>
                                                 <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="J2Q-Jx-RCt">
-                                            <rect key="frame" x="18" y="41" width="72" height="12"/>
+                                            <rect key="frame" x="18" y="38" width="72" height="15"/>
                                             <textFieldCell key="cell" alignment="left" placeholderString="Position" id="40c-Wo-HPW">
-                                                <font key="font" metaFont="label" size="9"/>
+                                                <font key="font" metaFont="system" size="12"/>
                                                 <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
@@ -740,17 +740,17 @@ CA
                                 <color key="borderColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </box>
                             <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="4WO-dU-R2m" customClass="NonUserScrollableScrollView" customModule="nmp" customModuleProvider="target">
-                                <rect key="frame" x="8" y="352" width="285" height="20"/>
+                                <rect key="frame" x="8" y="356" width="285" height="16"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="cW8-BX-DC6">
-                                    <rect key="frame" x="0.0" y="0.0" width="285" height="20"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="285" height="16"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView editable="NO" selectable="NO" importsGraphics="NO" richText="NO" horizontallyResizable="YES" verticallyResizable="NO" spellingCorrection="YES" smartInsertDelete="YES" id="K5v-5H-Rv8">
-                                            <rect key="frame" x="0.0" y="0.0" width="285" height="20"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="285" height="16"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <size key="minSize" width="285" height="20"/>
+                                            <size key="minSize" width="285" height="16"/>
                                             <size key="maxSize" width="1519" height="10000000"/>
                                             <attributedString key="textStorage">
                                                 <fragment content="Title">
@@ -787,12 +787,12 @@ CA
                             <constraint firstAttribute="trailing" secondItem="O24-Vm-hid" secondAttribute="trailing" constant="8" id="Jmt-EJ-5V0"/>
                             <constraint firstItem="rlW-Zc-2Lz" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="NIV-tG-LJi"/>
                             <constraint firstAttribute="trailing" secondItem="e9t-MM-OS7" secondAttribute="trailing" constant="8" id="O7J-pQ-krx"/>
-                            <constraint firstItem="O24-Vm-hid" firstAttribute="top" secondItem="bVE-4L-UX9" secondAttribute="bottom" constant="8" id="Pvc-GF-F8h"/>
+                            <constraint firstItem="O24-Vm-hid" firstAttribute="top" secondItem="bVE-4L-UX9" secondAttribute="bottom" constant="9" id="Pvc-GF-F8h"/>
                             <constraint firstItem="e9t-MM-OS7" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="8" id="VLO-ja-bUT"/>
                             <constraint firstAttribute="bottom" secondItem="e9t-MM-OS7" secondAttribute="bottom" constant="8" id="ahW-nb-dIK"/>
                             <constraint firstItem="rlW-Zc-2Lz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="82" id="epP-vG-zct"/>
                             <constraint firstItem="bVE-4L-UX9" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="i9j-d6-SgH"/>
-                            <constraint firstItem="bVE-4L-UX9" firstAttribute="top" secondItem="4WO-dU-R2m" secondAttribute="bottom" constant="-3" id="pay-1v-KDc"/>
+                            <constraint firstItem="bVE-4L-UX9" firstAttribute="top" secondItem="4WO-dU-R2m" secondAttribute="bottom" constant="1" id="pay-1v-KDc"/>
                             <constraint firstItem="rlW-Zc-2Lz" firstAttribute="centerX" secondItem="4WO-dU-R2m" secondAttribute="centerX" id="qad-DZ-t7w"/>
                             <constraint firstItem="O24-Vm-hid" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="8" id="tQm-ra-HHV"/>
                             <constraint firstAttribute="trailing" secondItem="bVE-4L-UX9" secondAttribute="trailing" constant="8" id="ulG-Ld-BOY"/>
