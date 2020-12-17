@@ -71,6 +71,11 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         
         view.wantsLayer = true
         
+        boxes = [
+            controlBox,
+            playlistBox
+        ]
+        
         buttons = [
             openButton,
             rewindButton,
