@@ -115,6 +115,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         killPlayer()
         killNowPlaying()
         killTimers()
+        removeObserver()
     }
     
     func setUIDefaults() {
