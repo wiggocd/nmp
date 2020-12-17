@@ -28,7 +28,7 @@ class PlaylistOutlineView: NSOutlineView {
         
         if currentRow > -1 {
             let menu = NSMenu()
-            let deleteItem = NSMenuItem(title: "Delete", action: #selector(removeCurrentRow), keyEquivalent: "\u{08}")
+            let deleteItem = NSMenuItem(title: "Delete", action: #selector(removeRowsConditionally), keyEquivalent: "\u{08}")
             deleteItem.keyEquivalentModifierMask = [.command]
             menu.addItem(deleteItem)
             
@@ -38,13 +38,21 @@ class PlaylistOutlineView: NSOutlineView {
         return nil
     }
     
+    @objc func removeRowsConditionally() {
+        if selectedRowIndexes.count > 0 {
+            removeSelectedRows()
+        } else {
+            removeCurrentRow()
+        }
+    }
+    
     func removeSelectedRows() {
         removedIndexes = selectedRowIndexes
         removeItems(at: selectedRowIndexes, inParent: nil, withAnimation: deleteAnimation)
         notificationCenter.post(name: .playlistIndexesRemoved, object: self)
     }
     
-    @objc func removeCurrentRow() {
+    func removeCurrentRow() {
         removedIndexes = [currentRow] as IndexSet
         removeItems(at: removedIndexes, inParent: nil, withAnimation: deleteAnimation)
         notificationCenter.post(name: .playlistIndexesRemoved, object: self)
