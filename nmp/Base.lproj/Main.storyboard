@@ -632,7 +632,7 @@ CA
                                         <constraint firstItem="W3q-Vw-E4r" firstAttribute="leading" secondItem="Z72-XO-r8D" secondAttribute="trailing" constant="8" symbolic="YES" id="6OL-vj-fJM"/>
                                         <constraint firstItem="J2Q-Jx-RCt" firstAttribute="baseline" secondItem="9sX-qc-cPp" secondAttribute="baseline" id="7N6-le-vM7"/>
                                         <constraint firstItem="Oqy-yU-Mwh" firstAttribute="leading" secondItem="tcp-Og-jxF" secondAttribute="trailing" constant="8" symbolic="YES" id="85d-CE-rzI"/>
-                                        <constraint firstItem="aTV-ju-zgQ" firstAttribute="leading" secondItem="gLo-5d-eza" secondAttribute="leading" constant="90" id="Css-L2-t9O"/>
+                                        <constraint firstItem="aTV-ju-zgQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gLo-5d-eza" secondAttribute="leading" constant="90" id="Css-L2-t9O"/>
                                         <constraint firstItem="tcp-Og-jxF" firstAttribute="leading" secondItem="gjt-zg-tCa" secondAttribute="trailing" constant="8" symbolic="YES" id="D1q-Yc-MwL"/>
                                         <constraint firstItem="ccp-8a-79m" firstAttribute="centerX" secondItem="gLo-5d-eza" secondAttribute="centerX" id="Dv5-7S-WQH"/>
                                         <constraint firstItem="ccp-8a-79m" firstAttribute="trailing" secondItem="9sX-qc-cPp" secondAttribute="trailing" id="IVd-Ue-RQz"/>
@@ -642,7 +642,6 @@ CA
                                         <constraint firstAttribute="bottom" secondItem="gjt-zg-tCa" secondAttribute="bottom" constant="13" id="Q1T-0z-SBV"/>
                                         <constraint firstItem="tcp-Og-jxF" firstAttribute="top" secondItem="Oqy-yU-Mwh" secondAttribute="top" id="Qx0-I0-oTK"/>
                                         <constraint firstItem="Oqy-yU-Mwh" firstAttribute="top" secondItem="Z72-XO-r8D" secondAttribute="top" id="TDH-pV-ibT"/>
-                                        <constraint firstItem="aTV-ju-zgQ" firstAttribute="leading" secondItem="gLo-5d-eza" secondAttribute="leading" constant="90" id="VhW-XR-3qr"/>
                                         <constraint firstItem="gjt-zg-tCa" firstAttribute="leading" secondItem="J2Q-Jx-RCt" secondAttribute="trailing" constant="82" id="XPl-Xt-bmo"/>
                                         <constraint firstItem="ccp-8a-79m" firstAttribute="top" secondItem="gLo-5d-eza" secondAttribute="top" constant="13" id="XrD-ig-UwX"/>
                                         <constraint firstItem="aTV-ju-zgQ" firstAttribute="centerY" secondItem="gjt-zg-tCa" secondAttribute="centerY" id="ZMq-B2-C9n"/>
@@ -918,7 +917,7 @@ CA
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="cq2-FE-JQM"/>
+        <segue reference="bT4-uI-51G"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AddToPlaylist" width="90" height="90"/>
