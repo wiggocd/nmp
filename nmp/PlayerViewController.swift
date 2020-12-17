@@ -35,7 +35,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     var defaultDetailsColor: NSColor!
     var defaultTimeColor: NSColor!
     var buttons: [NSButton] = []
-    var timers: [Timer] = []
     var boxes: [NSBox] = []
     var newPlaybackPositionTime: TimeInterval! = nil
     
@@ -78,10 +77,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             playlistButton
         ]
         
-        timers = [
-            positionTimer
-        ]
-        
         boxes = [
             controlBox,
             playlistBox
@@ -116,6 +111,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     override func viewWillDisappear() {
+        super.viewWillDisappear()
         killPlayer()
         killNowPlaying()
         killTimers()
@@ -465,9 +461,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func killTimers() {
-        for timer in timers {
-            timer.invalidate()
-        }
+        positionTimer.invalidate()
     }
     
     func alternateKeyDown(with event: NSEvent) -> Bool {
