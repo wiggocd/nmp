@@ -34,6 +34,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     var defaultTitleColor: NSColor!
     var defaultDetailsColor: NSColor!
     var defaultTimeColor: NSColor!
+    var defaultTransparentBoxColor: NSColor!
     var buttons: [NSButton] = []
     var boxes: [NSBox] = []
     var newPlaybackPositionTime: TimeInterval! = nil
@@ -66,6 +67,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         defaultTitleColor = titleTextView.textColor
         defaultDetailsColor = detailsTextView.textColor
         defaultTimeColor = positionLabel.textColor
+        defaultTransparentBoxColor = controlBox.fillColor
         
         view.wantsLayer = true
         
@@ -75,11 +77,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             playPauseButton,
             nextTrackButton,
             playlistButton
-        ]
-        
-        boxes = [
-            controlBox,
-            playlistBox
         ]
         
         setUIDefaults()
@@ -149,6 +146,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             positionLabel.textColor = defaultTimeColor
             durationLabel.textColor = defaultTimeColor
             
+            controlBox.appearance = NSApp.appearance
             playlistBox.appearance = NSApp.appearance
             
             playlistOutlineView.appearance = NSApp.appearance
@@ -179,18 +177,21 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             positionLabel.textColor = .gray
             durationLabel.textColor = .gray
             
+            controlBox.appearance = darkAppearance
             playlistBox.appearance = darkAppearance
+            
             playlistOutlineView.appearance = darkAppearance
             if let showTransparentAppearance = application?.userDefaults.bool(forKey: "ShowTransparentAppearance") {
                 if showTransparentAppearance {
+                    controlBox.fillColor = defaultTransparentBoxColor
                     playlistOutlineView.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0)
-                    for box in boxes {
-                        box.isTransparent = false
-                    }
+                    controlBox.isTransparent = false
                 } else {
+                    controlBox.fillColor = .controlBackgroundColor
                     playlistOutlineView.backgroundColor = .controlBackgroundColor
                 }
             } else {
+                controlBox.fillColor = .controlBackgroundColor
                 playlistOutlineView.backgroundColor = .controlBackgroundColor
             }
             
