@@ -237,13 +237,13 @@ CA
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HM5-Hp-Buj">
-                                            <rect key="frame" x="10" y="10" width="321" height="49"/>
+                                            <rect key="frame" x="10" y="10" width="321" height="99"/>
                                             <clipView key="contentView" id="A8b-QK-RMP">
-                                                <rect key="frame" x="1" y="0.0" width="319" height="48"/>
+                                                <rect key="frame" x="1" y="0.0" width="319" height="98"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnSelection="YES" columnResizing="NO" emptySelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="mjt-PA-sGQ" viewBased="YES" id="N36-pr-j6a">
-                                                        <rect key="frame" x="0.0" y="0.0" width="319" height="23"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="319" height="73"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -726,17 +726,12 @@ CA
                                     <rect key="frame" x="1" y="1" width="135" height="135"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rso-5a-nyJ">
-                                            <rect key="frame" x="0.0" y="0.0" width="137" height="137"/>
+                                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rso-5a-nyJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="135" height="135"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" id="9Nz-Xx-T4y"/>
                                         </imageView>
                                     </subviews>
-                                    <constraints>
-                                        <constraint firstItem="rso-5a-nyJ" firstAttribute="leading" secondItem="uRu-S5-sFs" secondAttribute="leading" id="4Z3-Rl-drT"/>
-                                        <constraint firstAttribute="bottom" secondItem="rso-5a-nyJ" secondAttribute="bottom" id="BD6-Nz-aqn"/>
-                                        <constraint firstItem="rso-5a-nyJ" firstAttribute="top" secondItem="uRu-S5-sFs" secondAttribute="top" constant="-2" id="P9h-ra-tvx"/>
-                                        <constraint firstAttribute="trailing" secondItem="rso-5a-nyJ" secondAttribute="trailing" constant="-2" id="zAf-tw-XON"/>
-                                    </constraints>
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="137" id="B86-Mg-K41"/>
@@ -808,6 +803,7 @@ CA
                     </view>
                     <connections>
                         <outlet property="controlBox" destination="O24-Vm-hid" id="kif-FN-PKV"/>
+                        <outlet property="coverImageBox" destination="rlW-Zc-2Lz" id="n9g-jS-hP9"/>
                         <outlet property="coverImageView" destination="rso-5a-nyJ" id="duH-WX-yo2"/>
                         <outlet property="detailsTextView" destination="EPq-UA-Tq7" id="2la-TZ-kL1"/>
                         <outlet property="durationLabel" destination="9sX-qc-cPp" id="jnT-Gs-oGe"/>

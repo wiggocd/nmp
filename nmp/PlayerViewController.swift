@@ -41,6 +41,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     @IBOutlet var titleTextView: NSTextView!
     @IBOutlet var detailsTextView: NSTextView!
+    @IBOutlet weak var coverImageBox: NSBox!
     @IBOutlet weak var coverImageView: NSImageView!
     
     @IBOutlet weak var controlBox: NSBox!
@@ -286,7 +287,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         let shadow = NSShadow()
         shadow.shadowColor = NSColor(white: 0.2, alpha: 0.5)
         shadow.shadowBlurRadius = 10
-        coverImageView.shadow = shadow
+        coverImageBox.shadow = shadow
     }
     
     func setBackgroundViewAndAppearance() {
