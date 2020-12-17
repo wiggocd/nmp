@@ -430,7 +430,7 @@ CA
                 </tabViewController>
                 <customObject id="fuw-mb-JIz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-490" y="659"/>
+            <point key="canvasLocation" x="-492" y="659"/>
         </scene>
         <!--nmp-->
         <scene sceneID="hIz-AP-VOD">
@@ -609,7 +609,7 @@ CA
                                         </slider>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9sX-qc-cPp">
                                             <rect key="frame" x="336" y="33" width="73" height="12"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" placeholderString="End" id="Ttv-lN-xkG">
+                                            <textFieldCell key="cell" alignment="right" placeholderString="End" id="Ttv-lN-xkG">
                                                 <font key="font" metaFont="label" size="9"/>
                                                 <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -617,7 +617,7 @@ CA
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="J2Q-Jx-RCt">
                                             <rect key="frame" x="10" y="33" width="76" height="12"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" placeholderString="Position" id="40c-Wo-HPW">
+                                            <textFieldCell key="cell" alignment="left" placeholderString="Position" id="40c-Wo-HPW">
                                                 <font key="font" metaFont="label" size="9"/>
                                                 <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
