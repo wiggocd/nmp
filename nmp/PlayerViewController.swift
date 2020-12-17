@@ -36,12 +36,14 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     var defaultTimeColor: NSColor!
     var buttons: [NSButton] = []
     var timers: [Timer] = []
+    var boxes: [NSBox] = []
     var newPlaybackPositionTime: TimeInterval! = nil
     
     @IBOutlet var titleTextView: NSTextView!
     @IBOutlet var detailsTextView: NSTextView!
     @IBOutlet weak var coverImageView: NSImageView!
     
+    @IBOutlet weak var controlBox: NSBox!
     @IBOutlet weak var openButton: NSButton!
     @IBOutlet weak var rewindButton: NSButton!
     @IBOutlet weak var playPauseButton: NSButton!
@@ -52,6 +54,8 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     @IBOutlet weak var volumeSlider: NSSlider!
     @IBOutlet weak var positionLabel: NSTextField!
     @IBOutlet weak var durationLabel: NSTextField!
+    
+    @IBOutlet weak var playlistBox: NSBox!
     @IBOutlet weak var playlistScrollView: NSScrollView!
     @IBOutlet weak var playlistOutlineView: PlaylistOutlineView!
     
@@ -76,6 +80,11 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         
         timers = [
             positionTimer
+        ]
+        
+        boxes = [
+            controlBox,
+            playlistBox
         ]
         
         setUIDefaults()
@@ -143,8 +152,14 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             positionLabel.textColor = defaultTimeColor
             durationLabel.textColor = defaultTimeColor
             
+            playlistBox.appearance = NSApp.appearance
+            
             playlistOutlineView.appearance = NSApp.appearance
             playlistOutlineView.backgroundColor = .controlBackgroundColor
+            
+            for box in boxes {
+                box.isTransparent = true
+            }
             
             for button in buttons {
                 button.appearance = NSApp.appearance
@@ -167,14 +182,13 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             positionLabel.textColor = .gray
             durationLabel.textColor = .gray
             
+            playlistBox.appearance = darkAppearance
             playlistOutlineView.appearance = darkAppearance
             if let showTransparentAppearance = application?.userDefaults.bool(forKey: "ShowTransparentAppearance") {
                 if showTransparentAppearance {
-                    let appearance = NSApp.effectiveAppearance
-                    if appearance.name == NSAppearance.Name.aqua {
-                        playlistOutlineView.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0)
-                    } else {
-                        playlistOutlineView.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0)
+                    playlistOutlineView.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0)
+                    for box in boxes {
+                        box.isTransparent = false
                     }
                 } else {
                     playlistOutlineView.backgroundColor = .controlBackgroundColor
@@ -412,7 +426,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     func setPlaylistHiddenFromDefaults() {
         if let playlistHidden = application?.userDefaults.bool(forKey: "PlaylistHidden") {
-            playlistScrollView.isHidden = playlistHidden
+            playlistBox.isHidden = playlistHidden
         }
     }
     
