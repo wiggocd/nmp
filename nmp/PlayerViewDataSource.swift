@@ -39,8 +39,6 @@ extension PlayerViewController: NSOutlineViewDataSource, NSPasteboardItemDataPro
             cell?.textField?.stringValue = item.name
         }
         
-        cell?.textField?.textColor = NSColor.controlTextColor
-        
         return cell
     }
     

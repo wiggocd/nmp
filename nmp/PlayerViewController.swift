@@ -34,9 +34,9 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     var defaultTitleColor: NSColor!
     var defaultDetailsColor: NSColor!
     var defaultTimeColor: NSColor!
-    var hasShownTransparentAppearance = false
     var buttons: [NSButton] = []
     var timers: [Timer] = []
+    var newPlaybackPositionTime: TimeInterval! = nil
     
     @IBOutlet var titleTextView: NSTextView!
     @IBOutlet var detailsTextView: NSTextView!
@@ -133,7 +133,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     func setDefaultAppearances() {
         NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.4
+            context.duration = 0.2
             
             let lastAlphaValue = view.alphaValue
             view.alphaValue = 0
@@ -144,11 +144,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             durationLabel.textColor = defaultTimeColor
             
             playlistOutlineView.appearance = NSApp.appearance
-            if let showTransparentAppearance = application?.userDefaults.bool(forKey: "ShowTransparentAppearance") {
-                if showTransparentAppearance || hasShownTransparentAppearance {
-                    playlistOutlineView.backgroundColor = .controlBackgroundColor
-                }
-            }
+            playlistOutlineView.backgroundColor = .controlBackgroundColor
             
             for button in buttons {
                 button.appearance = NSApp.appearance
@@ -161,7 +157,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     func setAlternateAppearances() {
         NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.4
+            context.duration = 0.2
             
             let lastAlphaValue = view.alphaValue
             view.alphaValue = 0
@@ -173,13 +169,12 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             
             playlistOutlineView.appearance = darkAppearance
             if let showTransparentAppearance = application?.userDefaults.bool(forKey: "ShowTransparentAppearance") {
-                hasShownTransparentAppearance = true
                 if showTransparentAppearance {
                     let appearance = NSApp.effectiveAppearance
                     if appearance.name == NSAppearance.Name.aqua {
-                        playlistOutlineView.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0.02)
+                        playlistOutlineView.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0)
                     } else {
-                        playlistOutlineView.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0.2)
+                        playlistOutlineView.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0)
                     }
                 } else {
                     playlistOutlineView.backgroundColor = .controlBackgroundColor

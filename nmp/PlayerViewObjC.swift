@@ -12,16 +12,16 @@ import MediaPlayer
 
 extension PlayerViewController {
     @objc func refresh() {
-        if application?.showTransparentAppearance == false {
-            hasShownTransparentAppearance = false
-        }
         setBackgroundViewAndAppearance()
     }
     
     @objc func updatePosition() {
         timeSlider.doubleValue = player.position
         positionLabel.stringValue = to_hhmmss(seconds: player.position)
-        nowPlayingInfoCenter.nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = player.position
+        if newPlaybackPositionTime != nil {
+            nowPlayingInfoCenter.nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = player.position
+            newPlaybackPositionTime = nil
+        }
     }
     
     @objc func playlistChanged(_ notification: Notification) {
@@ -94,7 +94,8 @@ extension PlayerViewController {
     
     @objc func changePlaybackPositionCommandAction(_ sender: Any?) -> MPRemoteCommandHandlerStatus {
         if let sender = sender as? MPChangePlaybackPositionCommandEvent {
-            player.setPosition(position: sender.positionTime)
+            newPlaybackPositionTime = sender.positionTime
+            player.setPosition(position: newPlaybackPositionTime)
             updatePosition()
             return .success
         }
