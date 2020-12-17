@@ -11,7 +11,7 @@ To download an application package, go to the releases page.
 
 ## Prerequisites to Build
 
-- Xcode 11.7 or higher from the App Store or [Apple Developer](https://developer.apple.com)
+- Xcode 11.7 or higher from the App Store or [Apple Developer](https://developer.apple.com/xcode/resources/)
 
 <sub>Run:</sub>
 
