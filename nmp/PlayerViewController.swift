@@ -13,7 +13,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     let notificationCenter = NotificationCenter.default
     let application = Application.shared as? Application
     let shadowRadius = CGFloat(8)
-    let coverImageSize = NSSize(width: 640, height: 640)
+    let coverImageMinimumSize = NSSize(width: 640, height: 640)
     let UICornerRadius = CGFloat(4)
     let bgBlurRadius = CGFloat(50)
     let coverImageCornerRadius = CGFloat(10)
@@ -261,8 +261,8 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func setCoverImage(image: CGImage) {
-        let scale = coverImageSize.height / CGFloat(image.height)
-        let size = NSSize(width: coverImageSize.width * scale, height: coverImageSize.height * scale)
+        let scale = coverImageMinimumSize.height / CGFloat(image.height)
+        let size = NSSize(width: CGFloat(image.width) * scale, height: CGFloat(image.height) * scale)
         
         coverImageView.image = NSImage(cgImage: image, size: size).roundCorners(withRadius: coverImageCornerRadius)
         setCoverImageShadow()
@@ -270,7 +270,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     func resetCoverImage() {
         let image = NSImage()
-        image.size = coverImageSize
+        image.size = coverImageMinimumSize
         image.lockFocus()
         NSColor(red: 0, green: 0, blue: 0, alpha: 0.1).set()
 
@@ -399,7 +399,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     func updateNowPlayingInfoCenter() {
         if let audioPlayer = player.player {
             if player.metadata != nil, let metadata = player.metadata, let artwork = metadata.artwork {
-                let coverArt = MPMediaItemArtwork(boundsSize: coverImageSize) { (size) -> NSImage in
+                let coverArt = MPMediaItemArtwork(boundsSize: coverImageMinimumSize) { (size) -> NSImage in
                     return NSImage(cgImage: artwork, size: size)
                 }
                 
