@@ -12,14 +12,14 @@ import MediaPlayer
 class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     let notificationCenter = NotificationCenter.default
     let application = Application.shared as? Application
-    let shadowRadius = CGFloat(8)
     let coverImageMinimumSize = NSSize(width: 640, height: 640)
-    let UICornerRadius = CGFloat(4)
-    let bgBlurRadius = CGFloat(50)
-    let coverImageCornerRadius = CGFloat(10)
-    let backgroundDarknessAlpha = CGFloat(0.5)
-    let doubleClickInterval = TimeInterval(0.2)
-    let animationDuration = TimeInterval(0.5)
+    let shadowRadius: CGFloat = 8
+    let UICornerRadius: CGFloat = 4
+    let bgBlurRadius: CGFloat = 50
+    let coverImageCornerRadius: CGFloat = 10
+    let backgroundDarknessAlpha: CGFloat = 0.5
+    let doubleClickInterval: TimeInterval = 0.2
+    let animationDuration: TimeInterval = 0.5
     let darkAppearance = NSAppearance(named: .darkAqua)
     let mediaHotKeyModifiers: NSEvent.ModifierFlags = [.command]
     let remoteCommandCenter = MPRemoteCommandCenter.shared()
@@ -292,7 +292,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         image.unlockFocus()
 
         coverImageView.image = image.roundCorners(withRadius: coverImageCornerRadius)
-        setDefaultAppearances()
     }
     
     func setCoverImageShadow() {
@@ -394,6 +393,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
                     setBackgroundViewAndAppearance()
                 } else {
                     resetCoverImage()
+                    resetBackgroundViewAndAppearance()
                 }
             }
         } else {

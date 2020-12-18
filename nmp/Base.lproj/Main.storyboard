@@ -237,13 +237,13 @@ CA
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HM5-Hp-Buj">
-                                            <rect key="frame" x="10" y="10" width="321" height="99"/>
+                                            <rect key="frame" x="10" y="10" width="321" height="49"/>
                                             <clipView key="contentView" id="A8b-QK-RMP">
-                                                <rect key="frame" x="1" y="0.0" width="319" height="98"/>
+                                                <rect key="frame" x="1" y="0.0" width="319" height="48"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnSelection="YES" columnResizing="NO" emptySelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="mjt-PA-sGQ" viewBased="YES" id="N36-pr-j6a">
-                                                        <rect key="frame" x="0.0" y="0.0" width="319" height="73"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="319" height="23"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -482,7 +482,7 @@ CA
                                     <rect key="frame" x="1" y="1" width="283" height="88"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ccp-8a-79m">
+                                        <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ccp-8a-79m" customClass="CustomSlider" customModule="nmp" customModuleProvider="target">
                                             <rect key="frame" x="18" y="54" width="247" height="23"/>
                                             <sliderCell key="cell" alignment="left" maxValue="100" doubleValue="100" tickMarkPosition="above" sliderType="linear" id="0IZ-5K-Ekm"/>
                                             <connections>
@@ -554,7 +554,7 @@ CA
                                                 <action selector="nextTrackAction:" target="XfG-lQ-9wD" id="xff-qr-IEZ"/>
                                             </connections>
                                         </button>
-                                        <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aTV-ju-zgQ">
+                                        <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aTV-ju-zgQ" customClass="CustomSlider" customModule="nmp" customModuleProvider="target">
                                             <rect key="frame" x="18" y="15" width="72" height="17"/>
                                             <sliderCell key="cell" state="on" alignment="left" maxValue="1" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="qx9-ga-poh"/>
                                             <connections>
@@ -929,7 +929,7 @@ CA
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="cq2-FE-JQM"/>
+        <segue reference="bT4-uI-51G"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AddToPlaylist" width="90" height="90"/>
