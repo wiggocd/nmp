@@ -24,6 +24,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     let mediaHotKeyModifiers: NSEvent.ModifierFlags = [.command]
     let remoteCommandCenter = MPRemoteCommandCenter.shared()
     let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
+    let defaultCoverImage = NSImage(named: "AppIcon")
     
     var player: AudioPlayer!
     var positionTimer = Timer()
@@ -282,16 +283,8 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func resetCoverImage() {
-        let image = NSImage()
-        image.size = coverImageMinimumSize
-        image.lockFocus()
-        NSColor(red: 0, green: 0, blue: 0, alpha: 0.1).set()
-
-        let imageRect = NSRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
-        imageRect.fill()
-        image.unlockFocus()
-
-        coverImageView.image = image.roundCorners(withRadius: coverImageCornerRadius)
+        coverImageView.image = defaultCoverImage
+        setCoverImageShadow()
     }
     
     func setCoverImageShadow() {
