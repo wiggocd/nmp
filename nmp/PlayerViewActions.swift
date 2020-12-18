@@ -22,17 +22,17 @@ extension PlayerViewController {
     @IBAction func playlistAction(_ sender: Any) {
         if playlistBox.isHidden {
             NSAnimationContext.runAnimationGroup({ context in
-                context.duration = 0.4
+                context.duration = animationDuration // 0.4
                 
                 playlistBox.alphaValue = 0
-                self.playlistBox.isHidden = false
+                playlistBox.isHidden = false
                 playlistBox.animator().alphaValue = 1
                 
-                self.application?.userDefaults.set(false, forKey: "PlaylistHidden")
+                application?.userDefaults.set(false, forKey: "PlaylistHidden")
             })
         } else {
             NSAnimationContext.runAnimationGroup({ context in
-                context.duration = 0.4
+                context.duration = animationDuration // 0.4
                 playlistBox.animator().alphaValue = 0
             }) {
                 self.playlistBox.isHidden = true

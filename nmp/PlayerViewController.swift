@@ -18,7 +18,8 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     let bgBlurRadius = CGFloat(50)
     let coverImageCornerRadius = CGFloat(10)
     let backgroundDarknessAlpha = CGFloat(0.5)
-    let doubleClickInterval = 0.2
+    let doubleClickInterval = TimeInterval(0.2)
+    let animationDuration = TimeInterval(0.5)
     let darkAppearance = NSAppearance(named: .darkAqua)
     let mediaHotKeyModifiers: NSEvent.ModifierFlags = [.command]
     let remoteCommandCenter = MPRemoteCommandCenter.shared()
@@ -141,73 +142,57 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func setDefaultAppearances() {
-        NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.2
-            
-            let lastAlphaValue = view.alphaValue
-            view.alphaValue = 0
-            
-            titleTextView.textColor = defaultTitleColor
-            detailsTextView.textColor = defaultDetailsColor
-            positionLabel.textColor = defaultTimeColor
-            durationLabel.textColor = defaultTimeColor
-            
-            controlBox.appearance = NSApp.appearance
-            playlistBox.appearance = NSApp.appearance
-            
-            playlistOutlineView.appearance = NSApp.appearance
-            playlistOutlineView.backgroundColor = .controlBackgroundColor
-            
-            for box in boxes {
-                box.isTransparent = true
-            }
-            
-            for button in buttons {
-                button.appearance = NSApp.appearance
-            }
-            
-            view.window?.appearance = NSApp.appearance
-            view.animator().alphaValue = lastAlphaValue
+        titleTextView.textColor = defaultTitleColor
+        detailsTextView.textColor = defaultDetailsColor
+        positionLabel.textColor = defaultTimeColor
+        durationLabel.textColor = defaultTimeColor
+        
+        controlBox.appearance = NSApp.appearance
+        playlistBox.appearance = NSApp.appearance
+        
+        playlistOutlineView.appearance = NSApp.appearance
+        playlistOutlineView.backgroundColor = .controlBackgroundColor
+        
+        for box in boxes {
+            box.isTransparent = true
         }
+        
+        for button in buttons {
+            button.appearance = NSApp.appearance
+        }
+        
+        view.window?.appearance = NSApp.appearance
     }
     
     func setAlternateAppearances() {
-        NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.2
-            
-            let lastAlphaValue = view.alphaValue
-            view.alphaValue = 0
-            
-            titleTextView.textColor = .white
-            detailsTextView.textColor = .lightGray
-            positionLabel.textColor = .gray
-            durationLabel.textColor = .gray
-            
-            controlBox.appearance = darkAppearance
-            playlistBox.appearance = darkAppearance
-            
-            playlistOutlineView.appearance = darkAppearance
-            if let showTransparentAppearance = application?.userDefaults.bool(forKey: "ShowTransparentAppearance") {
-                if showTransparentAppearance {
-                    controlBox.fillColor = defaultTransparentBoxColor
-                    playlistOutlineView.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0)
-                    controlBox.isTransparent = false
-                } else {
-                    controlBox.fillColor = .controlBackgroundColor
-                    playlistOutlineView.backgroundColor = .controlBackgroundColor
-                }
+        titleTextView.textColor = .white
+        detailsTextView.textColor = .lightGray
+        positionLabel.textColor = .gray
+        durationLabel.textColor = .gray
+        
+        controlBox.appearance = darkAppearance
+        playlistBox.appearance = darkAppearance
+        
+        playlistOutlineView.appearance = darkAppearance
+        if let showTransparentAppearance = application?.userDefaults.bool(forKey: "ShowTransparentAppearance") {
+            if showTransparentAppearance {
+                controlBox.fillColor = defaultTransparentBoxColor
+                playlistOutlineView.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0)
+                controlBox.isTransparent = false
             } else {
                 controlBox.fillColor = .controlBackgroundColor
                 playlistOutlineView.backgroundColor = .controlBackgroundColor
             }
-            
-            for button in buttons {
-                button.appearance = darkAppearance
-            }
-            
-            view.window?.appearance = darkAppearance
-            view.animator().alphaValue = lastAlphaValue
+        } else {
+            controlBox.fillColor = .controlBackgroundColor
+            playlistOutlineView.backgroundColor = .controlBackgroundColor
         }
+        
+        for button in buttons {
+            button.appearance = darkAppearance
+        }
+        
+        view.window?.appearance = darkAppearance
     }
     
     func addObservers() {
@@ -265,8 +250,11 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         let scale = coverImageMinimumSize.height / CGFloat(image.height)
         let size = NSSize(width: CGFloat(image.width) * scale, height: CGFloat(image.height) * scale)
         
-        coverImageView.image = NSImage(cgImage: image, size: size).roundCorners(withRadius: coverImageCornerRadius)
-        setCoverImageShadow()
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = animationDuration
+            coverImageView.image = NSImage(cgImage: image, size: size).roundCorners(withRadius: coverImageCornerRadius)
+            setCoverImageShadow()
+        }
     }
     
     func resetCoverImage() {
@@ -305,8 +293,8 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
                         
                         if transformedImage != nil {
                             let bgImage = transformedImage?.nsImage().darkened(byBlackAlpha: backgroundDarknessAlpha)
-                            view.layer?.contents = bgImage
                             
+                            view.layer?.contents = bgImage
                             setAlternateAppearances()
                             
                             return
