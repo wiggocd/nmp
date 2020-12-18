@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		404A4CEA258CE99B00D57519 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404A4CE9258CE99B00D57519 /* Slider.swift */; };
 		404B135C25896190001CA5ED /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404B135B25896190001CA5ED /* Views.swift */; };
 		405BC659257BDF80008BB376 /* Keycodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405BC658257BDF80008BB376 /* Keycodes.swift */; };
 		405C16C125838CE0004C2B05 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405C16C025838CE0004C2B05 /* HelpViewController.swift */; };
@@ -60,6 +61,7 @@
 
 /* Begin PBXFileReference section */
 		4048FBF125825B8D0030C337 /* nmp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "nmp-Bridging-Header.h"; sourceTree = "<group>"; };
+		404A4CE9258CE99B00D57519 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		404B135B25896190001CA5ED /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		405BC658257BDF80008BB376 /* Keycodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keycodes.swift; sourceTree = "<group>"; };
 		405C16C025838CE0004C2B05 /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				405C16C225838EB1004C2B05 /* HelpViewDataSource.swift */,
 				40ACA0D125895B12004A072F /* PreferencesViewControllers.swift */,
 				404B135B25896190001CA5ED /* Views.swift */,
+				404A4CE9258CE99B00D57519 /* Slider.swift */,
 				40A65F9C2569D3720072FB51 /* Player.swift */,
 				40D8C01A257CDDE80048757E /* Extensions.swift */,
 				40A65F9E2569D38F0072FB51 /* Filesystem.swift */,
@@ -319,6 +322,7 @@
 				40CEB16A2583C690000872C3 /* Application.swift in Sources */,
 				404B135C25896190001CA5ED /* Views.swift in Sources */,
 				40A65F9B2569D2840072FB51 /* Library.swift in Sources */,
+				404A4CEA258CE99B00D57519 /* Slider.swift in Sources */,
 				40D8C019257CDDB00048757E /* PlayerViewObjC.swift in Sources */,
 				40A65F9F2569D38F0072FB51 /* Filesystem.swift in Sources */,
 				405C16C325838EB1004C2B05 /* HelpViewDataSource.swift in Sources */,

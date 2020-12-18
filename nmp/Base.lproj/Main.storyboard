@@ -482,7 +482,7 @@ CA
                                     <rect key="frame" x="1" y="1" width="283" height="88"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ccp-8a-79m">
+                                        <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ccp-8a-79m" customClass="CustomSlider" customModule="nmp" customModuleProvider="target">
                                             <rect key="frame" x="18" y="54" width="247" height="23"/>
                                             <sliderCell key="cell" alignment="left" maxValue="100" doubleValue="100" tickMarkPosition="above" sliderType="linear" id="0IZ-5K-Ekm"/>
                                             <connections>
@@ -554,7 +554,7 @@ CA
                                                 <action selector="nextTrackAction:" target="XfG-lQ-9wD" id="xff-qr-IEZ"/>
                                             </connections>
                                         </button>
-                                        <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aTV-ju-zgQ">
+                                        <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aTV-ju-zgQ" customClass="CustomSlider" customModule="nmp" customModuleProvider="target">
                                             <rect key="frame" x="18" y="15" width="72" height="17"/>
                                             <sliderCell key="cell" state="on" alignment="left" maxValue="1" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="qx9-ga-poh"/>
                                             <connections>
@@ -564,7 +564,7 @@ CA
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9sX-qc-cPp">
                                             <rect key="frame" x="197" y="42" width="68" height="15"/>
                                             <textFieldCell key="cell" alignment="right" placeholderString="End" id="Ttv-lN-xkG">
-                                                <font key="font" metaFont="system" size="12"/>
+                                                <font key="font" metaFont="label" size="12"/>
                                                 <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
@@ -572,7 +572,7 @@ CA
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="J2Q-Jx-RCt">
                                             <rect key="frame" x="18" y="42" width="72" height="15"/>
                                             <textFieldCell key="cell" alignment="left" placeholderString="Position" id="40c-Wo-HPW">
-                                                <font key="font" metaFont="system" size="12"/>
+                                                <font key="font" metaFont="label" size="12"/>
                                                 <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>

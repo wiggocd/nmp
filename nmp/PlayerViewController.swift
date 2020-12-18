@@ -38,6 +38,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     var defaultTransparentBoxColor: NSColor!
     var buttons: [NSButton] = []
     var boxes: [NSBox] = []
+    var sliders: [NSSlider] = []
     var newPlaybackPositionTime: TimeInterval! = nil
     
     @IBOutlet var titleTextView: NSTextView!
@@ -86,6 +87,11 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             playlistButton
         ]
         
+        sliders = [
+            timeSlider,
+            volumeSlider
+        ]
+        
         setUIDefaults()
         addObservers()
         initialiseDragAndDrop()
@@ -120,6 +126,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         killNowPlaying()
         killTimers()
         removeObserver()
+        removeMediaListeners()
     }
     
     func setUIDefaults() {
@@ -208,6 +215,23 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     func removeObserver() {
         notificationCenter.removeObserver(self)
+    }
+    
+    func removeMediaListeners() {
+        remoteCommandCenter.togglePlayPauseCommand.removeTarget(self)
+        remoteCommandCenter.togglePlayPauseCommand.isEnabled = false
+        remoteCommandCenter.togglePlayPauseCommand.removeTarget(self)
+        remoteCommandCenter.playCommand.isEnabled = false
+        remoteCommandCenter.playCommand.removeTarget(self)
+        remoteCommandCenter.pauseCommand.isEnabled = false
+        remoteCommandCenter.pauseCommand.removeTarget(self)
+        remoteCommandCenter.previousTrackCommand.isEnabled = false
+        remoteCommandCenter.previousTrackCommand.removeTarget(self)
+        remoteCommandCenter.nextTrackCommand.isEnabled = false
+        remoteCommandCenter.nextTrackCommand.removeTarget(self)
+        remoteCommandCenter.changePlaybackPositionCommand.isEnabled = false
+        remoteCommandCenter.changePlaybackPositionCommand.removeTarget(self)
+        nowPlayingInfoCenter.nowPlayingInfo = [:]
     }
     
     func initialiseDragAndDrop() {
