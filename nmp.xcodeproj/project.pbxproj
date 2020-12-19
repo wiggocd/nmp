@@ -21,12 +21,12 @@
 		40A65F9D2569D3720072FB51 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F9C2569D3720072FB51 /* Player.swift */; };
 		40A65F9F2569D38F0072FB51 /* Filesystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A65F9E2569D38F0072FB51 /* Filesystem.swift */; };
 		40ACA0D225895B12004A072F /* PreferencesViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ACA0D125895B12004A072F /* PreferencesViewControllers.swift */; };
+		40CA1524258E31E200ABDA9A /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CA1523258E31E200ABDA9A /* CustomSlider.swift */; };
 		40CEB16A2583C690000872C3 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CEB1692583C690000872C3 /* Application.swift */; };
 		40D8C015257CDD420048757E /* PlayerViewActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D8C014257CDD420048757E /* PlayerViewActions.swift */; };
 		40D8C019257CDDB00048757E /* PlayerViewObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D8C018257CDDB00048757E /* PlayerViewObjC.swift */; };
 		40D8C01B257CDDE80048757E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D8C01A257CDDE80048757E /* Extensions.swift */; };
 		40D8C01D257CDEAE0048757E /* PlayerViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D8C01C257CDEAE0048757E /* PlayerViewDataSource.swift */; };
-		40E9BF1F258D490E00BD03AA /* CustomSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E9BF1E258D490E00BD03AA /* CustomSlider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,12 +82,12 @@
 		40A65F9C2569D3720072FB51 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		40A65F9E2569D38F0072FB51 /* Filesystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filesystem.swift; sourceTree = "<group>"; };
 		40ACA0D125895B12004A072F /* PreferencesViewControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewControllers.swift; sourceTree = "<group>"; };
+		40CA1523258E31E200ABDA9A /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 		40CEB1692583C690000872C3 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		40D8C014257CDD420048757E /* PlayerViewActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewActions.swift; sourceTree = "<group>"; };
 		40D8C018257CDDB00048757E /* PlayerViewObjC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewObjC.swift; sourceTree = "<group>"; };
 		40D8C01A257CDDE80048757E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		40D8C01C257CDEAE0048757E /* PlayerViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewDataSource.swift; sourceTree = "<group>"; };
-		40E9BF1E258D490E00BD03AA /* CustomSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSlider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,7 +150,7 @@
 				405C16C225838EB1004C2B05 /* HelpViewDataSource.swift */,
 				40ACA0D125895B12004A072F /* PreferencesViewControllers.swift */,
 				404B135B25896190001CA5ED /* Views.swift */,
-				40E9BF1E258D490E00BD03AA /* CustomSlider.swift */,
+				40CA1523258E31E200ABDA9A /* CustomSlider.swift */,
 				40A65F9C2569D3720072FB51 /* Player.swift */,
 				40D8C01A257CDDE80048757E /* Extensions.swift */,
 				40A65F9E2569D38F0072FB51 /* Filesystem.swift */,
@@ -315,6 +315,7 @@
 				405C16C125838CE0004C2B05 /* HelpViewController.swift in Sources */,
 				40A65F9D2569D3720072FB51 /* Player.swift in Sources */,
 				40D8C01D257CDEAE0048757E /* PlayerViewDataSource.swift in Sources */,
+				40CA1524258E31E200ABDA9A /* CustomSlider.swift in Sources */,
 				40D8C01B257CDDE80048757E /* Extensions.swift in Sources */,
 				40A65F6F2569CF7D0072FB51 /* PlayerViewController.swift in Sources */,
 				405BC659257BDF80008BB376 /* Keycodes.swift in Sources */,
@@ -326,7 +327,6 @@
 				40A65F9F2569D38F0072FB51 /* Filesystem.swift in Sources */,
 				405C16C325838EB1004C2B05 /* HelpViewDataSource.swift in Sources */,
 				40ACA0D225895B12004A072F /* PreferencesViewControllers.swift in Sources */,
-				40E9BF1F258D490E00BD03AA /* CustomSlider.swift in Sources */,
 				40D8C015257CDD420048757E /* PlayerViewActions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
