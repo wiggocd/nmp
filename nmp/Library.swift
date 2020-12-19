@@ -79,13 +79,14 @@ class PlaylistItem: NSObject {
     }
     
     func playlistLabel() -> String {
+        let displayIndex = trackIndex + 1
         if metadata.title != " " {
             if metadata.artist != " " {
-                return metadata.artist + " - " + metadata.title
+                return "\(displayIndex). " + metadata.artist + " - " + metadata.title
             }
-            return metadata.title
+            return "\(displayIndex). \(metadata.title)"
         }
-        return fileDisplayName(forPath: url.path)
+        return "\(displayIndex). \(fileDisplayName(forPath: url.path))"
     }
 }
 
