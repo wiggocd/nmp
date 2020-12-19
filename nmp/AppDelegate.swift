@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import StoreKit
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
