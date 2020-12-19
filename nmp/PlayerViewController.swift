@@ -448,7 +448,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         playlistItems = []
         if urls.count > 0 {
             for i in 0...urls.count-1 {
-                playlistItems.append(PlaylistItem(name: fileDisplayName(path: urls[i].path), trackIndex: i))
+                playlistItems.append(PlaylistItem(url: urls[i], trackIndex: i))
             }
         }
     }

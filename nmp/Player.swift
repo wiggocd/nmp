@@ -170,7 +170,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func updateMetadata() {
-        metadata = AudioMetadata(playerItem: AVPlayerItem(url: currentUrl))
+        metadata = AudioMetadata(forURL: currentUrl)
         if metadata.artwork == nil {
             let pathComponents = currentUrl.pathComponents
             let directoryComponents = pathComponents.dropLast()

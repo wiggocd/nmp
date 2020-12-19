@@ -28,8 +28,8 @@ class AudioMetadata {
     var album: String = " "
     var artwork: CGImage!
     
-    init(playerItem: AVPlayerItem) {
-        let metadataList = playerItem.asset.commonMetadata
+    init(forURL url: URL) {
+        let metadataList = AVAsset(url: url).commonMetadata
         for item in metadataList {
             let commonKey = item.commonKey?.rawValue ?? ""
             let stringValue = item.stringValue ?? ""
@@ -61,12 +61,31 @@ class AudioMetadata {
 }
 
 class PlaylistItem: NSObject {
-    var name: String
+    var url: URL
     var trackIndex: Int
+    var label: String!
+    var metadata: AudioMetadata {
+        didSet {
+            label = playlistLabel()
+        }
+    }
     
-    init(name: String = "", trackIndex: Int = 0) {
-        self.name = name
+    init(url: URL, trackIndex: Int = 0) {
+        self.url = url
         self.trackIndex = trackIndex
+        self.metadata = AudioMetadata(forURL: url)
+        super.init()
+        self.label = playlistLabel()
+    }
+    
+    func playlistLabel() -> String {
+        if metadata.title != " " {
+            if metadata.artist != " " {
+                return metadata.artist + " - " + metadata.title
+            }
+            return metadata.title
+        }
+        return fileDisplayName(forPath: url.path)
     }
 }
 

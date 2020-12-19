@@ -104,7 +104,7 @@ func recurseSubdirectories(urls: [URL?]) -> [URL?] {
     return ret
 }
 
-func fileDisplayName(path: String) -> String {
+func fileDisplayName(forPath path: String) -> String {
     return FileManager.default.displayName(atPath: path)
 }
 

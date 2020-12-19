@@ -36,7 +36,9 @@ extension PlayerViewController: NSOutlineViewDataSource, NSPasteboardItemDataPro
         let cell = outlineView.makeView(withIdentifier: tableColumn!.identifier, owner: tableColumn?.headerCell) as? NSTableCellView // Returns nil if no view cell is in place within interface builder
         
         if let item = item as? PlaylistItem {
-            cell?.textField?.stringValue = item.name
+            if item.label != nil {
+                cell?.textField?.stringValue = item.label
+            }
         }
         
         return cell
