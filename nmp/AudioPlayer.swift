@@ -124,16 +124,18 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func addMedia(urls: [URL?], updateIndexIfNew: Bool, shouldPlay: Bool) {
-        if urls.count > 0 {
-            for url in urls {
-                if url!.isFileURL && audioFileTypes.contains(url!.pathExtension) {
-                    self.playlist.append(url!)
+        DispatchQueue.main.async {
+            if urls.count > 0 {
+                for url in urls {
+                    if url!.isFileURL && audioFileTypes.contains(url!.pathExtension) {
+                        self.playlist.append(url!)
+                    }
                 }
-            }
-            
-            if self.playerHasMedia() == false {
-                if updateIndexIfNew { self.trackIndex = 0 }
-                if shouldPlay { self.play() }
+                
+                if self.playerHasMedia() == false {
+                    if updateIndexIfNew { self.trackIndex = 0 }
+                    if shouldPlay { self.play() }
+                }
             }
         }
     }
