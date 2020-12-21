@@ -240,7 +240,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func initialiseDragAndDrop() {
-        self.playlistOutlineView.registerForDraggedTypes(self.playlistPasteboardTypes)
+        self.playlistOutlineView.registerForDraggedTypes(playlistPasteboardTypes)
         self.playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation(), forLocal: false)
         self.playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation.every, forLocal: true)
     }

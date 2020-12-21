@@ -89,7 +89,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func loadPlaylistFromDefaults() -> Bool {
-        self.loadBookmarkData()
+        loadBookmarkData()
         let playlistData = self.application?.userDefaults.array(forKey: "Playlist") as? [String]
         var urls: [URL] = []
         
