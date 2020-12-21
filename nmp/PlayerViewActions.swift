@@ -12,7 +12,7 @@ import Cocoa
 extension PlayerViewController {
     @IBAction func clearPlaylist(_ sender: Any) {
         self.player.clear()
-        setUIDefaults()
+        self.setUIDefaults()
     }
     
     @IBAction func openAction(_ sender: Any) {
@@ -22,7 +22,7 @@ extension PlayerViewController {
     @IBAction func playlistAction(_ sender: Any) {
         if self.playlistBox.isHidden {
             NSAnimationContext.runAnimationGroup({ context in
-                context.duration = self.animationDuration // 0.4
+                context.duration = self.application!.animationDuration // 0.4
                 
                 self.playlistBox.alphaValue = 0
                 self.playlistBox.isHidden = false
@@ -32,7 +32,7 @@ extension PlayerViewController {
             })
         } else {
             NSAnimationContext.runAnimationGroup({ context in
-                context.duration = self.animationDuration // 0.4
+                context.duration = self.application!.animationDuration // 0.4
                 self.playlistBox.animator().alphaValue = 0
             }) {
                 self.playlistBox.isHidden = true
@@ -42,15 +42,15 @@ extension PlayerViewController {
     }
     
     @IBAction func playPauseAction(_ sender: Any) {
-        playPause()
+        self.playPause()
     }
     
     @IBAction func nextTrackAction(_ sender: Any) {
-        nextTrack()
+        self.nextTrack()
     }
     
     @IBAction func rewindAction(_ sender: Any) {
-        rewind()
+        self.rewind()
     }
     
     @IBAction func timeSliderMoved(_ sender: Any) {
@@ -69,7 +69,7 @@ extension PlayerViewController {
     
     @IBAction func playlistOutlineViewDoubleAction(_ sender: Any) {
         if let sender = sender as? NSOutlineView {
-            play(atIndex: sender.selectedRow)
+            self.play(atIndex: sender.selectedRow)
         }
     }
 }

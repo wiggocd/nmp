@@ -40,9 +40,9 @@ class PlaylistOutlineView: NSOutlineView {
     
     @objc func removeRowsConditionally() {
         if self.selectedRowIndexes.count > 0 {
-            removeSelectedRows()
+            self.removeSelectedRows()
         } else {
-            removeCurrentRow()
+            self.removeCurrentRow()
         }
     }
     

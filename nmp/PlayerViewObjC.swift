@@ -12,7 +12,7 @@ import MediaPlayer
 
 extension PlayerViewController {
     @objc func refresh() {
-        setBackgroundViewAndAppearance()
+        self.setBackgroundViewAndAppearance()
     }
     
     @objc func updatePosition() {
@@ -25,11 +25,11 @@ extension PlayerViewController {
     }
     
     @objc func playlistChanged(_ notification: Notification) {
-        updatePlaylist()
+        self.updatePlaylist()
     }
     
     @objc func mediaChanged(_ notification: Notification) {
-        updateMedia()
+        self.updateMedia()
     }
     
     @objc func playbackStarted(_ notification: Notification) {
@@ -96,7 +96,7 @@ extension PlayerViewController {
         if let sender = sender as? MPChangePlaybackPositionCommandEvent {
             self.newPlaybackPositionTime = sender.positionTime
             self.player.setPosition(position: self.newPlaybackPositionTime)
-            updatePosition()
+            self.updatePosition()
             return .success
         }
         return .commandFailed

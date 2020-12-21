@@ -23,7 +23,7 @@ class CustomSliderCell: NSSliderCell {
     
     var position: CGFloat {
         get {
-            return CGFloat((doubleValue - minValue) / (maxValue - minValue))
+            return CGFloat((self.doubleValue - self.minValue) / (self.maxValue - self.minValue))
         }
     }
 }

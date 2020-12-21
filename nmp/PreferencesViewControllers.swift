@@ -20,7 +20,7 @@ class PreferencesTabViewController: NSTabViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initialiseSelectedTab()
+        self.initialiseSelectedTab()
     }
     
     func initialiseSelectedTab() {

@@ -13,13 +13,8 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     let notificationCenter = NotificationCenter.default
     let application = Application.shared as? Application
     let coverImageMinimumSize = NSSize(width: 640, height: 640)
-    let shadowRadius: CGFloat = 8
-    let UICornerRadius: CGFloat = 4
-    let bgBlurRadius: CGFloat = 50
     let coverImageCornerRadius: CGFloat = 10
     let backgroundDarknessAlpha: CGFloat = 0.5
-    let doubleClickInterval: TimeInterval = 0.2
-    let animationDuration: TimeInterval = 0.5
     let darkAppearance = NSAppearance(named: .darkAqua)
     let mediaHotKeyModifiers: NSEvent.ModifierFlags = [.command]
     let remoteCommandCenter = MPRemoteCommandCenter.shared()
@@ -67,14 +62,54 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         super.viewDidLoad()
         
         self.player = AudioPlayer()
+        self.view.wantsLayer = true
         
+        self.getDefaultColors()
+        self.createObjectGroups()
+        self.setUIDefaults()
+        
+        self.addObservers()
+        self.initialiseDragAndDrop()
+        
+        self.addLocalMonitorsForEvents()
+    }
+    
+    override func viewWillAppear() {
+        self.updatePlaylist()
+        
+        self.initialisePlayerSession()
+        self.updateMedia()
+        
+        self.setVolumeFromDefaults()
+        self.setPlaylistHiddenFromDefaults()
+        
+        self.initialiseDragAndDrop()
+    }
+    
+    override var representedObject: Any? {
+        didSet {
+        // Update the view, if already loaded.
+        }
+    }
+    
+    override func viewWillDisappear() {
+        super.viewWillDisappear()
+        self.killPlayer()
+        self.killNowPlaying()
+        self.killTimers()
+        
+        self.removeObservers()
+        self.removeMediaListeners()
+    }
+    
+    func getDefaultColors() {
         self.defaultTitleColor = self.titleTextView.textColor
         self.defaultDetailsColor = self.detailsTextView.textColor
         self.defaultTimeColor = self.positionLabel.textColor
         self.defaultTransparentBoxColor = self.controlBox.fillColor
-        
-        self.view.wantsLayer = true
-        
+    }
+    
+    func createObjectGroups() {
         self.boxes = [
             self.controlBox,
             self.playlistBox
@@ -92,42 +127,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             self.timeSlider,
             self.volumeSlider
         ]
-        
-        setUIDefaults()
-        addObservers()
-        initialiseDragAndDrop()
-        
-        NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-            if self.alternateKeyDown(with: $0) {
-                return nil
-            } else {
-                return $0
-            }
-        }
-    }
-    
-    override func viewWillAppear() {
-        updatePlaylist()
-        initialisePlayerSession()
-        updateMedia()
-        setVolumeFromDefaults()
-        setPlaylistHiddenFromDefaults()
-        initialiseDragAndDrop()
-    }
-    
-    override var representedObject: Any? {
-        didSet {
-        // Update the view, if already loaded.
-        }
-    }
-    
-    override func viewWillDisappear() {
-        super.viewWillDisappear()
-        killPlayer()
-        killNowPlaying()
-        killTimers()
-        removeObserver()
-        removeMediaListeners()
     }
     
     func setUIDefaults() {
@@ -142,11 +141,11 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         self.playlistOutlineView.dataSource = self
         
         self.playlistOutlineView.indentationPerLevel = 0
-        self.playlistOutlineView.roundCorners(withRadius: UICornerRadius)
-        self.playlistScrollView.roundCorners(withRadius: UICornerRadius)
+        self.playlistOutlineView.roundCorners(withRadius: self.application!.UICornerRadius)
+        self.playlistScrollView.roundCorners(withRadius: self.application!.UICornerRadius)
         
-        resetCoverImage()
-        resetBackgroundViewAndAppearance()
+        self.resetCoverImage()
+        self.resetBackgroundViewAndAppearance()
     }
     
     func setDefaultAppearances() {
@@ -204,17 +203,17 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func addObservers() {
-        self.notificationCenter.addObserver(self, selector: #selector(refresh), name: .preferencesChanged, object: nil)
-        self.notificationCenter.addObserver(self, selector: #selector(playlistChanged), name: .playlistChanged, object: nil)
-        self.notificationCenter.addObserver(self, selector: #selector(mediaChanged), name: .mediaChanged, object: nil)
-        self.notificationCenter.addObserver(self, selector: #selector(playbackStarted), name: .playbackStarted, object: nil)
-        self.notificationCenter.addObserver(self, selector: #selector(playbackPaused), name: .playbackPaused, object: nil)
-        self.notificationCenter.addObserver(self, selector: #selector(playbackStopped), name: .playbackStopped, object: nil)
-        self.notificationCenter.addObserver(self, selector: #selector(playPauseAction), name: .playPause, object: nil)
-        self.notificationCenter.addObserver(self, selector: #selector(playlistIndexesRemoved), name: .playlistIndexesRemoved, object: playlistOutlineView)
+        self.notificationCenter.addObserver(self, selector: #selector(self.refresh), name: .preferencesChanged, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(self.playlistChanged), name: .playlistChanged, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(self.mediaChanged), name: .mediaChanged, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(self.playbackStarted), name: .playbackStarted, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(self.playbackPaused), name: .playbackPaused, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(self.playbackStopped), name: .playbackStopped, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(self.playPauseAction), name: .playPause, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(self.playlistIndexesRemoved), name: .playlistIndexesRemoved, object: self.playlistOutlineView)
     }
     
-    func removeObserver() {
+    func removeObservers() {
         self.notificationCenter.removeObserver(self)
     }
     
@@ -241,38 +240,48 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func initialiseDragAndDrop() {
-        self.playlistOutlineView.registerForDraggedTypes(playlistPasteboardTypes)
+        self.playlistOutlineView.registerForDraggedTypes(self.playlistPasteboardTypes)
         self.playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation(), forLocal: false)
         self.playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation.every, forLocal: true)
     }
     
     func initialisePlayerSession() {
         self.remoteCommandCenter.togglePlayPauseCommand.isEnabled = true
-        self.remoteCommandCenter.togglePlayPauseCommand.addTarget(self, action: #selector(togglePlayPauseCommandAction))
+        self.remoteCommandCenter.togglePlayPauseCommand.addTarget(self, action: #selector(self.togglePlayPauseCommandAction))
         
         self.remoteCommandCenter.playCommand.isEnabled = true
-        self.remoteCommandCenter.playCommand.addTarget(self, action: #selector(playCommandAction))
+        self.remoteCommandCenter.playCommand.addTarget(self, action: #selector(self.playCommandAction))
         
         self.remoteCommandCenter.pauseCommand.isEnabled = true
-        self.remoteCommandCenter.pauseCommand.addTarget(self, action: #selector(pauseCommandAction))
+        self.remoteCommandCenter.pauseCommand.addTarget(self, action: #selector(self.pauseCommandAction))
         
         self.remoteCommandCenter.previousTrackCommand.isEnabled = true
-        self.remoteCommandCenter.previousTrackCommand.addTarget(self, action: #selector(previousTrackCommandAction))
+        self.remoteCommandCenter.previousTrackCommand.addTarget(self, action: #selector(self.previousTrackCommandAction))
             
         self.remoteCommandCenter.nextTrackCommand.isEnabled = true
-        self.remoteCommandCenter.nextTrackCommand.addTarget(self, action: #selector(nextTrackCommandAction))
+        self.remoteCommandCenter.nextTrackCommand.addTarget(self, action: #selector(self.nextTrackCommandAction))
         
         self.remoteCommandCenter.changePlaybackPositionCommand.isEnabled = true
-        self.remoteCommandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(changePlaybackPositionCommandAction))
+        self.remoteCommandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(self.changePlaybackPositionCommandAction))
         
-        preparePlayback()
+        self.preparePlayback()
         self.nowPlayingInfoCenter.nowPlayingInfo = [:]
+    }
+    
+    func addLocalMonitorsForEvents() {
+        NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
+            if self.alternateKeyDown(with: $0) {
+                return nil
+            } else {
+                return $0
+            }
+        }
     }
     
     func preparePlayback() {
         self.player.toggleMute()
-        play()
-        pause()
+        self.play()
+        self.pause()
         self.player.toggleMute()
     }
     
@@ -281,15 +290,15 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         let size = NSSize(width: CGFloat(image.width) * scale, height: CGFloat(image.height) * scale)
         
         NSAnimationContext.runAnimationGroup { context in
-            context.duration = self.animationDuration
+            context.duration = self.application!.animationDuration
             self.coverImageView.image = NSImage(cgImage: image, size: size).roundCorners(withRadius: self.coverImageCornerRadius)
-            setCoverImageShadow()
+            self.setCoverImageShadow()
         }
     }
     
     func resetCoverImage() {
         self.coverImageView.image = self.defaultCoverImage
-        setCoverImageShadow()
+        self.setCoverImageShadow()
     }
     
     func setCoverImageShadow() {
@@ -325,29 +334,29 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             }
         }
         
-        resetBackgroundViewAndAppearance()
+        self.resetBackgroundViewAndAppearance()
     }
     
     func resetBackgroundViewAndAppearance() {
         self.view.layer?.contents = nil
-        setDefaultAppearances()
+        self.setDefaultAppearances()
     }
     
     func play() {
         self.player.play()
-        startPositionTimer()
+        self.startPositionTimer()
         self.nowPlayingInfoCenter.playbackState = .playing
     }
     
     func play(atIndex index: Int) {
         self.player.trackIndex = index
         self.player.play()
-        startPositionTimer()
+        self.startPositionTimer()
         self.nowPlayingInfoCenter.playbackState = .playing
     }
     
     func playAtSelectedRow() {
-        play(atIndex: playlistOutlineView.selectedRow)
+        self.play(atIndex: playlistOutlineView.selectedRow)
     }
     
     func pause() {
@@ -358,9 +367,9 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     func playPause() {
         if self.player.state == .playing {
-            pause()
+            self.pause()
         } else {
-            play()
+            self.play()
         }
     }
     
@@ -377,7 +386,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func updatePlaylist() {
-        createPlaylistItems(urls: self.player.playlist)
+        self.createPlaylistItems(urls: self.player.playlist)
         self.playlistOutlineView.reloadData()
     }
     
@@ -387,24 +396,24 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
                 self.titleTextView.string = self.player.metadata.title
                 self.detailsTextView.string = self.player.metadata.detailsString()
                 if self.player.metadata.artwork != nil {
-                    setCoverImage(image: self.player.metadata.artwork)
-                    setBackgroundViewAndAppearance()
+                    self.setCoverImage(image: self.player.metadata.artwork)
+                    self.setBackgroundViewAndAppearance()
                 } else {
-                    resetCoverImage()
-                    resetBackgroundViewAndAppearance()
+                    self.resetCoverImage()
+                    self.resetBackgroundViewAndAppearance()
                 }
             }
         } else {
-            setDefaultAppearances()
+            self.setDefaultAppearances()
         }
         
         self.timeSlider.maxValue = self.player.duration()
         self.timeSlider.reset()
         self.positionLabel.stringValue = to_hhmmss(seconds: 0.0)
         self.durationLabel.stringValue = to_hhmmss(seconds: self.player.duration())
-        startPositionTimer()
+        self.startPositionTimer()
         
-        updateNowPlayingInfoCenter()
+        self.updateNowPlayingInfoCenter()
     }
     
     func updateNowPlayingInfoCenter() {
@@ -489,13 +498,16 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         
         switch keyCode {
         case Keycode.space:
-            playPause()
+            self.playPause()
+            
             return true
         case Keycode.returnKey:
-            playAtSelectedRow()
+            self.playAtSelectedRow()
+            
             return true
         case Keycode.delete:
             let flags = event.modifierFlags
+            
             if isCommandModifierFlag(flags: flags) {
                 self.playlistOutlineView.removeSelectedRows()
                 return true

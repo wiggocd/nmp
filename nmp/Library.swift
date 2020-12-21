@@ -74,8 +74,9 @@ class PlaylistItem: NSObject {
         self.url = url
         self.trackIndex = trackIndex
         self.metadata = AudioMetadata(forURL: url)
+        
         super.init()
-        self.label = playlistLabel()
+        self.label = self.playlistLabel()
     }
     
     func playlistLabel() -> String {
@@ -125,31 +126,35 @@ func sortUrls(urls: [URL?]) -> [URL?] {
 }
 
 func to_hhmmss(seconds: Double) -> String {
-    var s = Int(seconds)
-    var m = Int(s / 60)
-    s = s % 60
-    let h = Int(m / 60)
-    m = m % 60
+    var timeString = "00:00"
     
-    var string_m = String(m)
-    var string_s = String(s)
-    var string_h: String!
-    
-    if h != 0 {
-        string_h = String(h)
-    }
-    
-    if string_m.count == 1 {
-        string_m = "0"+string_m
-    }
-    
-    if string_s.count == 1 {
-        string_s = "0"+string_s
-    }
-    
-    var timeString = string_m + ":" + string_s
-    if string_h != nil {
-        timeString = string_h + ":" + timeString
+    if seconds.isNormal {
+        var s = Int(seconds)
+        var m = Int(s / 60)
+        s = s % 60
+        let h = Int(m / 60)
+        m = m % 60
+        
+        var string_m = String(m)
+        var string_s = String(s)
+        var string_h: String!
+        
+        if h != 0 {
+            string_h = String(h)
+        }
+        
+        if string_m.count == 1 {
+            string_m = "0"+string_m
+        }
+        
+        if string_s.count == 1 {
+            string_s = "0"+string_s
+        }
+        
+        timeString = string_m + ":" + string_s
+        if string_h != nil {
+            timeString = string_h + ":" + timeString
+        }
     }
     
     return timeString

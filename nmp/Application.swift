@@ -14,6 +14,11 @@ class Application: NSApplication {
     let notificationCenter = NotificationCenter.default
     let userDefaults = UserDefaults.standard
     
+    let shadowRadius: CGFloat = 8
+    let UICornerRadius: CGFloat = 4
+    let bgBlurRadius: CGFloat = 50
+    let animationDuration: TimeInterval = 0.5
+    
     var colorBg: Bool! {
         didSet {
             self.userDefaults.set(colorBg, forKey: "ColorBg")
@@ -28,7 +33,7 @@ class Application: NSApplication {
     
     override init() {
         super.init()
-        initialiseUserDefaults()
+        self.initialiseUserDefaults()
     }
     
     required init?(coder: NSCoder) {

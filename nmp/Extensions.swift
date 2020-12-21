@@ -97,14 +97,14 @@ extension CIImage {
 
 extension NSSlider {
     func reset() {
-        doubleValue = minValue
+        self.doubleValue = self.minValue
     }
 }
 
 extension NSView {
     func roundCorners(withRadius radius: CGFloat) {
-        wantsLayer = true
-        layer?.cornerRadius = radius
+        self.wantsLayer = true
+        self.layer?.cornerRadius = radius
     }
 }
 

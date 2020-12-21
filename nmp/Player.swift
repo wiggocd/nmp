@@ -42,7 +42,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 do {
                     self.player = try AVAudioPlayer(contentsOf: currentUrl)
                     self.player.volume = self.volume
-                    mediaChanged()
+                    self.mediaChanged()
                 } catch let error {
                     print(error.localizedDescription)
                 }
@@ -72,15 +72,15 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     var muted = false
     
     @Published var state = PlayerState.idle {
-        didSet { stateChanged() }
+        didSet { self.stateChanged() }
     }
     
     init(notificationCenter: NotificationCenter = .default) {
         super.init()
         self.notificationCenter = notificationCenter
         
-        if loadPlaylistFromDefaults() {
-            loadTrackIndexFromDefaults()
+        if self.loadPlaylistFromDefaults() {
+            self.loadTrackIndexFromDefaults()
         }
         
         if self.trackIndex == nil {
@@ -89,7 +89,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func loadPlaylistFromDefaults() -> Bool {
-        loadBookmarkData()
+        self.loadBookmarkData()
         let playlistData = self.application?.userDefaults.array(forKey: "Playlist") as? [String]
         var urls: [URL] = []
         
@@ -105,7 +105,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
         
         if urls.count > 0 {
-            addMedia(urls: urls, updateIndexIfNew: false, shouldPlay: false)
+            self.addMedia(urls: urls, updateIndexIfNew: false, shouldPlay: false)
             return true
         } else {
             return false
@@ -131,9 +131,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 }
             }
             
-            if playerHasMedia() == false {
+            if self.playerHasMedia() == false {
                 if updateIndexIfNew { self.trackIndex = 0 }
-                if shouldPlay { play() }
+                if shouldPlay { self.play() }
             }
         }
     }
@@ -148,13 +148,13 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                     if self.playlist.count > n {
                         self.playlist.insert(url!, at: n)
                     } else {
-                        addMedia(urls: [url], updateIndexIfNew: updateIndexIfNew, shouldPlay: shouldPlay)
+                        self.addMedia(urls: [url], updateIndexIfNew: updateIndexIfNew, shouldPlay: shouldPlay)
                     }
                 }
                 
-                if playerHasMedia() == false {
+                if self.playerHasMedia() == false {
                     if updateIndexIfNew { self.trackIndex = 0 }
-                    if shouldPlay { play() }
+                    if shouldPlay { self.play() }
                 }
             }
         }
@@ -162,7 +162,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     func updatePlayer() {
         if self.player != nil {
-            updateMetadata()
+            self.updateMetadata()
             self.lastIndex = self.trackIndex
             self.player.delegate = self
             self.notificationCenter.post(name: .mediaChanged, object: nil)
@@ -217,12 +217,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     func pause() {
         if playerHasMedia() {
-            switch self.state {
-            case .idle, .paused:
-                break
-            case .playing:
-                player.pause()
-            }
+            self.player.pause()
         }
         
         if self.state == .playing {
@@ -232,9 +227,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     func playPause() {
         if isPlaying() {
-            pause()
+            self.pause()
         } else {
-            play()
+            self.play()
         }
     }
     
@@ -257,23 +252,23 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func nextTrack() {
-        if playlistHasMedia() && self.playlist.count - 1 >= self.trackIndex + 1 {
+        if self.playlistHasMedia() && self.playlist.count - 1 >= self.trackIndex + 1 {
             let wasPlaying = isPlaying()
             self.trackIndex += 1
             
             if wasPlaying {
-                play()
+                self.play()
             }
         }
     }
     
     func previousTrack() {
-        if playlistHasMedia() && self.trackIndex > 0 {
+        if self.playlistHasMedia() && self.trackIndex > 0 {
             let wasPlaying = isPlaying()
             self.trackIndex -= 1
             
             if wasPlaying {
-                play()
+                self.play()
             }
         }
     }
@@ -317,14 +312,14 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func finishPlayback() {
-        stop()
-        updatePlayer()
-        setPosition(position: 0.0)
+        self.stop()
+        self.updatePlayer()
+        self.setPosition(position: 0.0)
     }
     
     func clear() {
-        if self.player != nil && playlistHasMedia() {
-            stop()
+        if self.player != nil && self.playlistHasMedia() {
+            self.stop()
             self.currentUrl = nil
             self.playlist = []
             self.trackIndex = 0
@@ -332,13 +327,13 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             self.metadata = nil
         }
         
-        clearPlaylistDefaults()
+        self.clearPlaylistDefaults()
     }
     
     func removeMedia(atIndex index: Int) {
         if index >= 0 && index < self.playlist.count {
             self.playlist.remove(at: index)
-            playlistChanged()
+            self.playlistChanged()
         }
     }
     
@@ -346,7 +341,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         if indexes.count > 0 {
             var modifiableIndexes = indexes
             for i in 0...modifiableIndexes.count-1 {
-                removeMedia(atIndex: modifiableIndexes[i])
+                self.removeMedia(atIndex: modifiableIndexes[i])
                 for n in i...modifiableIndexes.count-1 {
                     modifiableIndexes[n] -= 1
                 }
@@ -367,11 +362,11 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             let wasPlaying = isPlaying()
             
             self.currentUrl = playlist[index]
-            updatePlayer()
+            self.updatePlayer()
             
-            play()
+            self.play()
             if !wasPlaying {
-                pause()
+                self.pause()
             }
         }
     }
@@ -401,11 +396,11 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         self.trackIndex += 1
         self.lastIndex = self.trackIndex
-        if playlistHasMedia() {
-            play()
+        if self.playlistHasMedia() {
+            self.play()
         } else {
             self.trackIndex -= 1
-            finishPlayback()
+            self.finishPlayback()
         }
     }
     
