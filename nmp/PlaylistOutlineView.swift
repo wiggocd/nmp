@@ -9,12 +9,6 @@
 import Foundation
 import Cocoa
 
-class NonUserScrollableScrollView: NSScrollView {
-    override func scrollWheel(with event: NSEvent) {
-        return
-    }
-}
-
 class PlaylistOutlineView: NSOutlineView {
     let notificationCenter = NotificationCenter.default
     let deleteAnimation: NSTableView.AnimationOptions = .init()
