@@ -50,11 +50,11 @@ class AudioMetadata {
     }
     
     func detailsString() -> String {
-        if artist != " " {
-            if album != " " {
-                return artist + " - " + album
+        if self.artist != " " {
+            if self.album != " " {
+                return self.artist + " - " + self.album
             }
-            return artist
+            return self.artist
         }
         return " "
     }
@@ -79,14 +79,14 @@ class PlaylistItem: NSObject {
     }
     
     func playlistLabel() -> String {
-        let displayIndex = trackIndex + 1
-        if metadata.title != " " {
-            if metadata.artist != " " {
-                return "\(displayIndex). " + metadata.artist + " - " + metadata.title
+        let displayIndex = self.trackIndex + 1
+        if self.metadata.title != " " {
+            if self.metadata.artist != " " {
+                return "\(displayIndex). " + self.metadata.artist + " - " + self.metadata.title
             }
-            return "\(displayIndex). \(metadata.title)"
+            return "\(displayIndex). \(self.metadata.title)"
         }
-        return "\(displayIndex). \(fileDisplayName(forPath: url.path))"
+        return "\(displayIndex). \(fileDisplayName(forPath: self.url.path))"
     }
 }
 
