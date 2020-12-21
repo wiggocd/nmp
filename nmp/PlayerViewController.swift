@@ -21,7 +21,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
     let defaultCoverImage = NSImage(named: "AppIcon")
     
-    var player: AudioPlayer!
+    var player = AudioPlayer()
     var positionTimer = Timer()
     var playlistItems: [PlaylistItem] = []
     var lastSelectedPlaylistItem = 0
@@ -61,7 +61,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.player = AudioPlayer()
         self.view.wantsLayer = true
         
         self.getDefaultColors()
@@ -417,7 +416,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func updateNowPlayingInfoCenter() {
-        if let audioPlayer = self.player.player {
+        if let avPlayer = self.player.avPlayer {
             if self.player.metadata != nil, let metadata = self.player.metadata, let artwork = metadata.artwork {
                 let coverArt = MPMediaItemArtwork(boundsSize: self.coverImageMinimumSize) { (size) -> NSImage in
                     return NSImage(cgImage: artwork, size: size)
@@ -428,9 +427,9 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
                     MPMediaItemPropertyTitle: metadata.title,
                     MPMediaItemPropertyArtist: metadata.artist,
                     MPMediaItemPropertyAlbumTitle: metadata.album,
-                    MPNowPlayingInfoPropertyPlaybackRate: audioPlayer.rate,
-                    MPNowPlayingInfoPropertyPlaybackProgress: audioPlayer.currentTime,
-                    MPMediaItemPropertyPlaybackDuration: audioPlayer.duration
+                    MPNowPlayingInfoPropertyPlaybackRate: avPlayer.rate,
+                    MPNowPlayingInfoPropertyPlaybackProgress: avPlayer.currentTime,
+                    MPMediaItemPropertyPlaybackDuration: avPlayer.duration
                 ]
                 
                 self.nowPlayingInfoCenter.nowPlayingInfo = dict
@@ -479,7 +478,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     func killPlayer() {
         self.player.stop()
-        self.player = nil
     }
     
     func killNowPlaying() {

@@ -13,7 +13,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     let application = Application.shared as? Application
     
     private var notificationCenter: NotificationCenter!
-    var player: AVAudioPlayer!
+    var avPlayer: AVAudioPlayer!
     var playlist: [URL] = [] {
         didSet {
             self.notificationCenter.post(name: .playlistChanged, object: nil)
@@ -37,11 +37,11 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     var currentUrl: URL! {
         didSet {
             if currentUrl == nil {
-                self.player = nil
+                self.avPlayer = nil
             } else {
                 do {
-                    self.player = try AVAudioPlayer(contentsOf: currentUrl)
-                    self.player.volume = self.volume
+                    self.avPlayer = try AVAudioPlayer(contentsOf: currentUrl)
+                    self.avPlayer.volume = self.volume
                     self.mediaChanged()
                 } catch let error {
                     print(error.localizedDescription)
@@ -52,8 +52,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     var position: TimeInterval {
         get {
-            if self.player != nil {
-                return self.player.currentTime
+            if self.avPlayer != nil {
+                return self.avPlayer.currentTime
             } else {
                 return 0.0
             }
@@ -62,8 +62,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     var volume: Float = 1.0 {
         didSet {
-            if self.player != nil {
-                self.player.volume = volume
+            if self.avPlayer != nil {
+                self.avPlayer.volume = volume
             }
         }
     }
@@ -161,10 +161,10 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func updatePlayer() {
-        if self.player != nil {
+        if self.avPlayer != nil {
             self.updateMetadata()
             self.lastIndex = self.trackIndex
-            self.player.delegate = self
+            self.avPlayer.delegate = self
             self.notificationCenter.post(name: .mediaChanged, object: nil)
         }
     }
@@ -209,15 +209,15 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
 
     func play() {
-        if self.player != nil && playlistHasMedia() {
-            self.player.play()
+        if self.avPlayer != nil && playlistHasMedia() {
+            self.avPlayer.play()
             self.state = .playing
         }
     }
     
     func pause() {
         if playerHasMedia() {
-            self.player.pause()
+            self.avPlayer.pause()
         }
         
         if self.state == .playing {
@@ -234,8 +234,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func stop() {
-        if self.player != nil {
-            self.player.stop()
+        if self.avPlayer != nil {
+            self.avPlayer.stop()
             self.state = .idle
         }
     }
@@ -274,7 +274,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func isPlaying() -> Bool {
-        if self.player != nil && self.player.isPlaying {
+        if self.avPlayer != nil && self.avPlayer.isPlaying {
             return true
         } else {
             return false
@@ -290,7 +290,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func playerHasMedia() -> Bool {
-        if self.player == nil || self.player.currentDevice == nil {
+        if self.avPlayer == nil || self.avPlayer.currentDevice == nil {
             return false
         } else {
             return true
@@ -298,16 +298,16 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func duration() -> Double {
-        if self.player != nil {
-            return self.player.duration
+        if self.avPlayer != nil {
+            return self.avPlayer.duration
         } else {
             return 0.0
         }
     }
     
     func setPosition(position: Double) {
-        if self.player != nil && position < duration() {
-            self.player.currentTime = position
+        if self.avPlayer != nil && position < duration() {
+            self.avPlayer.currentTime = position
         }
     }
     
@@ -318,7 +318,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func clear() {
-        if self.player != nil && self.playlistHasMedia() {
+        if self.avPlayer != nil && self.playlistHasMedia() {
             self.stop()
             self.currentUrl = nil
             self.playlist = []
