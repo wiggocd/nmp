@@ -105,7 +105,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
         
         if urls.count > 0 {
-            self.addMedia(urls: urls, updateIndexIfNew: false, shouldPlay: false)
+            self.addMedia(urls: urls, updateIndexIfNew: false, shouldPlay: false, async: false)
             return true
         } else {
             return false
@@ -123,19 +123,27 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         self.application?.userDefaults.removeObject(forKey: "Playlist")
     }
     
-    func addMedia(urls: [URL?], updateIndexIfNew: Bool, shouldPlay: Bool) {
-        DispatchQueue.main.async {
-            if urls.count > 0 {
-                for url in urls {
-                    if url!.isFileURL && audioFileTypes.contains(url!.pathExtension) {
-                        self.playlist.append(url!)
-                    }
+    func addMedia(urls: [URL?], updateIndexIfNew: Bool, shouldPlay: Bool, async: Bool = true) {
+        if async {
+            DispatchQueue.main.async {
+                self._addMedia(urls: urls, updateIndexIfNew: updateIndexIfNew, shouldPlay: shouldPlay)
+            }
+        } else {
+            self._addMedia(urls: urls, updateIndexIfNew: updateIndexIfNew, shouldPlay: shouldPlay)
+        }
+    }
+    
+    private func _addMedia(urls: [URL?], updateIndexIfNew: Bool, shouldPlay: Bool) {
+        if urls.count > 0 {
+            for url in urls {
+                if url!.isFileURL && audioFileTypes.contains(url!.pathExtension) {
+                    self.playlist.append(url!)
                 }
-                
-                if self.playerHasMedia() == false {
-                    if updateIndexIfNew { self.trackIndex = 0 }
-                    if shouldPlay { self.play() }
-                }
+            }
+            
+            if self.playerHasMedia() == false {
+                if updateIndexIfNew { self.trackIndex = 0 }
+                if shouldPlay { self.play() }
             }
         }
     }
@@ -242,14 +250,22 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
     
+    func mute() {
+        self.lastVolume = volume
+        self.volume = 0
+        self.muted = true
+    }
+    
+    func unmute() {
+        self.volume = lastVolume
+        self.muted = false
+    }
+    
     func toggleMute() {
         if self.muted {
-            self.volume = lastVolume
-            self.muted = false
+            self.unmute()
         } else {
-            self.lastVolume = volume
-            self.volume = 0
-            self.muted = true
+            self.mute()
         }
     }
     
