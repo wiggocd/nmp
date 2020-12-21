@@ -14,7 +14,7 @@ class PreferencesTabViewController: NSTabViewController {
     
     override var selectedTabViewItemIndex: Int {
         didSet {
-            application?.userDefaults.set(selectedTabViewItemIndex, forKey: "PreferencesSelectedTabViewItemIndex")
+            self.application?.userDefaults.set(self.selectedTabViewItemIndex, forKey: "PreferencesSelectedTabViewItemIndex")
         }
     }
     
@@ -24,10 +24,10 @@ class PreferencesTabViewController: NSTabViewController {
     }
     
     func initialiseSelectedTab() {
-        if let index = application?.userDefaults.integer(forKey: "PreferencesSelectedTabViewItemIndex") {
-            selectedTabViewItemIndex = index
+        if let index = self.application?.userDefaults.integer(forKey: "PreferencesSelectedTabViewItemIndex") {
+            self.selectedTabViewItemIndex = index
         } else {
-            selectedTabViewItemIndex = 0
+            self.selectedTabViewItemIndex = 0
         }
     }
 }
@@ -42,40 +42,40 @@ class GeneralPreferencesViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if application!.colorBg! {
-            colorBgButton.state = .on
+        if self.application!.colorBg! {
+            self.colorBgButton.state = .on
         } else {
-            colorBgButton.state = .off
+            self.colorBgButton.state = .off
         }
         
-        if application!.showTransparentAppearance! {
-            transparentAppearanceButton.state = .on
+        if self.application!.showTransparentAppearance! {
+            self.transparentAppearanceButton.state = .on
         } else {
-            transparentAppearanceButton.state = .off
+            self.transparentAppearanceButton.state = .off
         }
     }
     
     @IBAction func colorBgAction(_ sender: Any) {
         if let sender = sender as? NSButton {
             if sender.state == .on {
-                application?.colorBg = true
+                self.application?.colorBg = true
             } else {
-                application?.colorBg = false
+                self.application?.colorBg = false
             }
             
-            notificationCenter.post(name: .preferencesChanged, object: nil)
+            self.notificationCenter.post(name: .preferencesChanged, object: nil)
         }
     }
     
     @IBAction func transparentAppearanceAction(_ sender: Any) {
         if let sender = sender as? NSButton {
             if sender.state == .on {
-                application?.showTransparentAppearance = true
+                self.application?.showTransparentAppearance = true
             } else {
-                application?.showTransparentAppearance = false
+                self.application?.showTransparentAppearance = false
             }
             
-            notificationCenter.post(name: .preferencesChanged, object: nil)
+            self.notificationCenter.post(name: .preferencesChanged, object: nil)
         }
     }
 }
@@ -85,6 +85,6 @@ class AdvancedPreferencesViewController: NSViewController {
     let notificationCenter = NotificationCenter.default
     
     @IBAction func resetUserDefaultsAction(_ sender: Any) {
-        application?.resetUserDefaults()
+        self.application?.resetUserDefaults()
     }
 }

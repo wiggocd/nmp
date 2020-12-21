@@ -16,19 +16,19 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     var player: AVAudioPlayer!
     var playlist: [URL] = [] {
         didSet {
-            notificationCenter.post(name: .playlistChanged, object: nil)
+            self.notificationCenter.post(name: .playlistChanged, object: nil)
             var strings: [String] = []
             for item in playlist {
                 strings.append(item.absoluteString)
             }
-            application?.userDefaults.set(strings, forKey: "Playlist")
+            self.application?.userDefaults.set(strings, forKey: "Playlist")
         }
     }
     
     var trackIndex: Int! {
         didSet {
             seekTrack(index: trackIndex)
-            application?.userDefaults.set(trackIndex, forKey: "TrackIndex")
+            self.application?.userDefaults.set(trackIndex, forKey: "TrackIndex")
         }
     }
     
@@ -37,11 +37,11 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     var currentUrl: URL! {
         didSet {
             if currentUrl == nil {
-                player = nil
+                self.player = nil
             } else {
                 do {
-                    player = try AVAudioPlayer(contentsOf: currentUrl)
-                    player.volume = volume
+                    self.player = try AVAudioPlayer(contentsOf: currentUrl)
+                    self.player.volume = self.volume
                     mediaChanged()
                 } catch let error {
                     print(error.localizedDescription)
@@ -52,8 +52,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     var position: TimeInterval {
         get {
-            if player != nil {
-                return player.currentTime
+            if self.player != nil {
+                return self.player.currentTime
             } else {
                 return 0.0
             }
@@ -62,8 +62,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     var volume: Float = 1.0 {
         didSet {
-            if player != nil {
-                player.volume = volume
+            if self.player != nil {
+                self.player.volume = volume
             }
         }
     }
@@ -83,14 +83,14 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             loadTrackIndexFromDefaults()
         }
         
-        if trackIndex == nil {
-            trackIndex = 0
+        if self.trackIndex == nil {
+            self.trackIndex = 0
         }
     }
     
     func loadPlaylistFromDefaults() -> Bool {
         loadBookmarkData()
-        let playlistData = application?.userDefaults.array(forKey: "Playlist") as? [String]
+        let playlistData = self.application?.userDefaults.array(forKey: "Playlist") as? [String]
         var urls: [URL] = []
         
         if playlistData != nil {
@@ -113,26 +113,26 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func loadTrackIndexFromDefaults() {
-        if let data = application?.userDefaults.integer(forKey: "TrackIndex") {
-            trackIndex = data
+        if let data = self.application?.userDefaults.integer(forKey: "TrackIndex") {
+            self.trackIndex = data
         }
     }
     
     func clearPlaylistDefaults() {
-        application?.userDefaults.removeObject(forKey: "TrackIndex")
-        application?.userDefaults.removeObject(forKey: "Playlist")
+        self.application?.userDefaults.removeObject(forKey: "TrackIndex")
+        self.application?.userDefaults.removeObject(forKey: "Playlist")
     }
     
     func addMedia(urls: [URL?], updateIndexIfNew: Bool, shouldPlay: Bool) {
         if urls.count > 0 {
             for url in urls {
                 if url!.isFileURL && audioFileTypes.contains(url!.pathExtension) {
-                    playlist.append(url!)
+                    self.playlist.append(url!)
                 }
             }
             
             if playerHasMedia() == false {
-                if updateIndexIfNew { trackIndex = 0 }
+                if updateIndexIfNew { self.trackIndex = 0 }
                 if shouldPlay { play() }
             }
         }
@@ -145,15 +145,15 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 if url!.isFileURL && audioFileTypes.contains(url!.pathExtension) {
                     _ = url?.startAccessingSecurityScopedResource()
                     let n = atIndex+i
-                    if playlist.count > n {
-                        playlist.insert(url!, at: n)
+                    if self.playlist.count > n {
+                        self.playlist.insert(url!, at: n)
                     } else {
                         addMedia(urls: [url], updateIndexIfNew: updateIndexIfNew, shouldPlay: shouldPlay)
                     }
                 }
                 
                 if playerHasMedia() == false {
-                    if updateIndexIfNew { trackIndex = 0 }
+                    if updateIndexIfNew { self.trackIndex = 0 }
                     if shouldPlay { play() }
                 }
             }
@@ -161,18 +161,18 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func updatePlayer() {
-        if player != nil {
+        if self.player != nil {
             updateMetadata()
-            lastIndex = trackIndex
-            player.delegate = self
-            notificationCenter.post(name: .mediaChanged, object: nil)
+            self.lastIndex = self.trackIndex
+            self.player.delegate = self
+            self.notificationCenter.post(name: .mediaChanged, object: nil)
         }
     }
     
     func updateMetadata() {
-        metadata = AudioMetadata(forURL: currentUrl)
-        if metadata.artwork == nil {
-            let pathComponents = currentUrl.pathComponents
+        self.metadata = AudioMetadata(forURL: self.currentUrl)
+        if self.metadata.artwork == nil {
+            let pathComponents = self.currentUrl.pathComponents
             let directoryComponents = pathComponents.dropLast()
             var directoryPath = ""
             
@@ -197,9 +197,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                         
                         if colorRendering != nil {
                             if coverArtURL?.pathExtension == "jpg" || coverArtURL?.pathExtension == "jpeg" {
-                                metadata.artwork = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
+                                self.metadata.artwork = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
                             } else if coverArtURL?.pathExtension == "png" {
-                                metadata.artwork = CGImage(pngDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
+                                self.metadata.artwork = CGImage(pngDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
                             }
                         }
                     }
@@ -209,15 +209,15 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
 
     func play() {
-        if player != nil && playlistHasMedia() {
-            player.play()
-            state = .playing
+        if self.player != nil && playlistHasMedia() {
+            self.player.play()
+            self.state = .playing
         }
     }
     
     func pause() {
         if playerHasMedia() {
-            switch state {
+            switch self.state {
             case .idle, .paused:
                 break
             case .playing:
@@ -225,8 +225,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             }
         }
         
-        if state == .playing {
-            state = .paused
+        if self.state == .playing {
+            self.state = .paused
         }
     }
     
@@ -239,27 +239,27 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func stop() {
-        if player != nil {
-            player.stop()
-            state = .idle
+        if self.player != nil {
+            self.player.stop()
+            self.state = .idle
         }
     }
     
     func toggleMute() {
-        if muted {
-            volume = lastVolume
-            muted = false
+        if self.muted {
+            self.volume = lastVolume
+            self.muted = false
         } else {
-            lastVolume = volume
-            volume = 0
-            muted = true
+            self.lastVolume = volume
+            self.volume = 0
+            self.muted = true
         }
     }
     
     func nextTrack() {
-        if playlistHasMedia() && playlist.count - 1 >= trackIndex + 1 {
+        if playlistHasMedia() && self.playlist.count - 1 >= self.trackIndex + 1 {
             let wasPlaying = isPlaying()
-            trackIndex += 1
+            self.trackIndex += 1
             
             if wasPlaying {
                 play()
@@ -268,9 +268,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func previousTrack() {
-        if playlistHasMedia() && trackIndex > 0 {
+        if playlistHasMedia() && self.trackIndex > 0 {
             let wasPlaying = isPlaying()
-            trackIndex -= 1
+            self.trackIndex -= 1
             
             if wasPlaying {
                 play()
@@ -279,7 +279,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func isPlaying() -> Bool {
-        if player != nil && player.isPlaying {
+        if self.player != nil && self.player.isPlaying {
             return true
         } else {
             return false
@@ -288,14 +288,14 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     func playlistHasMedia(fromCurrentIndex: Bool = true) -> Bool {
         if fromCurrentIndex {
-            return playlist.count - trackIndex > 0
+            return self.playlist.count - self.trackIndex > 0
         } else {
-            return playlist.count > 0
+            return self.playlist.count > 0
         }
     }
     
     func playerHasMedia() -> Bool {
-        if player == nil || player.currentDevice == nil {
+        if self.player == nil || self.player.currentDevice == nil {
             return false
         } else {
             return true
@@ -303,16 +303,16 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func duration() -> Double {
-        if player != nil {
-            return player.duration
+        if self.player != nil {
+            return self.player.duration
         } else {
             return 0.0
         }
     }
     
     func setPosition(position: Double) {
-        if player != nil && position < duration() {
-            player.currentTime = position
+        if self.player != nil && position < duration() {
+            self.player.currentTime = position
         }
     }
     
@@ -323,21 +323,21 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func clear() {
-        if player != nil && playlistHasMedia() {
+        if self.player != nil && playlistHasMedia() {
             stop()
-            currentUrl = nil
-            playlist = []
-            trackIndex = 0
-            currentUrl = nil
-            metadata = nil
+            self.currentUrl = nil
+            self.playlist = []
+            self.trackIndex = 0
+            self.currentUrl = nil
+            self.metadata = nil
         }
         
         clearPlaylistDefaults()
     }
     
     func removeMedia(atIndex index: Int) {
-        if index >= 0 && index < playlist.count {
-            playlist.remove(at: index)
+        if index >= 0 && index < self.playlist.count {
+            self.playlist.remove(at: index)
             playlistChanged()
         }
     }
@@ -355,18 +355,18 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func mediaChanged() {
-        notificationCenter.post(name: .mediaChanged, object: nil)
+        self.notificationCenter.post(name: .mediaChanged, object: nil)
     }
     
     func playlistChanged() {
-        notificationCenter.post(name: .playlistChanged, object: nil)
+        self.notificationCenter.post(name: .playlistChanged, object: nil)
     }
     
     func seekTrack(index: Int) {
-        if index >= 0 && index < playlist.count {
+        if index >= 0 && index < self.playlist.count {
             let wasPlaying = isPlaying()
             
-            currentUrl = playlist[index]
+            self.currentUrl = playlist[index]
             updatePlayer()
             
             play()
@@ -378,45 +378,45 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     func movePlaylistItems(fromIndex: Int, toIndex: Int, count: Int) {
         if count == 1 {
-            let item = playlist[fromIndex]
-            playlist.remove(at: fromIndex)
-            playlist.insert(item, at: toIndex)
+            let item = self.playlist[fromIndex]
+            self.playlist.remove(at: fromIndex)
+            self.playlist.insert(item, at: toIndex)
         } else {
             var items: [URL] = []
             let range = fromIndex...fromIndex+count-1
             for i in range {
-                items.append(playlist[i])
+                items.append(self.playlist[i])
             }
             
-            playlist.removeSubrange(range)
+            self.playlist.removeSubrange(range)
             
-            if toIndex > playlist.count-1 {
-                playlist += items
+            if toIndex > self.playlist.count-1 {
+                self.playlist += items
             } else {
-                playlist.insert(contentsOf: items, at: toIndex)
+                self.playlist.insert(contentsOf: items, at: toIndex)
             }
         }
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        trackIndex += 1
-        lastIndex = trackIndex
+        self.trackIndex += 1
+        self.lastIndex = self.trackIndex
         if playlistHasMedia() {
             play()
         } else {
-            trackIndex -= 1
+            self.trackIndex -= 1
             finishPlayback()
         }
     }
     
     private func stateChanged() {
-        switch state {
+        switch self.state {
         case .idle:
-            notificationCenter.post(name: .playbackStopped, object: nil)
+            self.notificationCenter.post(name: .playbackStopped, object: nil)
         case .playing:
-            notificationCenter.post(name: .playbackStarted, object: nil)
+            self.notificationCenter.post(name: .playbackStarted, object: nil)
         case .paused:
-            notificationCenter.post(name: .playbackPaused, object: nil)
+            self.notificationCenter.post(name: .playbackPaused, object: nil)
         }
     }
 }

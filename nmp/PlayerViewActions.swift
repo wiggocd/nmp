@@ -11,29 +11,29 @@ import Cocoa
 
 extension PlayerViewController {
     @IBAction func clearPlaylist(_ sender: Any) {
-        player.clear()
+        self.player.clear()
         setUIDefaults()
     }
     
     @IBAction func openAction(_ sender: Any) {
-        player.addMedia(urls: openMedia(), updateIndexIfNew: true, shouldPlay: true)
+        self.player.addMedia(urls: openMedia(), updateIndexIfNew: true, shouldPlay: true)
     }
     
     @IBAction func playlistAction(_ sender: Any) {
-        if playlistBox.isHidden {
+        if self.playlistBox.isHidden {
             NSAnimationContext.runAnimationGroup({ context in
-                context.duration = animationDuration // 0.4
+                context.duration = self.animationDuration // 0.4
                 
-                playlistBox.alphaValue = 0
-                playlistBox.isHidden = false
-                playlistBox.animator().alphaValue = 1
+                self.playlistBox.alphaValue = 0
+                self.playlistBox.isHidden = false
+                self.playlistBox.animator().alphaValue = 1
                 
-                application?.userDefaults.set(false, forKey: "PlaylistHidden")
+                self.application?.userDefaults.set(false, forKey: "PlaylistHidden")
             })
         } else {
             NSAnimationContext.runAnimationGroup({ context in
-                context.duration = animationDuration // 0.4
-                playlistBox.animator().alphaValue = 0
+                context.duration = self.animationDuration // 0.4
+                self.playlistBox.animator().alphaValue = 0
             }) {
                 self.playlistBox.isHidden = true
                 self.application?.userDefaults.set(true, forKey: "PlaylistHidden")
@@ -55,15 +55,15 @@ extension PlayerViewController {
     
     @IBAction func timeSliderMoved(_ sender: Any) {
         if let sender = sender as? NSSlider {
-            player.setPosition(position: sender.doubleValue)
-            positionLabel.stringValue = to_hhmmss(seconds: player.position)
+            self.player.setPosition(position: sender.doubleValue)
+            self.positionLabel.stringValue = to_hhmmss(seconds: self.player.position)
         }
     }
     
     @IBAction func volumeSliderMoved(_ sender: Any) {
         if let sender = sender as? NSSlider {
-            player.volume = sender.floatValue
-            application?.userDefaults.set(sender.floatValue, forKey: "Volume")
+            self.player.volume = sender.floatValue
+            self.application?.userDefaults.set(sender.floatValue, forKey: "Volume")
         }
     }
     

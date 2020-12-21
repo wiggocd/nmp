@@ -34,29 +34,29 @@ class TimeSliderCell: CustomSliderCell {
     
     override func drawBar(inside rect: NSRect, flipped: Bool) {
         var newRect = rect
-        newRect.size.height = barHeight
+        newRect.size.height = self.barHeight
         
-        let value = position
+        let value = self.position
         
         let finalWidth = value * controlView!.frame.width
         
         var leftRect = newRect
         leftRect.size.width = finalWidth
         
-        let bg = NSBezierPath(roundedRect: newRect, xRadius: barRadius, yRadius: barRadius)
-        backgroundColor.setFill()
+        let bg = NSBezierPath(roundedRect: newRect, xRadius: self.barRadius, yRadius: self.barRadius)
+        self.backgroundColor.setFill()
         bg.fill()
         
-        let active = NSBezierPath(roundedRect: leftRect, xRadius: barRadius, yRadius: barRadius)
-        filledColor.setFill()
+        let active = NSBezierPath(roundedRect: leftRect, xRadius: self.barRadius, yRadius: self.barRadius)
+        self.filledColor.setFill()
         active.fill()
     }
     
     override func drawKnob(_ knobRect: NSRect) {
         let size = NSSize(width: knobRect.width, height: knobRect.height / 3)
         let rect = NSRect(x: knobRect.minX, y: knobRect.minY + size.height - 1, width: size.width, height: size.height)
-        let path = NSBezierPath(roundedRect: rect, xRadius: knobRadius, yRadius: knobRadius)
-        knobColor.setFill()
+        let path = NSBezierPath(roundedRect: rect, xRadius: self.knobRadius, yRadius: self.knobRadius)
+        self.knobColor.setFill()
         path.fill()
     }
 }
@@ -64,21 +64,21 @@ class TimeSliderCell: CustomSliderCell {
 class VolumeSliderCell: CustomSliderCell {
     override func drawBar(inside rect: NSRect, flipped: Bool) {
         var newRect = rect
-        newRect.size.height = barHeight
+        newRect.size.height = self.barHeight
         
-        let value = position
+        let value = self.position
         
         let finalWidth = value * controlView!.frame.width - 5
         
         var leftRect = newRect
         leftRect.size.width = finalWidth
         
-        let bg = NSBezierPath(roundedRect: newRect, xRadius: barRadius, yRadius: barRadius)
-        backgroundColor.setFill()
+        let bg = NSBezierPath(roundedRect: newRect, xRadius: self.barRadius, yRadius: self.barRadius)
+        self.backgroundColor.setFill()
         bg.fill()
         
-        let active = NSBezierPath(roundedRect: leftRect, xRadius: barRadius, yRadius: barRadius)
-        filledColor.setFill()
+        let active = NSBezierPath(roundedRect: leftRect, xRadius: self.barRadius, yRadius: self.barRadius)
+        self.filledColor.setFill()
         active.fill()
     }
 }

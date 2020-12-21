@@ -11,7 +11,7 @@ import Cocoa
 
 extension HelpViewController: NSTableViewDataSource, NSTableViewDelegate {
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return actionsTableItems.count
+        return self.actionsTableItems.count
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
@@ -19,9 +19,9 @@ extension HelpViewController: NSTableViewDataSource, NSTableViewDelegate {
         
         if cell != nil {
             if tableColumn == tableView.tableColumns[0] {
-                cell?.textField?.stringValue = actionsTableItems[row].0
+                cell?.textField?.stringValue = self.actionsTableItems[row].0
             } else {
-                cell?.textField?.stringValue = actionsTableItems[row].1
+                cell?.textField?.stringValue = self.actionsTableItems[row].1
             }
             
             return cell

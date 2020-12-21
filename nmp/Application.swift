@@ -16,13 +16,13 @@ class Application: NSApplication {
     
     var colorBg: Bool! {
         didSet {
-            userDefaults.set(colorBg, forKey: "ColorBg")
+            self.userDefaults.set(colorBg, forKey: "ColorBg")
         }
     }
     
     var showTransparentAppearance: Bool! {
         didSet {
-            userDefaults.set(showTransparentAppearance, forKey: "ShowTransparentAppearance")
+            self.userDefaults.set(showTransparentAppearance, forKey: "ShowTransparentAppearance")
         }
     }
     
@@ -36,24 +36,24 @@ class Application: NSApplication {
     }
     
     func initialiseUserDefaults() {
-        if userDefaults.value(forKey: "Volume") == nil {
-            userDefaults.set(1.0, forKey: "Volume")
+        if self.userDefaults.value(forKey: "Volume") == nil {
+            self.userDefaults.set(1.0, forKey: "Volume")
         }
         
-        if userDefaults.value(forKey: "ColorBg") == nil {
-            colorBg = true
+        if self.userDefaults.value(forKey: "ColorBg") == nil {
+            self.colorBg = true
         } else {
-            colorBg = userDefaults.bool(forKey: "ColorBg")
+            self.colorBg = self.userDefaults.bool(forKey: "ColorBg")
         }
         
-        if userDefaults.value(forKey: "ShowTransparentAppearance") == nil {
-            showTransparentAppearance = true
+        if self.userDefaults.value(forKey: "ShowTransparentAppearance") == nil {
+            self.showTransparentAppearance = true
         } else {
-            showTransparentAppearance = userDefaults.bool(forKey: "ShowTransparentAppearance")
+            self.showTransparentAppearance = self.userDefaults.bool(forKey: "ShowTransparentAppearance")
         }
     }
     
     func resetUserDefaults() {
-        userDefaults.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+        self.userDefaults.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
     }
 }

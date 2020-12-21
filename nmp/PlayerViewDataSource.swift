@@ -28,7 +28,7 @@ extension PlayerViewController: NSOutlineViewDataSource, NSPasteboardItemDataPro
         if let item = item as? PlaylistItem {
             return item
         } else {
-            return playlistItems[index]
+            return self.playlistItems[index]
         }
     }
     
@@ -53,7 +53,7 @@ extension PlayerViewController: NSOutlineViewDataSource, NSPasteboardItemDataPro
     }
     
     func outlineView(_ outlineView: NSOutlineView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItems draggedItems: [Any]) {
-        draggedNodes = draggedItems as [AnyObject]
+        self.draggedNodes = draggedItems as [AnyObject]
         session.draggingPasteboard.setData(Data(), forType: REORDER_PASTEBOARD_TYPE)
     }
     
@@ -61,8 +61,8 @@ extension PlayerViewController: NSOutlineViewDataSource, NSPasteboardItemDataPro
         var ret: NSDragOperation = NSDragOperation()
         
         if index != NSOutlineViewDropOnItemIndex {
-            if item as AnyObject? !== draggedNodes as AnyObject? {
-                if let _ = draggedNodes as? [PlaylistItem] {
+            if item as AnyObject? !== self.draggedNodes as AnyObject? {
+                if let _ = self.draggedNodes as? [PlaylistItem] {
                     ret = NSDragOperation.generic
                 }
             } else if info.draggingPasteboard.pasteboardItems != nil {
@@ -76,12 +76,12 @@ extension PlayerViewController: NSOutlineViewDataSource, NSPasteboardItemDataPro
     func outlineView(_ outlineView: NSOutlineView, acceptDrop info: NSDraggingInfo, item: Any?, childIndex index: Int) -> Bool {
         var ret: Bool = false
         
-        if draggedNodes != nil {
-            if !(draggedNodes is [PlaylistItem]) {
+        if self.draggedNodes != nil {
+            if !(self.draggedNodes is [PlaylistItem]) {
                 return false
             }
             
-            let srcItems = draggedNodes as! [PlaylistItem]
+            let srcItems = self.draggedNodes as! [PlaylistItem]
             let destItem: PlaylistItem? = item as? PlaylistItem
             let oldIndex = outlineView.row(forItem: srcItems[0])
             var toIndex = index > oldIndex ? index - 1 : index
@@ -91,8 +91,8 @@ extension PlayerViewController: NSOutlineViewDataSource, NSPasteboardItemDataPro
             }
             
             if oldIndex != toIndex || srcItems[0] != destItem {
-                player.movePlaylistItems(fromIndex: oldIndex, toIndex: toIndex, count: srcItems.count)
-                playlistOutlineView.reloadData()
+                self.player.movePlaylistItems(fromIndex: oldIndex, toIndex: toIndex, count: srcItems.count)
+                self.playlistOutlineView.reloadData()
                 ret = true
             }
         } else {
@@ -111,7 +111,7 @@ extension PlayerViewController: NSOutlineViewDataSource, NSPasteboardItemDataPro
                     saveURLToBookmarks(url: url!, userDefaults: UserDefaults.standard)
                 }
                 urls = sortUrls(urls: recurseSubdirectories(urls: urls))
-                player.insertMedia(urls: urls, atIndex: index, updateIndexIfNew: true, shouldPlay: true)
+                self.player.insertMedia(urls: urls, atIndex: index, updateIndexIfNew: true, shouldPlay: true)
             }
         }
         
@@ -119,7 +119,7 @@ extension PlayerViewController: NSOutlineViewDataSource, NSPasteboardItemDataPro
     }
     
     func outlineView(_ outlineView: NSOutlineView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, operation: NSDragOperation) {
-        draggedNodes = nil
+        self.draggedNodes = nil
     }
     
     // MARK: NSPasteboardItemDataProvider

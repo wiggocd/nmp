@@ -152,7 +152,7 @@ extension Notification.Name {
 
 extension NSTextView {
     func disableWrapping() {
-        isHorizontallyResizable = true
-        textContainer?.widthTracksTextView = false
+        self.isHorizontallyResizable = true
+        self.textContainer?.widthTracksTextView = false
     }
 }

@@ -16,11 +16,11 @@ extension PlayerViewController {
     }
     
     @objc func updatePosition() {
-        timeSlider.doubleValue = player.position
-        positionLabel.stringValue = to_hhmmss(seconds: player.position)
-        if newPlaybackPositionTime != nil {
-            nowPlayingInfoCenter.nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = player.position
-            newPlaybackPositionTime = nil
+        self.timeSlider.doubleValue = self.player.position
+        self.positionLabel.stringValue = to_hhmmss(seconds: self.player.position)
+        if self.newPlaybackPositionTime != nil {
+            self.nowPlayingInfoCenter.nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.player.position
+            self.newPlaybackPositionTime = nil
         }
     }
     
@@ -33,18 +33,18 @@ extension PlayerViewController {
     }
     
     @objc func playbackStarted(_ notification: Notification) {
-        playPauseButton.image = NSImage(named: "Pause")
-        nowPlayingInfoCenter.playbackState = .playing
+        self.playPauseButton.image = NSImage(named: "Pause")
+        self.nowPlayingInfoCenter.playbackState = .playing
     }
     
     @objc func playbackPaused(_ notification: Notification) {
-        playPauseButton.image = NSImage(named: "Play")
-        nowPlayingInfoCenter.playbackState = .paused
+        self.playPauseButton.image = NSImage(named: "Play")
+        self.nowPlayingInfoCenter.playbackState = .paused
     }
     
     @objc func playbackStopped(_ notification: Notification) {
-        playPauseButton.image = NSImage(named: "Play")
-        nowPlayingInfoCenter.playbackState = .stopped
+        self.playPauseButton.image = NSImage(named: "Play")
+        self.nowPlayingInfoCenter.playbackState = .stopped
     }
     
     @objc func togglePlayPauseCommandAction() -> MPRemoteCommandHandlerStatus {
@@ -94,8 +94,8 @@ extension PlayerViewController {
     
     @objc func changePlaybackPositionCommandAction(_ sender: Any?) -> MPRemoteCommandHandlerStatus {
         if let sender = sender as? MPChangePlaybackPositionCommandEvent {
-            newPlaybackPositionTime = sender.positionTime
-            player.setPosition(position: newPlaybackPositionTime)
+            self.newPlaybackPositionTime = sender.positionTime
+            self.player.setPosition(position: self.newPlaybackPositionTime)
             updatePosition()
             return .success
         }
@@ -109,7 +109,7 @@ extension PlayerViewController {
                 for index in object.removedIndexes {
                     indexes.append(index)
                 }
-                player.removeMedia(atIndexes: indexes)
+                self.player.removeMedia(atIndexes: indexes)
             }
         }
     }

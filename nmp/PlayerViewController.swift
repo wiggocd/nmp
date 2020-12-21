@@ -66,31 +66,31 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        player = AudioPlayer()
+        self.player = AudioPlayer()
         
-        defaultTitleColor = titleTextView.textColor
-        defaultDetailsColor = detailsTextView.textColor
-        defaultTimeColor = positionLabel.textColor
-        defaultTransparentBoxColor = controlBox.fillColor
+        self.defaultTitleColor = self.titleTextView.textColor
+        self.defaultDetailsColor = self.detailsTextView.textColor
+        self.defaultTimeColor = self.positionLabel.textColor
+        self.defaultTransparentBoxColor = self.controlBox.fillColor
         
-        view.wantsLayer = true
+        self.view.wantsLayer = true
         
-        boxes = [
-            controlBox,
-            playlistBox
+        self.boxes = [
+            self.controlBox,
+            self.playlistBox
         ]
         
-        buttons = [
-            openButton,
-            rewindButton,
-            playPauseButton,
-            nextTrackButton,
-            playlistButton
+        self.buttons = [
+            self.openButton,
+            self.rewindButton,
+            self.playPauseButton,
+            self.nextTrackButton,
+            self.playlistButton
         ]
         
-        sliders = [
-            timeSlider,
-            volumeSlider
+        self.sliders = [
+            self.timeSlider,
+            self.volumeSlider
         ]
         
         setUIDefaults()
@@ -131,159 +131,164 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func setUIDefaults() {
-        titleTextView.string = "Not Playing"
-        detailsTextView.string = "No Media"
-        positionLabel.stringValue = to_hhmmss(seconds: 0.0)
-        durationLabel.stringValue = to_hhmmss(seconds: 0.0)
-        timeSlider.minValue = 0
-        timeSlider.maxValue = 0
-        timeSlider.doubleValue = 0.0
-        playlistOutlineView.delegate = self
-        playlistOutlineView.dataSource = self
+        self.titleTextView.string = "Not Playing"
+        self.detailsTextView.string = "No Media"
+        self.positionLabel.stringValue = to_hhmmss(seconds: 0.0)
+        self.durationLabel.stringValue = to_hhmmss(seconds: 0.0)
+        self.timeSlider.minValue = 0
+        self.timeSlider.maxValue = 0
+        self.timeSlider.doubleValue = 0.0
+        self.playlistOutlineView.delegate = self
+        self.playlistOutlineView.dataSource = self
         
-        playlistOutlineView.indentationPerLevel = 0
-        playlistOutlineView.roundCorners(withRadius: UICornerRadius)
-        playlistScrollView.roundCorners(withRadius: UICornerRadius)
+        self.playlistOutlineView.indentationPerLevel = 0
+        self.playlistOutlineView.roundCorners(withRadius: UICornerRadius)
+        self.playlistScrollView.roundCorners(withRadius: UICornerRadius)
         
         resetCoverImage()
         resetBackgroundViewAndAppearance()
     }
     
     func setDefaultAppearances() {
-        titleTextView.textColor = defaultTitleColor
-        detailsTextView.textColor = defaultDetailsColor
-        positionLabel.textColor = defaultTimeColor
-        durationLabel.textColor = defaultTimeColor
+        self.titleTextView.textColor = self.defaultTitleColor
+        self.detailsTextView.textColor = self.defaultDetailsColor
+        self.positionLabel.textColor = self.defaultTimeColor
+        self.durationLabel.textColor = self.defaultTimeColor
         
-        controlBox.appearance = NSApp.appearance
-        playlistBox.appearance = NSApp.appearance
+        self.controlBox.appearance = NSApp.appearance
+        self.playlistBox.appearance = NSApp.appearance
         
-        playlistOutlineView.appearance = NSApp.appearance
-        playlistOutlineView.backgroundColor = .controlBackgroundColor
+        self.playlistOutlineView.appearance = NSApp.appearance
+        self.playlistOutlineView.backgroundColor = .controlBackgroundColor
         
-        for box in boxes {
+        for box in self.boxes {
             box.isTransparent = true
         }
         
-        for button in buttons {
+        for button in self.buttons {
             button.appearance = NSApp.appearance
         }
         
-        view.window?.appearance = NSApp.appearance
+        self.view.window?.appearance = NSApp.appearance
     }
     
     func setAlternateAppearances() {
-        titleTextView.textColor = .white
-        detailsTextView.textColor = .lightGray
-        positionLabel.textColor = .gray
-        durationLabel.textColor = .gray
+        self.titleTextView.textColor = .white
+        self.detailsTextView.textColor = .lightGray
+        self.positionLabel.textColor = .gray
+        self.durationLabel.textColor = .gray
         
-        controlBox.appearance = darkAppearance
-        playlistBox.appearance = darkAppearance
+        self.controlBox.appearance = self.darkAppearance
+        self.playlistBox.appearance = self.darkAppearance
         
-        playlistOutlineView.appearance = darkAppearance
-        if let showTransparentAppearance = application?.userDefaults.bool(forKey: "ShowTransparentAppearance") {
+        self.playlistOutlineView.appearance = self.darkAppearance
+        if let showTransparentAppearance = self.application?.userDefaults.bool(forKey: "ShowTransparentAppearance") {
             if showTransparentAppearance {
-                controlBox.fillColor = defaultTransparentBoxColor
-                playlistOutlineView.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0)
-                controlBox.isTransparent = false
+                self.controlBox.fillColor = self.defaultTransparentBoxColor
+                self.playlistOutlineView.backgroundColor = NSColor.controlBackgroundColor.withAlphaComponent(0)
+                self.controlBox.isTransparent = false
             } else {
-                controlBox.fillColor = .controlBackgroundColor
-                playlistOutlineView.backgroundColor = .controlBackgroundColor
+                self.controlBox.fillColor = .controlBackgroundColor
+                self.playlistOutlineView.backgroundColor = .controlBackgroundColor
             }
         } else {
-            controlBox.fillColor = .controlBackgroundColor
-            playlistOutlineView.backgroundColor = .controlBackgroundColor
+            self.controlBox.fillColor = .controlBackgroundColor
+            self.playlistOutlineView.backgroundColor = .controlBackgroundColor
         }
         
-        for button in buttons {
-            button.appearance = darkAppearance
+        for button in self.buttons {
+            button.appearance = self.darkAppearance
         }
         
-        view.window?.appearance = darkAppearance
+        self.view.window?.appearance = self.darkAppearance
     }
     
     func addObservers() {
-        notificationCenter.addObserver(self, selector: #selector(refresh), name: .preferencesChanged, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(playlistChanged), name: .playlistChanged, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(mediaChanged), name: .mediaChanged, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(playbackStarted), name: .playbackStarted, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(playbackPaused), name: .playbackPaused, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(playbackStopped), name: .playbackStopped, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(playPauseAction), name: .playPause, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(playlistIndexesRemoved), name: .playlistIndexesRemoved, object: playlistOutlineView)
+        self.notificationCenter.addObserver(self, selector: #selector(refresh), name: .preferencesChanged, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(playlistChanged), name: .playlistChanged, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(mediaChanged), name: .mediaChanged, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(playbackStarted), name: .playbackStarted, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(playbackPaused), name: .playbackPaused, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(playbackStopped), name: .playbackStopped, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(playPauseAction), name: .playPause, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(playlistIndexesRemoved), name: .playlistIndexesRemoved, object: playlistOutlineView)
     }
     
     func removeObserver() {
-        notificationCenter.removeObserver(self)
+        self.notificationCenter.removeObserver(self)
     }
     
     func removeMediaListeners() {
-        remoteCommandCenter.togglePlayPauseCommand.removeTarget(self)
-        remoteCommandCenter.togglePlayPauseCommand.isEnabled = false
-        remoteCommandCenter.togglePlayPauseCommand.removeTarget(self)
-        remoteCommandCenter.playCommand.isEnabled = false
-        remoteCommandCenter.playCommand.removeTarget(self)
-        remoteCommandCenter.pauseCommand.isEnabled = false
-        remoteCommandCenter.pauseCommand.removeTarget(self)
-        remoteCommandCenter.previousTrackCommand.isEnabled = false
-        remoteCommandCenter.previousTrackCommand.removeTarget(self)
-        remoteCommandCenter.nextTrackCommand.isEnabled = false
-        remoteCommandCenter.nextTrackCommand.removeTarget(self)
-        remoteCommandCenter.changePlaybackPositionCommand.isEnabled = false
-        remoteCommandCenter.changePlaybackPositionCommand.removeTarget(self)
-        nowPlayingInfoCenter.nowPlayingInfo = [:]
+        self.remoteCommandCenter.togglePlayPauseCommand.isEnabled = false
+        self.remoteCommandCenter.togglePlayPauseCommand.removeTarget(self)
+        
+        self.remoteCommandCenter.playCommand.isEnabled = false
+        self.remoteCommandCenter.playCommand.removeTarget(self)
+        
+        self.remoteCommandCenter.pauseCommand.isEnabled = false
+        self.remoteCommandCenter.pauseCommand.removeTarget(self)
+        
+        self.remoteCommandCenter.previousTrackCommand.isEnabled = false
+        self.remoteCommandCenter.previousTrackCommand.removeTarget(self)
+        
+        self.remoteCommandCenter.nextTrackCommand.isEnabled = false
+        self.remoteCommandCenter.nextTrackCommand.removeTarget(self)
+        
+        self.remoteCommandCenter.changePlaybackPositionCommand.isEnabled = false
+        self.remoteCommandCenter.changePlaybackPositionCommand.removeTarget(self)
+        
+        self.nowPlayingInfoCenter.nowPlayingInfo = [:]
     }
     
     func initialiseDragAndDrop() {
-        playlistOutlineView.registerForDraggedTypes(playlistPasteboardTypes)
-        playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation(), forLocal: false)
-        playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation.every, forLocal: true)
+        self.playlistOutlineView.registerForDraggedTypes(playlistPasteboardTypes)
+        self.playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation(), forLocal: false)
+        self.playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation.every, forLocal: true)
     }
     
     func initialisePlayerSession() {
-        remoteCommandCenter.togglePlayPauseCommand.isEnabled = true
-        remoteCommandCenter.togglePlayPauseCommand.addTarget(self, action: #selector(togglePlayPauseCommandAction))
+        self.remoteCommandCenter.togglePlayPauseCommand.isEnabled = true
+        self.remoteCommandCenter.togglePlayPauseCommand.addTarget(self, action: #selector(togglePlayPauseCommandAction))
         
-        remoteCommandCenter.playCommand.isEnabled = true
-        remoteCommandCenter.playCommand.addTarget(self, action: #selector(playCommandAction))
+        self.remoteCommandCenter.playCommand.isEnabled = true
+        self.remoteCommandCenter.playCommand.addTarget(self, action: #selector(playCommandAction))
         
-        remoteCommandCenter.pauseCommand.isEnabled = true
-        remoteCommandCenter.pauseCommand.addTarget(self, action: #selector(pauseCommandAction))
+        self.remoteCommandCenter.pauseCommand.isEnabled = true
+        self.remoteCommandCenter.pauseCommand.addTarget(self, action: #selector(pauseCommandAction))
         
-        remoteCommandCenter.previousTrackCommand.isEnabled = true
-        remoteCommandCenter.previousTrackCommand.addTarget(self, action: #selector(previousTrackCommandAction))
+        self.remoteCommandCenter.previousTrackCommand.isEnabled = true
+        self.remoteCommandCenter.previousTrackCommand.addTarget(self, action: #selector(previousTrackCommandAction))
             
-        remoteCommandCenter.nextTrackCommand.isEnabled = true
-        remoteCommandCenter.nextTrackCommand.addTarget(self, action: #selector(nextTrackCommandAction))
+        self.remoteCommandCenter.nextTrackCommand.isEnabled = true
+        self.remoteCommandCenter.nextTrackCommand.addTarget(self, action: #selector(nextTrackCommandAction))
         
-        remoteCommandCenter.changePlaybackPositionCommand.isEnabled = true
-        remoteCommandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(changePlaybackPositionCommandAction))
+        self.remoteCommandCenter.changePlaybackPositionCommand.isEnabled = true
+        self.remoteCommandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(changePlaybackPositionCommandAction))
         
         preparePlayback()
-        nowPlayingInfoCenter.nowPlayingInfo = [:]
+        self.nowPlayingInfoCenter.nowPlayingInfo = [:]
     }
     
     func preparePlayback() {
-        player.toggleMute()
+        self.player.toggleMute()
         play()
         pause()
-        player.toggleMute()
+        self.player.toggleMute()
     }
     
     func setCoverImage(image: CGImage) {
-        let scale = coverImageMinimumSize.height / CGFloat(image.height)
+        let scale = self.coverImageMinimumSize.height / CGFloat(image.height)
         let size = NSSize(width: CGFloat(image.width) * scale, height: CGFloat(image.height) * scale)
         
         NSAnimationContext.runAnimationGroup { context in
-            context.duration = animationDuration
-            coverImageView.image = NSImage(cgImage: image, size: size).roundCorners(withRadius: coverImageCornerRadius)
+            context.duration = self.animationDuration
+            self.coverImageView.image = NSImage(cgImage: image, size: size).roundCorners(withRadius: self.coverImageCornerRadius)
             setCoverImageShadow()
         }
     }
     
     func resetCoverImage() {
-        coverImageView.image = defaultCoverImage
+        self.coverImageView.image = self.defaultCoverImage
         setCoverImageShadow()
     }
     
@@ -291,13 +296,13 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         let shadow = NSShadow()
         shadow.shadowColor = NSColor(white: 0.2, alpha: 0.5)
         shadow.shadowBlurRadius = 10
-        coverImageBox.shadow = shadow
+        self.coverImageBox.shadow = shadow
     }
     
     func setBackgroundViewAndAppearance() {
-        if application!.colorBg! {
-            if player.metadata != nil && player.metadata.artwork != nil && coverImageView != nil {
-                let artwork = player.metadata.artwork
+        if self.application!.colorBg! {
+            if self.player.metadata != nil && self.player.metadata.artwork != nil && self.coverImageView != nil {
+                let artwork = self.player.metadata.artwork
                 let blurredImage = CIImage(cgImage: artwork!).blurred(radius: 64)
                 
                 if blurredImage != nil {
@@ -308,9 +313,9 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
                         let transformedImage = croppedImage?.transformed(by: CGAffineTransform(scaleX: 2, y: 2))
                         
                         if transformedImage != nil {
-                            let bgImage = transformedImage?.nsImage().darkened(byBlackAlpha: backgroundDarknessAlpha)
+                            let bgImage = transformedImage?.nsImage().darkened(byBlackAlpha: self.backgroundDarknessAlpha)
                             
-                            view.layer?.contents = bgImage
+                            self.view.layer?.contents = bgImage
                             setAlternateAppearances()
                             
                             return
@@ -324,21 +329,21 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func resetBackgroundViewAndAppearance() {
-        view.layer?.contents = nil
+        self.view.layer?.contents = nil
         setDefaultAppearances()
     }
     
     func play() {
-        player.play()
+        self.player.play()
         startPositionTimer()
-        nowPlayingInfoCenter.playbackState = .playing
+        self.nowPlayingInfoCenter.playbackState = .playing
     }
     
     func play(atIndex index: Int) {
-        player.trackIndex = index
-        player.play()
+        self.player.trackIndex = index
+        self.player.play()
         startPositionTimer()
-        nowPlayingInfoCenter.playbackState = .playing
+        self.nowPlayingInfoCenter.playbackState = .playing
     }
     
     func playAtSelectedRow() {
@@ -346,13 +351,13 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func pause() {
-        player.pause()
-        positionTimer.invalidate()
-        nowPlayingInfoCenter.playbackState = .paused
+        self.player.pause()
+        self.positionTimer.invalidate()
+        self.nowPlayingInfoCenter.playbackState = .paused
     }
     
     func playPause() {
-        if player.state == .playing {
+        if self.player.state == .playing {
             pause()
         } else {
             play()
@@ -360,29 +365,29 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func nextTrack() {
-        player.nextTrack()
+        self.player.nextTrack()
     }
     
     func rewind() {
-        if player.position > 1 {
-            player.setPosition(position: 0)
+        if self.player.position > 1 {
+            self.player.setPosition(position: 0)
         } else {
-            player.previousTrack()
+            self.player.previousTrack()
         }
     }
     
     func updatePlaylist() {
-        createPlaylistItems(urls: player.playlist)
-        playlistOutlineView.reloadData()
+        createPlaylistItems(urls: self.player.playlist)
+        self.playlistOutlineView.reloadData()
     }
     
     func updateMedia() {
-        if player.playlistHasMedia() {
-            if player.metadata != nil {
-                titleTextView.string = player.metadata.title
-                detailsTextView.string = player.metadata.detailsString()
-                if player.metadata.artwork != nil {
-                    setCoverImage(image: player.metadata.artwork)
+        if self.player.playlistHasMedia() {
+            if self.player.metadata != nil {
+                self.titleTextView.string = self.player.metadata.title
+                self.detailsTextView.string = self.player.metadata.detailsString()
+                if self.player.metadata.artwork != nil {
+                    setCoverImage(image: self.player.metadata.artwork)
                     setBackgroundViewAndAppearance()
                 } else {
                     resetCoverImage()
@@ -393,19 +398,19 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             setDefaultAppearances()
         }
         
-        timeSlider.maxValue = player.duration()
-        timeSlider.reset()
-        positionLabel.stringValue = to_hhmmss(seconds: 0.0)
-        durationLabel.stringValue = to_hhmmss(seconds: player.duration())
+        self.timeSlider.maxValue = self.player.duration()
+        self.timeSlider.reset()
+        self.positionLabel.stringValue = to_hhmmss(seconds: 0.0)
+        self.durationLabel.stringValue = to_hhmmss(seconds: self.player.duration())
         startPositionTimer()
         
         updateNowPlayingInfoCenter()
     }
     
     func updateNowPlayingInfoCenter() {
-        if let audioPlayer = player.player {
-            if player.metadata != nil, let metadata = player.metadata, let artwork = metadata.artwork {
-                let coverArt = MPMediaItemArtwork(boundsSize: coverImageMinimumSize) { (size) -> NSImage in
+        if let audioPlayer = self.player.player {
+            if self.player.metadata != nil, let metadata = self.player.metadata, let artwork = metadata.artwork {
+                let coverArt = MPMediaItemArtwork(boundsSize: self.coverImageMinimumSize) { (size) -> NSImage in
                     return NSImage(cgImage: artwork, size: size)
                 }
                 
@@ -419,67 +424,67 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
                     MPMediaItemPropertyPlaybackDuration: audioPlayer.duration
                 ]
                 
-                nowPlayingInfoCenter.nowPlayingInfo = dict
+                self.nowPlayingInfoCenter.nowPlayingInfo = dict
             }
         } else {
-            nowPlayingInfoCenter.nowPlayingInfo = [:]
+            self.nowPlayingInfoCenter.nowPlayingInfo = [:]
         }
     }
     
     func setVolumeFromDefaults() {
-        if let volume = application?.userDefaults.float(forKey: "Volume") {
-            volumeSlider.floatValue = volume
-            player.volume = volume
+        if let volume = self.application?.userDefaults.float(forKey: "Volume") {
+            self.volumeSlider.floatValue = volume
+            self.player.volume = volume
         }
     }
     
     func setPlaylistHiddenFromDefaults() {
-        if let playlistHidden = application?.userDefaults.bool(forKey: "PlaylistHidden") {
-            playlistBox.isHidden = playlistHidden
+        if let playlistHidden = self.application?.userDefaults.bool(forKey: "PlaylistHidden") {
+            self.playlistBox.isHidden = playlistHidden
         }
     }
     
     func startPositionTimer() {
-        positionTimer.invalidate()
-        positionTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updatePosition), userInfo: nil, repeats: true)
+        self.positionTimer.invalidate()
+        self.positionTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updatePosition), userInfo: nil, repeats: true)
     }
     
     func createPlaylistItems(urls: [URL]) {
-        playlistItems = []
+        self.playlistItems = []
         if urls.count > 0 {
             for i in 0...urls.count-1 {
-                playlistItems.append(PlaylistItem(url: urls[i], trackIndex: i))
+                self.playlistItems.append(PlaylistItem(url: urls[i], trackIndex: i))
             }
         }
     }
     
     func removeMediaAtSelectedRows() {
-        if playlistOutlineView.selectedRowIndexes.count > 0 {
+        if self.playlistOutlineView.selectedRowIndexes.count > 0 {
             var selectedRows: [Int] = []
-            for index in playlistOutlineView.selectedRowIndexes {
+            for index in self.playlistOutlineView.selectedRowIndexes {
                 selectedRows.append(index)
             }
-            player.removeMedia(atIndexes: selectedRows)
+            self.player.removeMedia(atIndexes: selectedRows)
         }
     }
     
     func killPlayer() {
-        player.stop()
-        player = nil
+        self.player.stop()
+        self.player = nil
     }
     
     func killNowPlaying() {
-        nowPlayingInfoCenter.nowPlayingInfo = [:]
-        nowPlayingInfoCenter.playbackState = .unknown
+        self.nowPlayingInfoCenter.nowPlayingInfo = [:]
+        self.nowPlayingInfoCenter.playbackState = .unknown
     }
     
     func killTimers() {
-        positionTimer.invalidate()
+        self.positionTimer.invalidate()
     }
     
     func alternateKeyDown(with event: NSEvent) -> Bool {
         guard let locWindow = view.window,
-            application?.keyWindow === locWindow else { return false }
+            self.application?.keyWindow === locWindow else { return false }
         let keyCode = event.keyCode
         
         switch keyCode {
@@ -492,7 +497,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         case Keycode.delete:
             let flags = event.modifierFlags
             if isCommandModifierFlag(flags: flags) {
-                playlistOutlineView.removeSelectedRows()
+                self.playlistOutlineView.removeSelectedRows()
                 return true
             }
         default:

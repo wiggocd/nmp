@@ -18,8 +18,8 @@ class HelpViewController: NSViewController {
     ]
     
     override func viewDidLoad() {
-        actionsTableView.delegate = self
-        actionsTableView.dataSource = self
-        actionsTableView.reloadData()
+        self.actionsTableView.delegate = self
+        self.actionsTableView.dataSource = self
+        self.actionsTableView.reloadData()
     }
 }
