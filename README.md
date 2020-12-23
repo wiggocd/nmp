@@ -4,7 +4,7 @@ For macOS 10.15+
 
 Swift 5 & Cocoa
 
-[Website](https://wiggocd.github.com/nmp)
+[Website](https://wiggocd.github.io/nmp)
 
 ## Usage
 
