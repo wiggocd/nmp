@@ -5,6 +5,7 @@ html {
 
 body {
     text-align: center;
+    align-content: center;
     font-family: monospace;
     --alt-background-color: rgba(30, 30, 30, 0.5);
     --alt-color: rgba(150, 150, 150, 1);
@@ -24,13 +25,11 @@ h1 {
 
 h2 {
     font-size: 95%;
-    margin-left: auto;
 }
 
 h3 {
     font-size: 90%;
     color: var(--alt-color);
-    margin-left: auto;
 }
 
 img.icon {
@@ -43,7 +42,6 @@ img.icon-small {
 }
 
 img.screenshot {
-    border-radius: var(--default-rounded-border-radius);
     height: 500px;
 }
 
