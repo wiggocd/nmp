@@ -33,16 +33,21 @@ h3 {
     margin-left: auto;
 }
 
-img#icon {
+img.icon {
     height: 200px;
 }
 
-img#icon-small {
+img.icon-small {
     height: 50px;
     margin: 5px;
 }
 
-#box {
+img.screenshot {
+    border-radius: var(--default-rounded-border-radius);
+    height: 500px;
+}
+
+.box {
     background-color: var(--alt-background-color);
     border-radius: var(--default-rounded-border-radius);
     margin: auto;
@@ -50,7 +55,7 @@ img#icon-small {
     width: 500px;
 }
 
-#box-alt {
+.box-alt {
     background-color: var(--alt-background-color);
     border-radius: var(--default-rounded-border-radius);
     margin: auto;
