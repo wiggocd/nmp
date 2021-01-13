@@ -500,11 +500,9 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         switch keyCode {
         case Keycode.space:
             self.playPause()
-            
             return true
         case Keycode.returnKey:
             self.playAtSelectedRow()
-            
             return true
         case Keycode.delete:
             let flags = event.modifierFlags
@@ -513,6 +511,9 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
                 self.playlistOutlineView.removeSelectedRows()
                 return true
             }
+        case Keycode.forwardDelete:
+            self.playlistOutlineView.removeSelectedRows()
+            return true
         default:
             break
         }
