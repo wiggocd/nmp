@@ -22,7 +22,7 @@ let REORDER_PASTEBOARD_TYPE = NSPasteboard.PasteboardType((Bundle.main.bundleIde
 let FILENAMES_PASTEBOARD_TYPE = NSPasteboard.PasteboardType.fileURL
 let playlistPasteboardTypes = [REORDER_PASTEBOARD_TYPE, FILENAMES_PASTEBOARD_TYPE]
 
-class AudioMetadata {
+class AudioMetadata: NSObject {
     var title: String = " "
     var artist: String = " "
     var album: String = " "
@@ -98,24 +98,24 @@ enum PlayerState {
 }
 
 
-func filterToSupportedOnly(urls: [URL?]) -> [URL?] {
+func filterToSupportedOnly(urls: [URL]) -> [URL] {
     var ret: [URL] = []
     
     for url in urls {
-        if audioFileTypes.contains(url!.pathExtension) {
-            ret.append(url!)
+        if audioFileTypes.contains(url.pathExtension) {
+            ret.append(url)
         }
     }
     
     return ret
 }
 
-func sortUrls(urls: [URL?]) -> [URL?] {
+func sortUrls(urls: [URL]) -> [URL] {
     var paths: [String] = []
-    var ret: [URL?] = []
+    var ret: [URL] = []
     
     for url in urls {
-        paths.append(url!.path)
+        paths.append(url.path)
     }
     
     for path in paths.sorted() {

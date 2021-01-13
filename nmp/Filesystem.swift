@@ -9,7 +9,7 @@
 import Foundation
 import Cocoa
 
-func open() -> [URL?] {
+func open() -> [URL] {
     let dialog = NSOpenPanel()
     
     dialog.title = "Open one or more audio files or directories to queue"
@@ -90,12 +90,12 @@ func recurseSubdirectory(url: URL) -> [URL] {
     return ret
 }
 
-func recurseSubdirectories(urls: [URL?]) -> [URL?] {
-    var ret: [URL?] = []
+func recurseSubdirectories(urls: [URL]) -> [URL] {
+    var ret: [URL] = []
     
     for url in urls {
-        if isDirectory(path: url!.path) {
-            ret.append(contentsOf: recurseSubdirectory(url: url!))
+        if isDirectory(path: url.path) {
+            ret.append(contentsOf: recurseSubdirectory(url: url))
         } else {
             ret.append(url)
         }

@@ -16,7 +16,7 @@ extension PlayerViewController {
     }
     
     @IBAction func openAction(_ sender: Any) {
-        self.player.addMedia(urls: openMedia(), updateIndexIfNew: true, shouldPlay: true)
+        self.player.addMedia(urls: openMedia(), updateIndexIfNew: !self.player.playlistHasMedia(), shouldPlay: !self.player.isPlaying())
     }
     
     @IBAction func playlistAction(_ sender: Any) {
@@ -54,9 +54,12 @@ extension PlayerViewController {
     }
     
     @IBAction func timeSliderMoved(_ sender: Any) {
-        if let sender = sender as? NSSlider {
-            self.player.setPosition(position: sender.doubleValue)
-            self.positionLabel.stringValue = to_hhmmss(seconds: self.player.position)
+        let event = self.application?.currentEvent
+        if let event = event, event.type != NSEvent.EventType.leftMouseUp {
+            if let sender = sender as? NSSlider {
+                self.player.position = sender.doubleValue
+                self.positionLabel.stringValue = to_hhmmss(seconds: self.player.position)
+            }
         }
     }
     

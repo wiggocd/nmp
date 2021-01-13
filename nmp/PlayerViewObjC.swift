@@ -95,7 +95,7 @@ extension PlayerViewController {
     @objc func changePlaybackPositionCommandAction(_ sender: Any?) -> MPRemoteCommandHandlerStatus {
         if let sender = sender as? MPChangePlaybackPositionCommandEvent {
             self.newPlaybackPositionTime = sender.positionTime
-            self.player.setPosition(position: self.newPlaybackPositionTime)
+            self.player.position = self.newPlaybackPositionTime
             self.updatePosition()
             return .success
         }

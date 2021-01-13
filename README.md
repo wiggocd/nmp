@@ -22,7 +22,7 @@ Xcode first if the additional components are not installed
 
 ## Building
 
-Open  `nmp.xcodeproj` in Xcode and change the build team / signing info to build on your machine. To build for deployment, go to Product > Archive in the Xcode project.
+Open  `nmp.xcworkspace` in Xcode and change the build team / signing info to build on your machine. To build for deployment, go to Product > Archive in the Xcode project.
 
 Run `xcodebuild build` to build; an application package should be built to `build/Release/nmp.app`
 

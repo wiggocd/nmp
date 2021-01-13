@@ -12,6 +12,7 @@ import MediaPlayer
 class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     let notificationCenter = NotificationCenter.default
     let application = Application.shared as? Application
+    let player = AudioPlayer()
     let coverImageMinimumSize = NSSize(width: 640, height: 640)
     let coverImageCornerRadius: CGFloat = 10
     let backgroundDarknessAlpha: CGFloat = 0.5
@@ -21,7 +22,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
     let defaultCoverImage = NSImage(named: "AppIcon")
     
-    var player = AudioPlayer()
     var positionTimer = Timer()
     var playlistItems: [PlaylistItem] = []
     var lastSelectedPlaylistItem = 0
@@ -87,7 +87,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     override var representedObject: Any? {
         didSet {
-        // Update the view, if already loaded.
+            // Update the view, if already loaded.
         }
     }
     
@@ -309,8 +309,9 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     func setBackgroundViewAndAppearance() {
         if self.application!.colorBg! {
-            if self.player.metadata != nil && self.player.metadata.artwork != nil && self.coverImageView != nil {
-                let artwork = self.player.metadata.artwork
+            if let metadata = self.player.metadata,
+                metadata.artwork != nil && self.coverImageView != nil {
+                let artwork = metadata.artwork
                 let blurredImage = CIImage(cgImage: artwork!).blurred(radius: 64)
                 
                 if blurredImage != nil {
@@ -348,7 +349,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func play(atIndex index: Int) {
-        self.player.trackIndex = index
+        self.player.playlistIndex = index
         self.player.play()
         self.startPositionTimer()
         self.nowPlayingInfoCenter.playbackState = .playing
@@ -377,11 +378,11 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func rewind() {
-        if self.player.position > 1 {
-            self.player.setPosition(position: 0)
-        } else {
+//        if self.player.position > 1 {
+//            self.player.position = 0
+//        } else {
             self.player.previousTrack()
-        }
+//        }
     }
     
     func updatePlaylist() {
@@ -391,11 +392,11 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     func updateMedia() {
         if self.player.playlistHasMedia() {
-            if self.player.metadata != nil {
-                self.titleTextView.string = self.player.metadata.title
-                self.detailsTextView.string = self.player.metadata.detailsString()
-                if self.player.metadata.artwork != nil {
-                    self.setCoverImage(image: self.player.metadata.artwork)
+            if let metadata = self.player.metadata {
+                self.titleTextView.string = metadata.title
+                self.detailsTextView.string = metadata.detailsString()
+                if metadata.artwork != nil {
+                    self.setCoverImage(image: metadata.artwork)
                     self.setBackgroundViewAndAppearance()
                 } else {
                     self.resetCoverImage()
@@ -406,37 +407,38 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             self.setDefaultAppearances()
         }
         
-        self.timeSlider.maxValue = self.player.duration()
         self.timeSlider.reset()
-        self.positionLabel.stringValue = to_hhmmss(seconds: 0.0)
-        self.durationLabel.stringValue = to_hhmmss(seconds: self.player.duration())
+        self.updateDuration()
         self.startPositionTimer()
+        self.updatePosition()
         
         self.updateNowPlayingInfoCenter()
     }
     
+    func updateDuration() {
+        self.timeSlider.maxValue = self.player.duration
+        self.durationLabel.stringValue = to_hhmmss(seconds: self.player.duration)
+    }
+    
     func updateNowPlayingInfoCenter() {
-        if let avPlayer = self.player.avPlayer {
-            if self.player.metadata != nil, let metadata = self.player.metadata, let artwork = metadata.artwork {
-                let coverArt = MPMediaItemArtwork(boundsSize: self.coverImageMinimumSize) { (size) -> NSImage in
-                    return NSImage(cgImage: artwork, size: size)
-                }
-                
-                let dict: [String: Any] = [
-                    MPMediaItemPropertyArtwork: coverArt,
-                    MPMediaItemPropertyTitle: metadata.title,
-                    MPMediaItemPropertyArtist: metadata.artist,
-                    MPMediaItemPropertyAlbumTitle: metadata.album,
-                    MPNowPlayingInfoPropertyPlaybackRate: avPlayer.rate,
-                    MPNowPlayingInfoPropertyPlaybackProgress: avPlayer.currentTime,
-                    MPMediaItemPropertyPlaybackDuration: avPlayer.duration
-                ]
-                
-                self.nowPlayingInfoCenter.nowPlayingInfo = dict
+        var dict: [String: Any] = [
+            MPNowPlayingInfoPropertyPlaybackRate: self.player.rate,
+            MPNowPlayingInfoPropertyPlaybackProgress: self.player.position,
+            MPMediaItemPropertyPlaybackDuration: self.player.duration
+        ]
+        
+        if let metadata = self.player.metadata, let artwork = metadata.artwork {
+            let coverArt = MPMediaItemArtwork(boundsSize: self.coverImageMinimumSize) { (size) -> NSImage in
+                return NSImage(cgImage: artwork, size: size)
             }
-        } else {
-            self.nowPlayingInfoCenter.nowPlayingInfo = [:]
+            
+            dict[MPMediaItemPropertyArtwork] = coverArt
+            dict[MPMediaItemPropertyTitle] = metadata.title
+            dict[MPMediaItemPropertyArtist] = metadata.artist
+            dict[MPMediaItemPropertyAlbumTitle] = metadata.album
         }
+        
+        self.nowPlayingInfoCenter.nowPlayingInfo = dict
     }
     
     func setVolumeFromDefaults() {
@@ -478,6 +480,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     func killPlayer() {
         self.player.stop()
+        self.player.destroy()
     }
     
     func killNowPlaying() {

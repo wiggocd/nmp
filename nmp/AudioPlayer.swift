@@ -1,5 +1,5 @@
 //
-//  Player.swift
+//  AudioPlayer.swift
 //  nmp
 //
 //  Created by C. Wiggins on 14/11/2020.
@@ -7,16 +7,24 @@
 //
 
 import Foundation
+import StreamingKit
 import AVFoundation
 
-class AudioPlayer: NSObject, AVAudioPlayerDelegate {
-    let application = Application.shared as? Application
+class AudioPlayer: NSObject, STKAudioPlayerDelegate {
+    private let application = Application.shared as? Application
+    private var audioPlayer: STKAudioPlayer? = STKAudioPlayer()
     
-    private var notificationCenter: NotificationCenter!
-    var avPlayer: AVAudioPlayer!
+    private var notificationCenter: NotificationCenter = .default
+    private var indexUpdate = false
+    private var shouldPlayAfterLoad = false
+    private var nextItem: URL?
+    private var currentAsset: AVURLAsset?
+    
     var playlist: [URL] = [] {
         didSet {
-            self.notificationCenter.post(name: .playlistChanged, object: nil)
+            // updatePlayerQueue(fromPlaylist: playlist)
+            self.playlistChanged()
+            
             var strings: [String] = []
             for item in playlist {
                 strings.append(item.absoluteString)
@@ -25,67 +33,90 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
     
-    var trackIndex: Int! {
+    var playlistIndex: Int? {
         didSet {
-            seekTrack(index: trackIndex)
-            self.application?.userDefaults.set(trackIndex, forKey: "TrackIndex")
+            if !self.indexUpdate {
+                guard let newValue = playlistIndex else { return }
+                
+                if newValue < self.playlist.count {
+                    let wasPlaying = self.isPlaying()
+                    self.audioPlayer?.play(self.playlist[newValue])
+                    if !wasPlaying { self.pause() }
+                    
+                    updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: newValue)
+                }
+            }
+            
+            self.application?.userDefaults.set(self.playlistIndex, forKey: "PlaylistIndex")
         }
     }
     
-    var metadata: AudioMetadata!
-    var lastIndex = 0
-    var currentUrl: URL! {
-        didSet {
-            if currentUrl == nil {
-                self.avPlayer = nil
-            } else {
-                do {
-                    self.avPlayer = try AVAudioPlayer(contentsOf: currentUrl)
-                    self.avPlayer.volume = self.volume
-                    self.mediaChanged()
-                } catch let error {
-                    print(error.localizedDescription)
-                }
-            }
+    var currentURL: URL? {
+        if self.playerHasMedia() {
+            return self.audioPlayer?.currentlyPlayingQueueItemId() as? URL
         }
+        return nil
+    }
+    
+    var duration: TimeInterval {
+        if let asset = self.currentAsset {
+            let audioDuration = asset.duration
+            return CMTimeGetSeconds(audioDuration)
+        }
+        
+        return 0
     }
     
     var position: TimeInterval {
         get {
-            if self.avPlayer != nil {
-                return self.avPlayer.currentTime
+            if let player = self.audioPlayer {
+                return player.progress
             } else {
-                return 0.0
+                return 0
+            }
+        } set {
+            if newValue < self.duration {
+                self.audioPlayer?.seek(toTime: newValue)
             }
         }
     }
     
-    var volume: Float = 1.0 {
+    var volume: Float {
+        get {
+            if let player = self.audioPlayer {
+                return player.volume
+            } else {
+                return 0
+            }
+        } set {
+            self.audioPlayer?.volume = newValue
+        }
+    }
+    
+    var rate: Float {
+        return 0
+    }
+    
+    var state: PlayerState = .idle {
         didSet {
-            if self.avPlayer != nil {
-                self.avPlayer.volume = volume
-            }
+            self.stateChanged()
         }
     }
     
-    private var lastVolume: Float = 1.0
-    var muted = false
+    var metadata: AudioMetadata?
     
-    @Published var state = PlayerState.idle {
-        didSet { self.stateChanged() }
-    }
-    
-    init(notificationCenter: NotificationCenter = .default) {
+    override init() {
         super.init()
-        self.notificationCenter = notificationCenter
+        self.audioPlayer?.delegate = self
         
         if self.loadPlaylistFromDefaults() {
             self.loadTrackIndexFromDefaults()
         }
-        
-        if self.trackIndex == nil {
-            self.trackIndex = 0
-        }
+    }
+    
+    convenience init(notificationCenter: NotificationCenter = .default) {
+        self.init()
+        self.notificationCenter = notificationCenter
     }
     
     func loadPlaylistFromDefaults() -> Bool {
@@ -93,7 +124,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         let playlistData = self.application?.userDefaults.array(forKey: "Playlist") as? [String]
         var urls: [URL] = []
         
-        if playlistData != nil {
+        if playlistData != nil && playlistData != [] {
             if playlistData!.count > 0 {
                 for item in playlistData! {
                     if let url = URL(string: item) {
@@ -113,8 +144,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     func loadTrackIndexFromDefaults() {
-        if let data = self.application?.userDefaults.integer(forKey: "TrackIndex") {
-            self.trackIndex = data
+        if let data = self.application?.userDefaults.integer(forKey: "PlaylistIndex") {
+            self.playlistIndex = data
         }
     }
     
@@ -141,217 +172,50 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 }
             }
             
-            if self.playerHasMedia() == false {
-                if updateIndexIfNew { self.trackIndex = 0 }
-                if shouldPlay { self.play() }
-            }
+            if updateIndexIfNew { self.playlistIndex = 0 }
+            self.shouldPlayAfterLoad = shouldPlay
         }
     }
     
-    func insertMedia(urls: [URL?], atIndex: Int, updateIndexIfNew: Bool, shouldPlay: Bool) {
-        if urls.count > 0 {
-            for i in 0...urls.count-1 {
-                let url = urls[i]
-                if url!.isFileURL && audioFileTypes.contains(url!.pathExtension) {
-                    _ = url?.startAccessingSecurityScopedResource()
-                    let n = atIndex+i
-                    if self.playlist.count > n {
-                        self.playlist.insert(url!, at: n)
-                    } else {
-                        self.addMedia(urls: [url], updateIndexIfNew: updateIndexIfNew, shouldPlay: shouldPlay)
-                    }
-                }
-                
-                if self.playerHasMedia() == false {
-                    if updateIndexIfNew { self.trackIndex = 0 }
-                    if shouldPlay { self.play() }
-                }
-            }
-        }
-    }
-    
-    func updatePlayer() {
-        if self.avPlayer != nil {
-            self.updateMetadata()
-            self.lastIndex = self.trackIndex
-            self.avPlayer.delegate = self
-            self.notificationCenter.post(name: .mediaChanged, object: nil)
-        }
-    }
-    
-    func updateMetadata() {
-        self.metadata = AudioMetadata(forURL: self.currentUrl)
-        if self.metadata.artwork == nil {
-            let pathComponents = self.currentUrl.pathComponents
-            let directoryComponents = pathComponents.dropLast()
-            var directoryPath = ""
+    private func updatePlayerQueue(fromPlaylist playlist: [URL], withStartingIndex startingIndex: Int = 0) {
+        let currentId = self.audioPlayer?.currentlyPlayingQueueItemId()
+        
+        self.audioPlayer?.clearQueue()
+        
+        if playlist.count > 0 {
+    //        // let modifiedStartingIndex = self.isPlaying() && currentId as? URL != nil ?
+    //        let modifiedStartingIndex = currentId as? URL != nil && startingIndex != 0 ?
+    //        startingIndex + 1 : startingIndex
+    //
+            let upperBound = self.isPlaying() && currentId as? URL == self.playlist[self.playlist.count - 2] ?
+            playlist.count - 1 : playlist.count
             
-            for component in directoryComponents {
-                directoryPath += component+pathSep
+            for i in startingIndex..<upperBound {
+                self.audioPlayer?.queue(playlist[i])
             }
-            
-            let directoryURL = URL(fileURLWithPath: directoryPath)
-            
-            if directoryURL.hasDirectoryPath {
-                let coverArtURL = getCoverArt(fromDirectory: directoryURL)
-                if coverArtURL != nil {
-                    var dataProvider: CGDataProvider!
-                    do {
-                        dataProvider = CGDataProvider(data: try Data(contentsOf: coverArtURL!) as CFData)
-                    } catch let error {
-                        print(error.localizedDescription)
-                    }
-                    
-                    if dataProvider != nil {
-                        let colorRendering = CGColorRenderingIntent(rawValue: 32)
-                        
-                        if colorRendering != nil {
-                            if coverArtURL?.pathExtension == "jpg" || coverArtURL?.pathExtension == "jpeg" {
-                                self.metadata.artwork = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
-                            } else if coverArtURL?.pathExtension == "png" {
-                                self.metadata.artwork = CGImage(pngDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    func play() {
-        if self.avPlayer != nil && playlistHasMedia() {
-            self.avPlayer.play()
-            self.state = .playing
-        }
-    }
-    
-    func pause() {
-        if playerHasMedia() {
-            self.avPlayer.pause()
         }
         
-        if self.state == .playing {
-            self.state = .paused
-        }
     }
     
-    func playPause() {
-        if isPlaying() {
-            self.pause()
-        } else {
-            self.play()
-        }
-    }
-    
-    func stop() {
-        if self.avPlayer != nil {
-            self.avPlayer.stop()
-            self.state = .idle
-        }
-    }
-    
-    func mute() {
-        self.lastVolume = volume
-        self.volume = 0
-        self.muted = true
-    }
-    
-    func unmute() {
-        self.volume = lastVolume
-        self.muted = false
-    }
-    
-    func toggleMute() {
-        if self.muted {
-            self.unmute()
-        } else {
-            self.mute()
-        }
-    }
-    
-    func nextTrack() {
-        if self.playlistHasMedia() && self.playlist.count - 1 >= self.trackIndex + 1 {
-            let wasPlaying = isPlaying()
-            self.trackIndex += 1
-            
-            if wasPlaying {
-                self.play()
+    func insertMedia(urls: [URL], atIndex index: Int, updateIndexIfNew: Bool, shouldPlay: Bool, async: Bool = true) {
+        if async {
+            DispatchQueue.main.async {
+                self._insertMedia(urls: urls, atIndex: index, updateIndexIfNew: updateIndexIfNew, shouldPlay: shouldPlay)
             }
-        }
-    }
-    
-    func previousTrack() {
-        if self.playlistHasMedia() && self.trackIndex > 0 {
-            let wasPlaying = isPlaying()
-            self.trackIndex -= 1
-            
-            if wasPlaying {
-                self.play()
-            }
-        }
-    }
-    
-    func isPlaying() -> Bool {
-        if self.avPlayer != nil && self.avPlayer.isPlaying {
-            return true
         } else {
-            return false
+            self._insertMedia(urls: urls, atIndex: index, updateIndexIfNew: updateIndexIfNew, shouldPlay: shouldPlay)
         }
     }
     
-    func playlistHasMedia(fromCurrentIndex: Bool = true) -> Bool {
-        if fromCurrentIndex {
-            return self.playlist.count - self.trackIndex > 0
-        } else {
-            return self.playlist.count > 0
+    private func _insertMedia(urls: [URL], atIndex index: Int, updateIndexIfNew: Bool, shouldPlay: Bool) {
+        for i in 0..<urls.count {
+            self.playlist.insert(urls[i], at: index + i)
         }
-    }
-    
-    func playerHasMedia() -> Bool {
-        if self.avPlayer == nil || self.avPlayer.currentDevice == nil {
-            return false
-        } else {
-            return true
-        }
-    }
-    
-    func duration() -> Double {
-        if self.avPlayer != nil {
-            return self.avPlayer.duration
-        } else {
-            return 0.0
-        }
-    }
-    
-    func setPosition(position: Double) {
-        if self.avPlayer != nil && position < duration() {
-            self.avPlayer.currentTime = position
-        }
-    }
-    
-    func finishPlayback() {
-        self.stop()
-        self.updatePlayer()
-        self.setPosition(position: 0.0)
-    }
-    
-    func clear() {
-        if self.avPlayer != nil && self.playlistHasMedia() {
-            self.stop()
-            self.currentUrl = nil
-            self.playlist = []
-            self.trackIndex = 0
-            self.currentUrl = nil
-            self.metadata = nil
-        }
-        
-        self.clearPlaylistDefaults()
     }
     
     func removeMedia(atIndex index: Int) {
         if index >= 0 && index < self.playlist.count {
             self.playlist.remove(at: index)
-            self.playlistChanged()
         }
     }
     
@@ -363,28 +227,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 for n in i...modifiableIndexes.count-1 {
                     modifiableIndexes[n] -= 1
                 }
-            }
-        }
-    }
-    
-    func mediaChanged() {
-        self.notificationCenter.post(name: .mediaChanged, object: nil)
-    }
-    
-    func playlistChanged() {
-        self.notificationCenter.post(name: .playlistChanged, object: nil)
-    }
-    
-    func seekTrack(index: Int) {
-        if index >= 0 && index < self.playlist.count {
-            let wasPlaying = isPlaying()
-            
-            self.currentUrl = playlist[index]
-            self.updatePlayer()
-            
-            self.play()
-            if !wasPlaying {
-                self.pause()
             }
         }
     }
@@ -411,15 +253,207 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
     }
     
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        self.trackIndex += 1
-        self.lastIndex = self.trackIndex
-        if self.playlistHasMedia() {
+    func play() {
+        self.audioPlayer?.resume()
+    }
+    
+    func pause() {
+        self.audioPlayer?.pause()
+    }
+    
+    func playPause() {
+        if self.isPlaying() {
+            self.pause()
+        } else {
+            self.play()
+        }
+    }
+    
+    func stop() {
+        self.audioPlayer?.pause()
+        self.playlistIndex = 0
+        self.audioPlayer?.stop()
+    }
+    
+    func mute() {
+        self.audioPlayer?.mute()
+    }
+    
+    func unmute() {
+        self.audioPlayer?.unmute()
+    }
+    
+    func toggleMute() {
+        if let player = self.audioPlayer {
+            if player.muted {
+                player.unmute()
+            } else {
+                player.mute()
+            }
+        }
+    }
+    
+    func nextTrack() {
+        if let playlistIndex = self.playlistIndex {
+            let newIndex = playlistIndex + 1
+            if newIndex >= 0 && newIndex < self.playlist.count {
+                self.playlistIndex = newIndex
+            }
+        }
+    }
+    
+    func previousTrack() {
+        if let playlistIndex = self.playlistIndex {
+            let newIndex = playlistIndex - 1
+            if newIndex >= 0 && newIndex < self.playlist.count {
+                self.playlistIndex = newIndex
+            }
+        }
+    }
+    
+    func clear() {
+        self.playlistIndex = 0
+        self.playlist = []
+        self.audioPlayer?.stop()
+    }
+    
+    func destroy() {
+        self.audioPlayer?.delegate = nil
+        self.audioPlayer = nil
+    }
+    
+    func updateMetadata() {
+        guard let currentURL = self.currentURL else { return }
+        let newMetadata = AudioMetadata(forURL: currentURL)
+        if self.metadata != newMetadata {
+            self.metadata = newMetadata
+            if self.metadata != nil && self.metadata!.artwork == nil {
+                let pathComponents = currentURL.pathComponents
+                let directoryComponents = pathComponents.dropLast()
+                var directoryPath = ""
+                
+                for component in directoryComponents {
+                    directoryPath += component+pathSep
+                }
+                
+                let directoryURL = URL(fileURLWithPath: directoryPath)
+                
+                if directoryURL.hasDirectoryPath {
+                    let coverArtURL = getCoverArt(fromDirectory: directoryURL)
+                    if coverArtURL != nil {
+                        var dataProvider: CGDataProvider!
+                        do {
+                            dataProvider = CGDataProvider(data: try Data(contentsOf: coverArtURL!) as CFData)
+                        } catch let error {
+                            print(error.localizedDescription)
+                        }
+                        
+                        if dataProvider != nil {
+                            let colorRendering = CGColorRenderingIntent(rawValue: 32)
+                            
+                            if colorRendering != nil {
+                                if coverArtURL?.pathExtension == "jpg" || coverArtURL?.pathExtension == "jpeg" {
+                                    self.metadata!.artwork = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
+                                } else if coverArtURL?.pathExtension == "png" {
+                                    self.metadata!.artwork = CGImage(pngDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func playerHasMedia() -> Bool {
+        if let player = self.audioPlayer {
+            return player.pendingQueueCount > 0
+            || player.state == .playing
+            || player.state == .running
+            || player.state == .paused
+            || player.state == .buffering
+        }
+        
+        return false
+    }
+    
+    func playlistHasMedia() -> Bool {
+        return self.playlist.count > 0
+    }
+    
+    func isPlaying() -> Bool {
+        return self.state == .playing
+    }
+    
+    func isInitialItem() -> Bool {
+        guard let playlistIndex = self.playlistIndex else { return false }
+        guard let lastQueuedItem = self.audioPlayer?.mostRecentlyQueuedStillPendingItem else { return false }
+        if playlistIndex < self.playlist.count {
+            return playlistIndex == 0 && lastQueuedItem as! URL == self.playlist[1]
+        }
+        return false
+    }
+    
+    func isNextItem() -> Bool {
+        return nextItem == currentURL
+    }
+    
+    func audioPlayer(_ audioPlayer: STKAudioPlayer, didStartPlayingQueueItemId queueItemId: NSObject) {
+        if let playlistIndex = self.playlistIndex {
+            if isNextItem() {
+                self.sendPlaylistUpdate(newValue: playlistIndex + 1)
+            }
+            
+            if self.audioPlayer?.pendingQueueCount == 0 {
+                self.updatePlayerQueue(fromPlaylist: self.playlist, withStartingIndex: playlistIndex + 1)
+            }
+        }
+        
+        if self.shouldPlayAfterLoad {
             self.play()
         } else {
-            self.trackIndex -= 1
-            self.finishPlayback()
+            self.pause()
+            self.shouldPlayAfterLoad = true
         }
+        
+        DispatchQueue.main.async {
+            self.mediaChanged()
+        }
+        
+        self.position = 0
+    }
+    
+    func audioPlayer(_ audioPlayer: STKAudioPlayer, didFinishBufferingSourceWithQueueItemId queueItemId: NSObject) {
+        
+    }
+    
+    func audioPlayer(_ audioPlayer: STKAudioPlayer, stateChanged state: STKAudioPlayerState, previousState: STKAudioPlayerState) {
+        switch state {
+        case .playing:
+            self.state = .playing
+        case .paused:
+            self.state = .paused
+        default:
+            self.state = .idle
+        }
+    }
+    
+    func audioPlayer(_ audioPlayer: STKAudioPlayer, didFinishPlayingQueueItemId queueItemId: NSObject, with stopReason: STKAudioPlayerStopReason, andProgress progress: Double, andDuration duration: Double) {
+        if let playlistIndex = self.playlistIndex, playlistIndex < self.playlist.count {
+            if playlistIndex + 1 < self.playlist.count {
+                self.nextItem = self.playlist[playlistIndex + 1]
+            }
+        }
+    }
+    
+    func audioPlayer(_ audioPlayer: STKAudioPlayer, unexpectedError errorCode: STKAudioPlayerErrorCode) {
+        print("STKAudioPlayer error: \(errorCode)")
+    }
+    
+    private func sendPlaylistUpdate(newValue: Int) {
+        self.indexUpdate = true
+        self.playlistIndex = newValue
+        self.indexUpdate = false
     }
     
     private func stateChanged() {
@@ -431,5 +465,17 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         case .paused:
             self.notificationCenter.post(name: .playbackPaused, object: nil)
         }
+    }
+    
+    private func mediaChanged() {
+        if let url = self.currentURL {
+            self.currentAsset = AVURLAsset(url: url)
+        }
+        self.updateMetadata()
+        self.notificationCenter.post(name: .mediaChanged, object: nil)
+    }
+    
+    private func playlistChanged() {
+        self.notificationCenter.post(name: .playlistChanged, object: nil)
     }
 }

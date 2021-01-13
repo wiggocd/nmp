@@ -98,7 +98,7 @@ extension PlayerViewController: NSOutlineViewDataSource, NSPasteboardItemDataPro
         } else {
             if info.draggingPasteboard.pasteboardItems != nil {
                 let pbItems = info.draggingPasteboard.pasteboardItems
-                var urls: [URL?] = []
+                var urls: [URL] = []
                 for item in pbItems! {
                     if let data = item.propertyList(forType: FILENAMES_PASTEBOARD_TYPE) as? String {
                         if let url = URL(string: data) {
@@ -108,7 +108,7 @@ extension PlayerViewController: NSOutlineViewDataSource, NSPasteboardItemDataPro
                 }
                 
                 for url in urls {
-                    saveURLToBookmarks(url: url!, userDefaults: UserDefaults.standard)
+                    saveURLToBookmarks(url: url, userDefaults: UserDefaults.standard)
                 }
                 urls = sortUrls(urls: recurseSubdirectories(urls: urls))
                 self.player.insertMedia(urls: urls, atIndex: index, updateIndexIfNew: true, shouldPlay: true)
