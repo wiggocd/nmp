@@ -172,7 +172,7 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
                 }
             }
             
-            if updateIndexIfNew { self.playlistIndex = 0 }
+            if updateIndexIfNew && !self.playerHasMedia() { self.playlistIndex = 0 }
             self.shouldPlayAfterLoad = shouldPlay
         }
     }
@@ -208,8 +208,13 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     private func _insertMedia(urls: [URL], atIndex index: Int, updateIndexIfNew: Bool, shouldPlay: Bool) {
-        for i in 0..<urls.count {
-            self.playlist.insert(urls[i], at: index + i)
+        if urls.count > 0 {
+            for i in 0..<urls.count {
+                self.playlist.insert(urls[i], at: index + i)
+            }
+            
+            if updateIndexIfNew && !self.playerHasMedia() { self.playlistIndex = 0 }
+            self.shouldPlayAfterLoad = shouldPlay
         }
     }
     
