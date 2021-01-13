@@ -1,6 +1,0 @@
-framework module Pods_nmp {
-  umbrella header "Pods-nmp-umbrella.h"
-
-  export *
-  module * { export * }
-}
