@@ -19,17 +19,20 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     private var shouldPlayAfterLoad = false
     private var nextItem: URL?
     private var currentAsset: AVURLAsset?
+    private var lastPlaylistCount = 0
     
     var playlist: [URL] = [] {
         didSet {
-            // updatePlayerQueue(fromPlaylist: playlist)
+            if playlist.count < self.lastPlaylistCount { updatePlayerQueue(fromPlaylist: playlist) }
             self.playlistChanged()
             
             var strings: [String] = []
             for item in playlist {
                 strings.append(item.absoluteString)
             }
+            
             self.application?.userDefaults.set(strings, forKey: "Playlist")
+            self.lastPlaylistCount = playlist.count
         }
     }
     
