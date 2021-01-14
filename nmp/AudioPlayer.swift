@@ -23,7 +23,9 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     
     var playlist: [URL] = [] {
         didSet {
-            if playlist.count < self.lastPlaylistCount { updatePlayerQueue(fromPlaylist: playlist) }
+            let removalStartingIndex = self.playlistIndex == nil ? 0
+                : (playlist.count > 1 ? self.playlistIndex! + 1 : self.playlistIndex!)
+            if playlist.count < self.lastPlaylistCount { updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: removalStartingIndex) }
             self.playlistChanged()
             
             var strings: [String] = []
