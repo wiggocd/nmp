@@ -52,7 +52,7 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
                 }
             }
             
-            self.application?.userDefaults.set(self.playlistIndex, forKey: "PlaylistIndex")
+            self.application?.userDefaults.set(playlistIndex, forKey: "PlaylistIndex")
         }
     }
     
@@ -278,7 +278,6 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     
     func stop() {
         self.audioPlayer?.pause()
-        self.playlistIndex = 0
         self.audioPlayer?.stop()
     }
     

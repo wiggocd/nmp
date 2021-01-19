@@ -55,7 +55,7 @@ class TimeSliderCell: CustomSliderCell {
     
     override func drawKnob(_ knobRect: NSRect) {
         let size = NSSize(width: knobRect.width, height: knobRect.height / 3)
-        let rect = NSRect(x: knobRect.minX, y: knobRect.minY + size.height - 1, width: size.width, height: size.height)
+        let rect = NSRect(x: knobRect.minX, y: knobRect.minY + size.height / 1.5, width: size.width, height: size.height)
         let path = NSBezierPath(roundedRect: rect, xRadius: self.knobRadius, yRadius: self.knobRadius)
         self.knobColor.setFill()
         path.fill()
