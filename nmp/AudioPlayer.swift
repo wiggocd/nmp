@@ -43,7 +43,7 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
             if !self.indexUpdate {
                 guard let newValue = playlistIndex else { return }
                 
-                if newValue < self.playlist.count {
+                if newValue >= 0 && newValue < self.playlist.count {
                     let wasPlaying = self.isPlaying()
                     self.audioPlayer?.play(self.playlist[newValue])
                     if !wasPlaying { self.pause() }
@@ -265,6 +265,7 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     
     func play() {
         self.audioPlayer?.resume()
+        self.shouldPlayAfterLoad = true
     }
     
     func pause() {

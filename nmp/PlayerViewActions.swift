@@ -16,7 +16,7 @@ extension PlayerViewController {
     }
     
     @IBAction func openAction(_ sender: Any) {
-        self.player.addMedia(urls: openMedia(), updateIndexIfNew: !self.player.playlistHasMedia(), shouldPlay: !self.player.isPlaying())
+        self.player.addMedia(urls: openMedia(), updateIndexIfNew: !self.player.playlistHasMedia(), shouldPlay: self.player.isPlaying())
     }
     
     @IBAction func playlistAction(_ sender: Any) {
