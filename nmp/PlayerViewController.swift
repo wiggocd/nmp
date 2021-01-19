@@ -278,10 +278,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func preparePlayback() {
-        self.player.toggleMute()
-        self.play()
         self.pause()
-        self.player.toggleMute()
     }
     
     func setCoverImage(image: CGImage) {
