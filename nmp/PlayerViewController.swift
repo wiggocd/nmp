@@ -284,7 +284,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     func setCoverImage(image: CGImage) {
         self.resetCoverImage()
         
-        let scale = self.coverImageView.fittingSize.height / CGFloat(image.height / 2)
+        let scale = self.coverImageView.fittingSize.height / (CGFloat(image.height) / 1.5)
         let size = NSSize(width: CGFloat(image.width) * scale, height: CGFloat(image.height) * scale)
         
         NSAnimationContext.runAnimationGroup { context in
@@ -406,7 +406,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             self.setDefaultAppearances()
         }
         
-        self.timeSlider.reset()
+//        self.timeSlider.reset()
         self.updateDuration()
         self.startPositionTimer()
         self.updatePosition()
