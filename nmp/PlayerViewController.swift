@@ -282,7 +282,9 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func setCoverImage(image: CGImage) {
-        let scale = self.coverImageMinimumSize.height / CGFloat(image.height)
+        self.resetCoverImage()
+        
+        let scale = self.coverImageView.fittingSize.height / CGFloat(image.height / 2)
         let size = NSSize(width: CGFloat(image.width) * scale, height: CGFloat(image.height) * scale)
         
         NSAnimationContext.runAnimationGroup { context in
@@ -321,7 +323,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
                         if transformedImage != nil {
                             let bgImage = transformedImage?.nsImage().darkened(byBlackAlpha: self.backgroundDarknessAlpha)
                             
-                            self.view.layer?.contents = bgImage
+                            view.layer?.contents = bgImage
                             setAlternateAppearances()
                             
                             return
