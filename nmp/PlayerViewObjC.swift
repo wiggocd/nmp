@@ -96,7 +96,6 @@ extension PlayerViewController {
         if let sender = sender as? MPChangePlaybackPositionCommandEvent {
             self.newPlaybackPositionTime = sender.positionTime
             self.player.position = self.newPlaybackPositionTime
-            self.updatePosition()
             return .success
         }
         return .commandFailed
