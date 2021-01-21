@@ -19,7 +19,7 @@ class CustomSliderCell: NSSliderCell {
     var barHeight: CGFloat = 3
     var barRadius: CGFloat = 2.5
     var backgroundColor = NSColor.gray.withAlphaComponent(0.5)
-    var filledColor = NSColor.lightGray.withAlphaComponent(0.5)
+    var filledColor = NSColor.lightGray
     
     var position: CGFloat {
         get {
