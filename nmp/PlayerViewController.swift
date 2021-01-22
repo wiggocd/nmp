@@ -71,17 +71,13 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         self.initialiseDragAndDrop()
         
         self.addLocalMonitorsForEvents()
-    }
-    
-    override func viewWillAppear() {
-        self.updatePlaylist()
         
+        self.updatePlaylist()
         self.initialisePlayerSession()
         self.updateMedia()
-        
+    
         self.setVolumeFromDefaults()
         self.setPlaylistHiddenFromDefaults()
-        
         self.initialiseDragAndDrop()
     }
     
@@ -91,8 +87,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         }
     }
     
-    override func viewWillDisappear() {
-        super.viewWillDisappear()
+    deinit {
         self.killPlayer()
         self.killNowPlaying()
         self.killTimers()
