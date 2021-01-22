@@ -213,7 +213,7 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
             }
         }
         
-        self.updateMetadata()
+        self.mediaChanged()
         self.mediaUpdate = lastValue
     }
     
