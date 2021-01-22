@@ -74,11 +74,14 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         
         self.updatePlaylist()
         self.initialisePlayerSession()
-        self.updateMedia()
     
         self.setVolumeFromDefaults()
         self.setPlaylistHiddenFromDefaults()
         self.initialiseDragAndDrop()
+    }
+    
+    override func viewWillAppear() {
+        self.updateMedia()
     }
     
     override var representedObject: Any? {

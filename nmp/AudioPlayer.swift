@@ -206,12 +206,24 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
         let currentId = self.audioPlayer?.currentlyPlayingQueueItemId()
         self.audioPlayer?.clearQueue()
         
+        if startingIndex == 0 && !self.playerHasMedia() {
+            self.playlistIndex = startingIndex
+        }
+        
         if playlist.count > 0 {
             let upperBound = self.isPlaying() && currentId as? URL == self.playlist[self.playlist.count - 2] ?
             playlist.count - 1 : playlist.count
             
             for i in startingIndex..<upperBound {
                 self.audioPlayer?.queue(playlist[i])
+                if i == 1 {
+                    print(playlist[i])
+                }
+            }
+            
+            if 1 < self.playlist.count { print(playlist[1]) }
+            if let player = self.audioPlayer {
+                if player.pendingQueueCount - 2 >= 0 { print(player.pendingQueue.last) }
             }
         }
         
@@ -354,7 +366,7 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     func clear() {
-        self.playlistIndex = 0
+        self.playlistIndex = nil
         self.playlist = []
         self.audioPlayer?.stop()
     }
