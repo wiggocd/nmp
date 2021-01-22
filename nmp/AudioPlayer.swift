@@ -184,13 +184,15 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
         self.mediaUpdate = true
         
         if urls.count > 0 {
+            let playerHadMedia = self.playerHasMedia()
+            
             for url in urls {
                 if url!.isFileURL && audioFileTypes.contains(url!.pathExtension) {
                     self.playlist.append(url!)
                 }
             }
             
-            if updateIndexIfNew && !self.playerHasMedia() { self.playlistIndex = 0 }
+            if updateIndexIfNew && !playerHadMedia { self.playlistIndex = 0 }
             self.shouldPlayAfterLoad = shouldPlay
         }
         

@@ -19,7 +19,7 @@ extension PlayerViewController {
         self.timeSlider.doubleValue = self.player.position
         self.positionLabel.stringValue = to_hhmmss(seconds: self.player.position)
         if self.newPlaybackPositionTime != nil {
-            self.nowPlayingInfoCenter.nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.player.position
+            self.nowPlayingInfoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.player.position
             self.newPlaybackPositionTime = nil
         }
     }
