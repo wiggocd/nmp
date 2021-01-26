@@ -50,12 +50,12 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     var playlistIndex: Int? {
         didSet {
             print("Index changed")
-            self.audioPlayer?.pause()   /* Hack to pause and sleep for a short amount of time to prevent queue reset during update */
             
-            DispatchQueue.main.async {
-                usleep(20000)
-                
-                if !self.indexUpdate {
+            if !self.indexUpdate {
+                DispatchQueue.main.async {
+                    self.audioPlayer?.pause()   /* Hack to pause and sleep for a short amount of time to prevent queue reset during update */
+                    usleep(20000)
+                    
                     guard let newValue = self.playlistIndex else { return }
                     
                     if newValue >= 0 && newValue < self.playlist.count {
