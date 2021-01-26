@@ -50,16 +50,18 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     var playlistIndex: Int? {
         didSet {
             print("Index changed")
-            self.audioPlayer?.pause()
+            self.audioPlayer?.pause()   /* Hack to pause and sleep for a short amount of time to prevent queue reset during update */
             
-            while self.audioPlayer?.state == STKAudioPlayerState.playing {}
-            
-            if !self.indexUpdate {
-                guard let newValue = self.playlistIndex else { return }
+            DispatchQueue.main.async {
+                usleep(20000)
                 
-                if newValue >= 0 && newValue < self.playlist.count {
-                    self.audioPlayer?.play(self.playlist[newValue])
-                    self.updatePlayerQueue(fromPlaylist: self.playlist, withStartingIndex: newValue)
+                if !self.indexUpdate {
+                    guard let newValue = self.playlistIndex else { return }
+                    
+                    if newValue >= 0 && newValue < self.playlist.count {
+                        self.audioPlayer?.play(self.playlist[newValue])
+                        self.updatePlayerQueue(fromPlaylist: self.playlist, withStartingIndex: newValue)
+                    }
                 }
             }
             
