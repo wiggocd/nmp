@@ -495,8 +495,6 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
         if let playlistIndex = self.playlistIndex, playlistIndex < self.playlist.count {
             if playlistIndex + 1 < self.playlist.count {
                 self.nextItem = self.playlist[playlistIndex + 1]
-            } else {
-                self.shouldPlayAfterLoad = false
             }
         }
         
