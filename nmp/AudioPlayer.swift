@@ -203,28 +203,30 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
         let lastValue = self.mediaUpdate
         self.mediaUpdate = true
         
-        let currentId = self.audioPlayer?.currentlyPlayingQueueItemId()
-        self.audioPlayer?.clearQueue()
-        
-        if startingIndex == 0 && !self.playerHasMedia() {
-            self.playlistIndex = startingIndex
+        if !self.playerHasMedia() {
+            self.audioPlayer = STKAudioPlayer()
         }
         
+        self.audioPlayer?.clearQueue()
+        
         if playlist.count > 0 {
-            let upperBound = self.isPlaying() && currentId as? URL == self.playlist[self.playlist.count - 2] ?
-            playlist.count - 1 : playlist.count
+//            print(startingIndex)
             
-            for i in startingIndex..<upperBound {
+            for i in startingIndex..<playlist.count {
                 self.audioPlayer?.queue(playlist[i])
-                if i == 1 {
-                    print(playlist[i])
-                }
+                // Somewhere here the pending queue gets cleared
+                
+//                if i == 1 {
+//                    print(playlist[i])
+//                }
+                
+//                print("---------\n\(self.audioPlayer?.pendingQueue)\n---------\n")
             }
             
-            if 1 < self.playlist.count { print(playlist[1]) }
-            if let player = self.audioPlayer {
-                if player.pendingQueueCount - 2 >= 0 { print(player.pendingQueue.last) }
-            }
+//            if 1 < self.playlist.count { print(playlist[1]) }
+//            if let player = self.audioPlayer {
+//                if player.pendingQueueCount - 2 >= 0 { print(player.pendingQueue.last) }
+//            }
         }
         
         self.mediaChanged()
@@ -462,6 +464,10 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
         } else {
             self.pause()
             self.shouldPlayAfterLoad = true
+        }
+        
+        DispatchQueue.main.async {
+            self.mediaChanged()
         }
         
         self.mediaUpdate = lastValue
