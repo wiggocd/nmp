@@ -451,7 +451,6 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     func audioPlayer(_ audioPlayer: STKAudioPlayer, didStartPlayingQueueItemId queueItemId: NSObject) {
         print("Started playing item \(queueItemId)")
         
-        let lastValue = self.mediaUpdate
         self.mediaUpdate = true
         
         if let playlistIndex = self.playlistIndex {
@@ -475,7 +474,7 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
             self.mediaChanged()
         }
         
-        self.mediaUpdate = lastValue
+        self.mediaUpdate = false
     }
     
     func audioPlayer(_ audioPlayer: STKAudioPlayer, didFinishBufferingSourceWithQueueItemId queueItemId: NSObject) {
@@ -483,7 +482,7 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     func audioPlayer(_ audioPlayer: STKAudioPlayer, stateChanged state: STKAudioPlayerState, previousState: STKAudioPlayerState) {
-        print("State changed")
+        print("Player state changed")
         
         switch state {
         case .playing:
@@ -504,6 +503,8 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
         if let playlistIndex = self.playlistIndex, playlistIndex < self.playlist.count {
             if playlistIndex + 1 < self.playlist.count {
                 self.nextItem = self.playlist[playlistIndex + 1]
+            } else {
+                self.shouldPlayAfterLoad = false
             }
         }
         
@@ -511,7 +512,9 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
             self.mediaChanged()
         }
         
-        self.mediaUpdate = lastValue
+        if let playlistIndex = self.playlistIndex, playlistIndex == self.playlist.count - 1 {
+            self.mediaUpdate = lastValue
+        }
     }
     
     func audioPlayer(_ audioPlayer: STKAudioPlayer, unexpectedError errorCode: STKAudioPlayerErrorCode) {
@@ -525,13 +528,15 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     private func stateChanged() {
-        switch self.state {
-        case .idle:
-            self.notificationCenter.post(name: .playbackStopped, object: nil)
-        case .playing:
-            self.notificationCenter.post(name: .playbackStarted, object: nil)
-        case .paused:
-            self.notificationCenter.post(name: .playbackPaused, object: nil)
+        if !self.mediaUpdate {
+            switch self.state {
+            case .idle:
+                self.notificationCenter.post(name: .playbackStopped, object: nil)
+            case .playing:
+                self.notificationCenter.post(name: .playbackStarted, object: nil)
+            case .paused:
+                self.notificationCenter.post(name: .playbackPaused, object: nil)
+            }
         }
     }
     
