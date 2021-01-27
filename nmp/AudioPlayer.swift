@@ -330,7 +330,7 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     func stop() {
-        self.audioPlayer?.pause()
+        self.mediaUpdate = false
         self.audioPlayer?.stop()
     }
     
@@ -373,7 +373,7 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     func clear() {
         self.playlistIndex = nil
         self.playlist = []
-        self.audioPlayer?.stop()
+        self.stop()
     }
     
     func destroy() {
