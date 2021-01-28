@@ -399,12 +399,13 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
                     self.resetCoverImage()
                     self.resetBackgroundViewAndAppearance()
                 }
+            } else {
+                self.setUIDefaults()
             }
         } else {
             self.setDefaultAppearances()
         }
         
-//        self.timeSlider.reset()
         self.updateDuration()
         self.startPositionTimer()
         self.updatePosition()
@@ -418,24 +419,28 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func updateNowPlayingInfoCenter() {
-        var dict: [String: Any] = [
-            MPNowPlayingInfoPropertyPlaybackRate: self.player.rate,
-            MPNowPlayingInfoPropertyPlaybackProgress: self.player.position,
-            MPMediaItemPropertyPlaybackDuration: self.player.duration
-        ]
-        
-        if let metadata = self.player.metadata, let artwork = metadata.artwork {
-            let coverArt = MPMediaItemArtwork(boundsSize: self.coverImageMinimumSize) { (size) -> NSImage in
-                return NSImage(cgImage: artwork, size: size)
+        if self.player.hasMedia() {
+            var dict: [String: Any] = [
+                MPNowPlayingInfoPropertyPlaybackRate: self.player.rate,
+                MPNowPlayingInfoPropertyPlaybackProgress: self.player.position,
+                MPMediaItemPropertyPlaybackDuration: self.player.duration
+            ]
+            
+            if let metadata = self.player.metadata, let artwork = metadata.artwork {
+                let coverArt = MPMediaItemArtwork(boundsSize: self.coverImageMinimumSize) { (size) -> NSImage in
+                    return NSImage(cgImage: artwork, size: size)
+                }
+                
+                dict[MPMediaItemPropertyArtwork] = coverArt
+                dict[MPMediaItemPropertyTitle] = metadata.title
+                dict[MPMediaItemPropertyArtist] = metadata.artist
+                dict[MPMediaItemPropertyAlbumTitle] = metadata.album
             }
             
-            dict[MPMediaItemPropertyArtwork] = coverArt
-            dict[MPMediaItemPropertyTitle] = metadata.title
-            dict[MPMediaItemPropertyArtist] = metadata.artist
-            dict[MPMediaItemPropertyAlbumTitle] = metadata.album
+            self.nowPlayingInfoCenter.nowPlayingInfo = dict
+        } else {
+            self.nowPlayingInfoCenter.nowPlayingInfo = [:]
         }
-        
-        self.nowPlayingInfoCenter.nowPlayingInfo = dict
     }
     
     func setVolumeFromDefaults() {
@@ -453,7 +458,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     func startPositionTimer() {
         self.positionTimer.invalidate()
-        self.positionTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updatePosition), userInfo: nil, repeats: true)
+        self.positionTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.updatePosition), userInfo: nil, repeats: true)
     }
     
     func createPlaylistItems(urls: [URL]) {
@@ -477,7 +482,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     func killPlayer() {
         self.player.stop()
-        self.player.destroy()
     }
     
     func killNowPlaying() {

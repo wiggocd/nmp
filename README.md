@@ -1,8 +1,4 @@
-nmp - The New Music Player
-
-For macOS 10.15+
-
-Swift 5 & Cocoa
+nmp - The New Music Player for macOS 10.15+
 
 [Website](https://wiggocd.github.io/nmp)
 
@@ -13,7 +9,7 @@ To download an application package, go to the releases page.
 
 ## Prerequisites to Build
 
-- Xcode 11.7 or higher from the App Store or [Apple Developer](https://developer.apple.com/xcode/resources/)
+- Xcode 12.0 or higher from the App Store or [Apple Developer](https://developer.apple.com/xcode/resources/)
 
 <sub>Run:</sub>
 
@@ -24,7 +20,7 @@ Xcode first if the additional components are not installed
 
 ## Building
 
-Open  `nmp.xcworkspace` in Xcode and change the build team / signing info to build on your machine. To build for deployment, go to Product > Archive in the Xcode project.
+Open `nmp.xcodeproj` in Xcode and change the build team / signing info to build on your machine. To build for deployment, go to Product > Archive in the Xcode project.
 
 Run `xcodebuild build` to build; an application package should be built to `build/Release/nmp.app`
 

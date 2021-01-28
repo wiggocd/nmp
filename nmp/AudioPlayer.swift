@@ -7,31 +7,23 @@
 //
 
 import Foundation
-import StreamingKit
 import AVFoundation
 
-class AudioPlayer: NSObject, STKAudioPlayerDelegate {
+class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     private let application = Application.shared as? Application
-    private var audioPlayer: STKAudioPlayer? = STKAudioPlayer(options: STKAudioPlayerOptions(flushQueueOnSeek: false,
-                                                                                             enableVolumeMixer: false,
-                                                                                             equalizerBandFrequencies: (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0), readBufferSize: 65536,
-                                                                                             bufferSizeInSeconds: 10.0,
-                                                                                             secondsRequiredToStartPlaying: 1.0,
-                                                                                             gracePeriodAfterSeekInSeconds: 0.5,
-                                                                                             secondsRequiredToStartPlayingAfterBufferUnderun: 2 /* Default 7.5 */))
     
     private var notificationCenter: NotificationCenter = .default
+    private var positionTimer: Timer?
     private var indexUpdate = false
-    private var mediaUpdate = false
-    private var shouldPlayAfterLoad = false
-    private var nextItem: URL?
-    private var currentAsset: AVURLAsset?
+    private var positionUpdate = false
+    private var nextItem: AVPlayerItem?
     private var lastPlaylistCount = 0
+    private var observations: [NSKeyValueObservation] = []
+    
+    var audioPlayer = AVQueuePlayer()
     
     var playlist: [URL] = [] {
         didSet {
-            print("Playlist changed")
-            
             let removalStartingIndex = self.playlistIndex == nil ? 0
                 : self.playlistIndex!
             if playlist.count < self.lastPlaylistCount { updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: removalStartingIndex) }
@@ -49,20 +41,16 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     
     var playlistIndex: Int? {
         didSet {
-            print("Index changed")
-            
             if !self.indexUpdate {
-                DispatchQueue.main.async {
-                    self.audioPlayer?.pause()   /* Hack to pause and sleep for a short amount of time to prevent queue reset during update */
-                    usleep(20000)
-                    
-                    guard let newValue = self.playlistIndex else { return }
-                    
-                    if newValue >= 0 && newValue < self.playlist.count {
-                        self.audioPlayer?.play(self.playlist[newValue])
-                        self.updatePlayerQueue(fromPlaylist: self.playlist, withStartingIndex: newValue)
-                    }
+                guard let newValue = self.playlistIndex else { return }
+                
+                if newValue >= 0 && newValue < self.playlist.count {
+                    self.audioPlayer.removeAllItems()
+                    self.audioPlayer.insert(AVPlayerItem(url: self.playlist[newValue]), after: nil)
+                    self.updatePlayerQueue(fromPlaylist: self.playlist, withStartingIndex: newValue + 1)
                 }
+                
+                self.itemDidStartPlaying(userSelected: true)
             }
             
             self.application?.userDefaults.set(playlistIndex, forKey: "PlaylistIndex")
@@ -70,58 +58,41 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     var currentURL: URL? {
-        if self.playerHasMedia() {
-            return self.audioPlayer?.currentlyPlayingQueueItemId() as? URL
+        if let playlistIndex = self.playlistIndex, self.audioObjectHasMedia()
+            && playlistIndex >= 0
+            && playlistIndex < self.playlist.count {
+            return self.playlist[playlistIndex]
         }
         return nil
     }
     
     var duration: TimeInterval {
-        if let asset = self.currentAsset {
-            let audioDuration = asset.duration
-            return CMTimeGetSeconds(audioDuration)
+        if let item = self.audioPlayer.currentItem, item.asset.duration.isNumeric {
+            return CMTimeGetSeconds(item.asset.duration)
         }
         
         return 0
     }
     
-    var position: TimeInterval {
-        get {
-            if let player = self.audioPlayer {
-                return player.progress
-            } else {
-                return 0
-            }
-        } set {
-            if newValue < self.duration - 1.5 {
-                self.audioPlayer?.seek(toTime: newValue)
-            } else if !self.indexUpdate && !self.mediaUpdate {
-                if newValue > self.duration - 1.5 {
-                    DispatchQueue.main.async {
-                        usleep(1)
-                        self.nextTrack()
-                    }
-                } else {
-                    self.nextTrack()
-                }
+    var position: TimeInterval = 0 {
+        didSet {
+            if !self.positionUpdate {
+                let newTime = CMTime(seconds: position, preferredTimescale: .max)
+                self.audioPlayer.seek(to: newTime)
             }
         }
     }
     
     var volume: Float {
         get {
-            if let player = self.audioPlayer {
-                return player.volume
-            } else {
-                return 0
-            }
+            return self.audioPlayer.volume
         } set {
-            self.audioPlayer?.volume = newValue
+            self.audioPlayer.volume = newValue
         }
     }
     
     var rate: Float {
-        return 0
+        return self.audioPlayer.rate
     }
     
     var state: PlayerState = .idle {
@@ -134,7 +105,8 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     
     override init() {
         super.init()
-        self.audioPlayer?.delegate = self
+        
+        self.addObservers()
         
         if self.loadPlaylistFromDefaults() {
             self.loadTrackIndexFromDefaults()
@@ -144,6 +116,20 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     convenience init(notificationCenter: NotificationCenter = .default) {
         self.init()
         self.notificationCenter = notificationCenter
+    }
+    
+    deinit {
+        self.removeObservers()
+    }
+    
+    func addObservers() {
+        self.notificationCenter.addObserver(self, selector: #selector(self.itemDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: nil)
+    }
+    
+    func removeObservers() {
+        for observation in self.observations {
+            observation.invalidate()
+        }
     }
     
     func loadPlaylistFromDefaults() -> Bool {
@@ -192,11 +178,8 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     private func _addMedia(urls: [URL?], updateIndexIfNew: Bool, shouldPlay: Bool) {
-        let lastValue = self.mediaUpdate
-        self.mediaUpdate = true
-        
         if urls.count > 0 {
-            let playerHadMedia = self.playerHasMedia()
+            let playerHadMedia = self.audioObjectHasMedia()
             
             for url in urls {
                 if url!.isFileURL && audioFileTypes.contains(url!.pathExtension) {
@@ -205,35 +188,33 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
             }
             
             if updateIndexIfNew && !playerHadMedia { self.playlistIndex = 0 }
-            self.shouldPlayAfterLoad = shouldPlay
+            if !shouldPlay && !audioObjectHasMedia() { self.pause() }
         }
-        
-        self.mediaUpdate = lastValue
     }
     
     private func updatePlayerQueue(fromPlaylist playlist: [URL], withStartingIndex startingIndex: Int = 0) {
-        let lastValue = self.mediaUpdate
-        self.mediaUpdate = true
-        
-        if !self.playerHasMedia() {
-            self.audioPlayer = STKAudioPlayer()
-        }
-        
-        self.audioPlayer?.clearQueue()
-        
         if playlist.count > 0 {
-            print("Updating queue with starting index \(startingIndex)")
-            
-            for i in startingIndex..<playlist.count {
-                self.audioPlayer?.queue(playlist[i])
-                // MARK: Bug: Somewhere here the pending queue occasionally gets cleared if the player is in the playing state, always reaches a similar index through the queue before resetting
+            if 1 < self.audioPlayer.items().count {
+                var i = 1
+                var count = self.audioPlayer.items().count
                 
-                print("====Queue====\n\(String(describing: self.audioPlayer?.pendingQueue))\n=============\n")
+                while i < count {
+                    self.audioPlayer.remove(self.audioPlayer.items()[i])
+                    i+=1
+                    count = self.audioPlayer.items().count
+                }
             }
+            
+            if startingIndex < playlist.count {
+                for i in startingIndex..<playlist.count {
+                    self.audioPlayer.insert(AVPlayerItem(url: playlist[i]), after: nil)
+                }
+            }
+        } else {
+            self.audioPlayer.removeAllItems()
         }
         
         self.mediaChanged()
-        self.mediaUpdate = lastValue
     }
     
     func insertMedia(urls: [URL], atIndex index: Int, updateIndexIfNew: Bool, shouldPlay: Bool, async: Bool = true) {
@@ -247,36 +228,25 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     private func _insertMedia(urls: [URL], atIndex index: Int, updateIndexIfNew: Bool, shouldPlay: Bool) {
-        let lastValue = self.mediaUpdate
-        self.mediaUpdate = true
-        
         if urls.count > 0 {
             for i in 0..<urls.count {
                 self.playlist.insert(urls[i], at: index + i)
             }
             
-            if updateIndexIfNew && !self.playerHasMedia() { self.playlistIndex = 0 }
-            self.shouldPlayAfterLoad = shouldPlay
+            if self.audioObjectHasMedia() {
+                if updateIndexIfNew { self.playlistIndex = 0 }
+                if !shouldPlay { self.pause() }
+            }
         }
-        
-        self.mediaUpdate = lastValue
     }
     
     func removeMedia(atIndex index: Int) {
-        let lastValue = self.mediaUpdate
-        self.mediaUpdate = true
-        
         if index >= 0 && index < self.playlist.count {
             self.playlist.remove(at: index)
         }
-        
-        self.mediaUpdate = lastValue
     }
     
     func removeMedia(atIndexes indexes: [Int]) {
-        let lastValue = self.mediaUpdate
-        self.mediaUpdate = true
-        
         if indexes.count > 0 {
             var modifiableIndexes = indexes
             for i in 0...modifiableIndexes.count-1 {
@@ -286,8 +256,6 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
                 }
             }
         }
-        
-        self.mediaUpdate = lastValue
     }
     
     func movePlaylistItems(fromIndex: Int, toIndex: Int, count: Int) {
@@ -313,12 +281,13 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     func play() {
-        self.audioPlayer?.resume()
-        self.shouldPlayAfterLoad = true
+        self.audioPlayer.play()
+        self.updateState()
     }
     
     func pause() {
-        self.audioPlayer?.pause()
+        self.audioPlayer.pause()
+        self.updateState()
     }
     
     func playPause() {
@@ -330,26 +299,22 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     func stop() {
-        self.mediaUpdate = false
-        self.audioPlayer?.stop()
+        self.pause()
+        self.audioPlayer.replaceCurrentItem(with: nil)
+        self.state = .idle
+        self.mediaChanged()
     }
     
     func mute() {
-        self.audioPlayer?.mute()
+        self.audioPlayer.isMuted = true
     }
     
     func unmute() {
-        self.audioPlayer?.unmute()
+        self.audioPlayer.isMuted = false
     }
     
     func toggleMute() {
-        if let player = self.audioPlayer {
-            if player.muted {
-                player.unmute()
-            } else {
-                player.mute()
-            }
-        }
+        self.audioPlayer.isMuted.toggle()
     }
     
     func nextTrack() {
@@ -376,17 +341,16 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
         self.stop()
     }
     
-    func destroy() {
-        self.audioPlayer?.delegate = nil
-        self.audioPlayer = nil
-    }
-    
     func updateMetadata() {
-        guard let currentURL = self.currentURL else { return }
+        guard let currentURL = self.currentURL else {
+            self.metadata = nil
+            return
+        }
+        
         let newMetadata = AudioMetadata(forURL: currentURL)
         if self.metadata != newMetadata {
             self.metadata = newMetadata
-            if self.metadata != nil && self.metadata!.artwork == nil {
+            if let metadata = self.metadata, metadata.artwork == nil {
                 let pathComponents = currentURL.pathComponents
                 let directoryComponents = pathComponents.dropLast()
                 var directoryPath = ""
@@ -412,9 +376,9 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
                             
                             if colorRendering != nil {
                                 if coverArtURL?.pathExtension == "jpg" || coverArtURL?.pathExtension == "jpeg" {
-                                    self.metadata!.artwork = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
+                                    metadata.artwork = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
                                 } else if coverArtURL?.pathExtension == "png" {
-                                    self.metadata!.artwork = CGImage(pngDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
+                                    metadata.artwork = CGImage(pngDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
                                 }
                             }
                         }
@@ -424,101 +388,87 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
         }
     }
     
-    func playerHasMedia() -> Bool {
-        if let player = self.audioPlayer {
-            return player.pendingQueueCount > 0
-            || player.state == .playing
-            || player.state == .running
-            || player.state == .paused
-            || player.state == .buffering
-        }
-        
-        return false
+    func audioObjectHasMedia() -> Bool {
+        return self.audioPlayer.currentItem != nil || self.audioPlayer.items().count > 0
     }
     
     func playlistHasMedia() -> Bool {
         return self.playlist.count > 0
     }
     
+    func hasMedia() -> Bool {
+        return self.audioObjectHasMedia() || self.playlistHasMedia()
+    }
+    
     func isPlaying() -> Bool {
         return self.state == .playing
     }
     
-    func isNextItem() -> Bool {
-        return nextItem == currentURL
+    private func startPositionTimer() {
+        self.positionTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { _ in
+            self.updatePosition()
+        })
     }
     
-    func audioPlayer(_ audioPlayer: STKAudioPlayer, didStartPlayingQueueItemId queueItemId: NSObject) {
-        print("Started playing item \(queueItemId)")
+    private func killPositionTimer() {
+        self.positionTimer?.invalidate()
+        self.positionTimer = nil
+    }
+    
+    private func itemDidStartPlaying(userSelected: Bool) {
+        if let playlistIndex = self.playlistIndex, !userSelected {
+            self.sendPlaylistUpdate(newValue: playlistIndex + 1)
+        }
         
-        self.mediaUpdate = true
-        
-        if let playlistIndex = self.playlistIndex {
-            if isNextItem() {
-                self.sendPlaylistUpdate(newValue: playlistIndex + 1)
+        self.updatePosition()
+        self.mediaChanged()
+    }
+    
+    @objc private func itemDidFinishPlaying() {
+        if self.playlistIndex != self.playlist.count - 1 {
+            if let playlistIndex = self.playlistIndex, playlistIndex < self.playlist.count {
+                if playlistIndex + 1 < self.playlist.count {
+                    self.nextItem = AVPlayerItem(url: self.playlist[playlistIndex + 1])
+                } else {
+                    self.nextItem = nil
+                }
             }
             
-            if self.audioPlayer?.pendingQueueCount == 0 {
-                self.updatePlayerQueue(fromPlaylist: self.playlist, withStartingIndex: playlistIndex + 1)
+            self.updateState()
+
+            DispatchQueue.main.async {
+                if self.nextItem != nil {
+                    if self.nextItem?.duration != self.audioPlayer.currentItem?.duration {
+                        while self.nextItem?.asset.metadata != self.audioPlayer.currentItem?.asset.metadata {}
+                    }
+                    self.itemDidStartPlaying(userSelected: false)
+                }
             }
-        }
-        
-        if self.shouldPlayAfterLoad {
-            self.play()
         } else {
-            self.pause()
-            self.shouldPlayAfterLoad = true
+            self.audioPlayer.removeAllItems()
+            self.stop()
+            self.playlistIndex = nil
+            self.metadata = nil
+            self.updatePosition()
         }
-        
-        DispatchQueue.main.async {
-            self.mediaChanged()
-        }
-        
-        self.mediaUpdate = false
     }
     
-    func audioPlayer(_ audioPlayer: STKAudioPlayer, didFinishBufferingSourceWithQueueItemId queueItemId: NSObject) {
-        print("Finished buffering item \(queueItemId)")
-    }
-    
-    func audioPlayer(_ audioPlayer: STKAudioPlayer, stateChanged state: STKAudioPlayerState, previousState: STKAudioPlayerState) {
-        print("Player state changed")
-        
-        switch state {
-        case .playing:
-            self.state = .playing
-        case .paused:
-            self.state = .paused
-        default:
+    private func updateState() {
+        if self.audioObjectHasMedia() {
+            if self.audioPlayer.rate > 0 {
+                self.state = .playing
+            } else {
+                self.state = .paused
+            }
+        } else {
             self.state = .idle
         }
     }
     
-    func audioPlayer(_ audioPlayer: STKAudioPlayer, didFinishPlayingQueueItemId queueItemId: NSObject, with stopReason: STKAudioPlayerStopReason, andProgress progress: Double, andDuration duration: Double) {
-        print("Finished playback of item \(queueItemId)")
-        
-        let lastValue = self.mediaUpdate
-        self.mediaUpdate = true
-        
-        if let playlistIndex = self.playlistIndex, playlistIndex < self.playlist.count {
-            if playlistIndex + 1 < self.playlist.count {
-                self.nextItem = self.playlist[playlistIndex + 1]
-            } else {
-                self.shouldPlayAfterLoad = false
-            }
-        }
-        
-        DispatchQueue.main.async {
-            self.mediaChanged()
-        }
-        
-        if let playlistIndex = self.playlistIndex, playlistIndex == self.playlist.count - 1 {
-            self.mediaUpdate = lastValue
-        }
-    }
-    
-    func audioPlayer(_ audioPlayer: STKAudioPlayer, unexpectedError errorCode: STKAudioPlayerErrorCode) {
-        print("STKAudioPlayer error: \(errorCode)")
+    private func updatePosition() {
+        self.positionUpdate = true
+        self.position = CMTimeGetSeconds(self.audioPlayer.currentTime())
+        self.positionUpdate = false
     }
     
     private func sendPlaylistUpdate(newValue: Int) {
@@ -528,24 +478,20 @@ class AudioPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     private func stateChanged() {
-        if !self.mediaUpdate {
-            switch self.state {
-            case .idle:
-                self.notificationCenter.post(name: .playbackStopped, object: nil)
-            case .playing:
-                self.notificationCenter.post(name: .playbackStarted, object: nil)
-            case .paused:
-                self.notificationCenter.post(name: .playbackPaused, object: nil)
-            }
+        switch self.state {
+        case .idle:
+            self.notificationCenter.post(name: .playbackStopped, object: nil)
+            self.killPositionTimer()
+        case .playing:
+            self.notificationCenter.post(name: .playbackStarted, object: nil)
+            self.startPositionTimer()
+        case .paused:
+            self.notificationCenter.post(name: .playbackPaused, object: nil)
+            self.killPositionTimer()
         }
     }
     
     private func mediaChanged() {
-        print("Media changed")
-        
-        if let url = self.currentURL {
-            self.currentAsset = AVURLAsset(url: url)
-        }
         self.updateMetadata()
         self.notificationCenter.post(name: .mediaChanged, object: nil)
     }
