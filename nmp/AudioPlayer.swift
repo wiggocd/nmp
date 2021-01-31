@@ -79,6 +79,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             if !self.positionUpdate {
                 let newTime = CMTime(seconds: position, preferredTimescale: .max)
                 self.audioPlayer.seek(to: newTime)
+                self.positionSet()
             }
         }
     }
@@ -124,6 +125,11 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     func addObservers() {
         self.notificationCenter.addObserver(self, selector: #selector(self.itemDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        self.observations = [
+            self.audioPlayer.observe(\.rate, changeHandler: { _,_ in
+                self.rateChanged()
+            })
+        ]
     }
     
     func removeObservers() {
@@ -498,5 +504,13 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     private func playlistChanged() {
         self.notificationCenter.post(name: .playlistChanged, object: nil)
+    }
+    
+    private func rateChanged() {
+        self.notificationCenter.post(name: .rateChanged, object: nil)
+    }
+    
+    private func positionSet() {
+        self.notificationCenter.post(name: .positionSet, object: nil)
     }
 }

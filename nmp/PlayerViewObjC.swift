@@ -24,6 +24,35 @@ extension PlayerViewController {
         }
     }
     
+    @objc func positionSet() {
+        self.nowPlayingInfoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackProgress] = self.player.position
+    }
+    
+    @objc func updateNowPlayingInfoCenter() {
+        if self.player.hasMedia() {
+            var dict: [String: Any] = [
+                MPNowPlayingInfoPropertyPlaybackRate: self.player.rate,
+                MPNowPlayingInfoPropertyPlaybackProgress: self.player.position,
+                MPMediaItemPropertyPlaybackDuration: self.player.duration
+            ]
+            
+            if let metadata = self.player.metadata, let artwork = metadata.artwork {
+                let coverArt = MPMediaItemArtwork(boundsSize: self.coverImageMinimumSize) { (size) -> NSImage in
+                    return NSImage(cgImage: artwork, size: size)
+                }
+                
+                dict[MPMediaItemPropertyArtwork] = coverArt
+                dict[MPMediaItemPropertyTitle] = metadata.title
+                dict[MPMediaItemPropertyArtist] = metadata.artist
+                dict[MPMediaItemPropertyAlbumTitle] = metadata.album
+            }
+            
+            self.nowPlayingInfoCenter.nowPlayingInfo = dict
+        } else {
+            self.nowPlayingInfoCenter.nowPlayingInfo = [:]
+        }
+    }
+    
     @objc func playlistChanged(_ notification: Notification) {
         self.updatePlaylist()
     }

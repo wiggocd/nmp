@@ -73,7 +73,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         self.addLocalMonitorsForEvents()
         
         self.updatePlaylist()
-        self.initialisePlayerSession()
+        self.initialiseMediaSession()
     
         self.setVolumeFromDefaults()
         self.setPlaylistHiddenFromDefaults()
@@ -203,6 +203,8 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         self.notificationCenter.addObserver(self, selector: #selector(self.refresh), name: .preferencesChanged, object: nil)
         self.notificationCenter.addObserver(self, selector: #selector(self.playlistChanged), name: .playlistChanged, object: nil)
         self.notificationCenter.addObserver(self, selector: #selector(self.mediaChanged), name: .mediaChanged, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(self.updateNowPlayingInfoCenter), name: .rateChanged, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(self.positionSet), name: .positionSet, object: nil)
         self.notificationCenter.addObserver(self, selector: #selector(self.playbackStarted), name: .playbackStarted, object: nil)
         self.notificationCenter.addObserver(self, selector: #selector(self.playbackPaused), name: .playbackPaused, object: nil)
         self.notificationCenter.addObserver(self, selector: #selector(self.playbackStopped), name: .playbackStopped, object: nil)
@@ -242,7 +244,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         self.playlistOutlineView.setDraggingSourceOperationMask(NSDragOperation.every, forLocal: true)
     }
     
-    func initialisePlayerSession() {
+    func initialiseMediaSession() {
         self.remoteCommandCenter.togglePlayPauseCommand.isEnabled = true
         self.remoteCommandCenter.togglePlayPauseCommand.addTarget(self, action: #selector(self.togglePlayPauseCommandAction))
         
@@ -416,31 +418,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     func updateDuration() {
         self.timeSlider.maxValue = self.player.duration
         self.durationLabel.stringValue = to_hhmmss(seconds: self.player.duration)
-    }
-    
-    func updateNowPlayingInfoCenter() {
-        if self.player.hasMedia() {
-            var dict: [String: Any] = [
-                MPNowPlayingInfoPropertyPlaybackRate: self.player.rate,
-                MPNowPlayingInfoPropertyPlaybackProgress: self.player.position,
-                MPMediaItemPropertyPlaybackDuration: self.player.duration
-            ]
-            
-            if let metadata = self.player.metadata, let artwork = metadata.artwork {
-                let coverArt = MPMediaItemArtwork(boundsSize: self.coverImageMinimumSize) { (size) -> NSImage in
-                    return NSImage(cgImage: artwork, size: size)
-                }
-                
-                dict[MPMediaItemPropertyArtwork] = coverArt
-                dict[MPMediaItemPropertyTitle] = metadata.title
-                dict[MPMediaItemPropertyArtist] = metadata.artist
-                dict[MPMediaItemPropertyAlbumTitle] = metadata.album
-            }
-            
-            self.nowPlayingInfoCenter.nowPlayingInfo = dict
-        } else {
-            self.nowPlayingInfoCenter.nowPlayingInfo = [:]
-        }
     }
     
     func setVolumeFromDefaults() {

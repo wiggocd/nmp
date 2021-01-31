@@ -232,13 +232,13 @@ CA
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HM5-Hp-Buj">
-                                            <rect key="frame" x="10" y="10" width="316" height="49"/>
+                                            <rect key="frame" x="10" y="10" width="316" height="99"/>
                                             <clipView key="contentView" id="A8b-QK-RMP">
-                                                <rect key="frame" x="1" y="1" width="314" height="47"/>
+                                                <rect key="frame" x="1" y="1" width="314" height="97"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnSelection="YES" columnResizing="NO" emptySelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="mjt-PA-sGQ" viewBased="YES" id="N36-pr-j6a">
-                                                        <rect key="frame" x="0.0" y="0.0" width="314" height="22"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="314" height="72"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -437,7 +437,7 @@ CA
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="4WO-dU-R2m" customClass="NonUserScrollableScrollView" customModule="nmp" customModuleProvider="target">
-                                <rect key="frame" x="8" y="334" width="285" height="16"/>
+                                <rect key="frame" x="8" y="330" width="285" height="16"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="cW8-BX-DC6">
                                     <rect key="frame" x="0.0" y="0.0" width="285" height="16"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -472,7 +472,7 @@ CA
                                 </scroller>
                             </scrollView>
                             <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="bVE-4L-UX9" customClass="NonUserScrollableScrollView" customModule="nmp" customModuleProvider="target">
-                                <rect key="frame" x="8" y="314" width="285" height="18"/>
+                                <rect key="frame" x="8" y="310" width="285" height="18"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="41Q-Q6-7UZ">
                                     <rect key="frame" x="0.0" y="0.0" width="285" height="18"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -507,7 +507,7 @@ CA
                                 </scroller>
                             </scrollView>
                             <box boxType="custom" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="rlW-Zc-2Lz" userLabel="Image Box">
-                                <rect key="frame" x="83" y="363" width="135" height="135"/>
+                                <rect key="frame" x="83" y="359" width="135" height="135"/>
                                 <view key="contentView" id="uRu-S5-sFs">
                                     <rect key="frame" x="1" y="1" width="133" height="133"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -531,7 +531,7 @@ CA
                                 <color key="borderColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </box>
                             <box boxType="custom" cornerRadius="16" title="Box" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O24-Vm-hid">
-                                <rect key="frame" x="8" y="208" width="285" height="97"/>
+                                <rect key="frame" x="8" y="204" width="285" height="97"/>
                                 <view key="contentView" id="gLo-5d-eza">
                                     <rect key="frame" x="1" y="1" width="283" height="95"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -575,12 +575,12 @@ CA
                                                 <action selector="playlistAction:" target="XfG-lQ-9wD" id="1IJ-Dd-npU"/>
                                             </connections>
                                         </button>
-                                        <button horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Oqy-yU-Mwh">
+                                        <button horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Oqy-yU-Mwh" customClass="CustomButton">
                                             <rect key="frame" x="172" y="17" width="24" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="2k7-Wj-DDV"/>
                                             </constraints>
-                                            <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="Play" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="2iH-82-h8c">
+                                            <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="Play" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="2iH-82-h8c" customClass="CustomButtonCell">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -673,19 +673,19 @@ CA
                                 <color key="fillColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="0.19561509683098591" colorSpace="custom" customColorSpace="sRGB"/>
                             </box>
                             <box boxType="custom" cornerRadius="4" title="Box" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e9t-MM-OS7">
-                                <rect key="frame" x="8" y="8" width="285" height="191"/>
+                                <rect key="frame" x="8" y="8" width="285" height="187"/>
                                 <view key="contentView" id="c5M-73-KtE">
-                                    <rect key="frame" x="1" y="1" width="283" height="189"/>
+                                    <rect key="frame" x="1" y="1" width="283" height="185"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <scrollView autoresizesSubviews="NO" borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZUU-ru-jEQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="283" height="189"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="283" height="185"/>
                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="vu6-q2-hY3">
-                                                <rect key="frame" x="0.0" y="0.0" width="283" height="189"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="283" height="185"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" outlineTableColumn="wnY-SM-EmK" id="mzH-Gz-28f" customClass="PlaylistOutlineView" customModule="nmp" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="283" height="189"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="283" height="185"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <size key="intercellSpacing" width="2" height="3"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -887,7 +887,7 @@ CA
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mpE-4J-reV">
-                                <rect key="frame" x="13" y="253" width="156" height="32"/>
+                                <rect key="frame" x="13" y="253" width="155" height="32"/>
                                 <buttonCell key="cell" type="push" title="Reset User Defaults" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="V2g-na-FEZ">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>

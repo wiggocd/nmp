@@ -21,6 +21,10 @@ extension Notification.Name {
         return .init("AudioPlayer.playlistChanged")
     }
     
+    static var rateChanged: Notification.Name {
+        return .init("AudioPlayer.rateChanged")
+    }
+    
     static var playbackStarted: Notification.Name {
         return .init("AudioPlayer.playbackStarted")
     }
@@ -33,8 +37,8 @@ extension Notification.Name {
         return .init("AudioPlayer.playbackStopped")
     }
     
-    static var trackPositionChanged: Notification.Name {
-        return .init("AudioPlayer.trackPositionChanged")
+    static var positionSet: Notification.Name {
+        return .init("AudioPlayer.positionSet")
     }
     
     static var playPause: Notification.Name {
