@@ -16,7 +16,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     private var positionTimer: Timer?
     private var indexUpdate = false
     private var positionUpdate = false
-    private var nextItem: AVPlayerItem?
     private var lastPlaylistCount = 0
     private var observations: [NSKeyValueObservation] = []
     
@@ -36,7 +35,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             
             self.application?.userDefaults.set(strings, forKey: "Playlist")
             self.lastPlaylistCount = playlist.count
-            self.updateNextItem()
         }
     }
     
@@ -433,17 +431,10 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     @objc private func itemDidFinishPlaying() {
         if self.playlistIndex != self.playlist.count - 1 {
-            self.updateNextItem()
-            
             self.updateState()
 
             DispatchQueue.main.async {
-                if self.nextItem != nil {
-                    if self.nextItem?.duration != self.audioPlayer.currentItem?.duration {
-                        while self.nextItem?.asset.metadata != self.audioPlayer.currentItem?.asset.metadata {}
-                    }
-                    self.itemDidStartPlaying(userSelected: false)
-                }
+                self.itemDidStartPlaying(userSelected: false)
             }
         } else {
             self.audioPlayer.removeAllItems()
@@ -451,16 +442,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             self.playlistIndex = nil
             self.metadata = nil
             self.updatePosition()
-        }
-    }
-    
-    private func updateNextItem() {
-        if let playlistIndex = self.playlistIndex, playlistIndex < self.playlist.count {
-            if playlistIndex + 1 < self.playlist.count {
-                self.nextItem = AVPlayerItem(url: self.playlist[playlistIndex + 1])
-            } else {
-                self.nextItem = nil
-            }
         }
     }
     
