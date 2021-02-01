@@ -36,6 +36,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             
             self.application?.userDefaults.set(strings, forKey: "Playlist")
             self.lastPlaylistCount = playlist.count
+            self.updateNextItem()
         }
     }
     
@@ -432,13 +433,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     @objc private func itemDidFinishPlaying() {
         if self.playlistIndex != self.playlist.count - 1 {
-            if let playlistIndex = self.playlistIndex, playlistIndex < self.playlist.count {
-                if playlistIndex + 1 < self.playlist.count {
-                    self.nextItem = AVPlayerItem(url: self.playlist[playlistIndex + 1])
-                } else {
-                    self.nextItem = nil
-                }
-            }
+            self.updateNextItem()
             
             self.updateState()
 
@@ -456,6 +451,16 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             self.playlistIndex = nil
             self.metadata = nil
             self.updatePosition()
+        }
+    }
+    
+    private func updateNextItem() {
+        if let playlistIndex = self.playlistIndex, playlistIndex < self.playlist.count {
+            if playlistIndex + 1 < self.playlist.count {
+                self.nextItem = AVPlayerItem(url: self.playlist[playlistIndex + 1])
+            } else {
+                self.nextItem = nil
+            }
         }
     }
     
