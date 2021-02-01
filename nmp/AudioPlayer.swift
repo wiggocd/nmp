@@ -25,7 +25,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         didSet {
             let removalStartingIndex = self.playlistIndex == nil ? 0
                 : self.playlistIndex!
-            if playlist.count < self.lastPlaylistCount { updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: removalStartingIndex) }
+            updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: removalStartingIndex)
             self.playlistChanged()
             
             var strings: [String] = []
