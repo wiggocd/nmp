@@ -23,9 +23,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     var playlist: [URL] = [] {
         didSet {
-            let removalStartingIndex = self.playlistIndex == nil ? 0
+            let startingIndex = self.playlistIndex == nil ? 0
                 : self.playlistIndex!
-            updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: removalStartingIndex)
+            updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: startingIndex)
             self.playlistChanged()
             
             var strings: [String] = []
@@ -194,6 +194,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             
             if updateIndexIfNew && !playerHadMedia { self.playlistIndex = 0 }
             if !shouldPlay && !audioObjectHasMedia() { self.pause() }
+            
+            self.startPositionTimer()
         }
     }
     
@@ -242,6 +244,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 if updateIndexIfNew { self.playlistIndex = 0 }
                 if !shouldPlay { self.pause() }
             }
+            
+            self.startPositionTimer()
         }
     }
     
