@@ -175,7 +175,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         self.positionLabel.textColor = .gray
         self.durationLabel.textColor = .gray
         
-        self.controlBox.appearance = self.darkAppearance
+//        self.controlBox.appearance = self.darkAppearance
         self.playlistBox.appearance = self.darkAppearance
         
         self.playlistOutlineView.appearance = self.darkAppearance
@@ -193,9 +193,9 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
             self.playlistOutlineView.backgroundColor = .controlBackgroundColor
         }
         
-        for button in self.buttons {
-            button.appearance = self.darkAppearance
-        }
+//        for button in self.buttons {
+//            button.appearance = self.darkAppearance
+//        }
         
         self.view.window?.appearance = self.darkAppearance
     }
