@@ -18,6 +18,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     private var positionUpdate = false
     private var lastPlaylistCount = 0
     private var observations: [NSKeyValueObservation] = []
+    private var lastItem: AVPlayerItem?
     
     var audioPlayer = AVQueuePlayer()
     
@@ -62,6 +63,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             && playlistIndex < self.playlist.count {
             return self.playlist[playlistIndex]
         }
+        
         return nil
     }
     

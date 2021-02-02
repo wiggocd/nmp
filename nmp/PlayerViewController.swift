@@ -36,6 +36,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     var boxes: [NSBox] = []
     var sliders: [NSSlider] = []
     var newPlaybackPositionTime: TimeInterval! = nil
+    var lastURL: URL?
     
     @IBOutlet var titleTextView: NSTextView!
     @IBOutlet var detailsTextView: NSTextView!
@@ -203,7 +204,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         self.notificationCenter.addObserver(self, selector: #selector(self.refresh), name: .preferencesChanged, object: nil)
         self.notificationCenter.addObserver(self, selector: #selector(self.playlistChanged), name: .playlistChanged, object: nil)
         self.notificationCenter.addObserver(self, selector: #selector(self.mediaChanged), name: .mediaChanged, object: nil)
-        self.notificationCenter.addObserver(self, selector: #selector(self.updateNowPlayingInfoCenter), name: .rateChanged, object: nil)
+        self.notificationCenter.addObserver(self, selector: #selector(self.rateChanged), name: .rateChanged, object: nil)
         self.notificationCenter.addObserver(self, selector: #selector(self.positionSet), name: .positionSet, object: nil)
         self.notificationCenter.addObserver(self, selector: #selector(self.playbackStarted), name: .playbackStarted, object: nil)
         self.notificationCenter.addObserver(self, selector: #selector(self.playbackPaused), name: .playbackPaused, object: nil)
@@ -413,6 +414,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         self.updatePosition()
         
         self.updateNowPlayingInfoCenter()
+        self.lastURL = self.player.currentURL
     }
     
     func updateDuration() {

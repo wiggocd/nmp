@@ -19,6 +19,7 @@ extension PlayerViewController {
         self.timeSlider.doubleValue = self.player.position
         self.positionLabel.stringValue = to_hhmmss(seconds: self.player.position)
         if self.newPlaybackPositionTime != nil {
+            self.player.position = self.newPlaybackPositionTime
             self.nowPlayingInfoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.player.position
             self.newPlaybackPositionTime = nil
         }
@@ -26,6 +27,13 @@ extension PlayerViewController {
     
     @objc func positionSet() {
         self.nowPlayingInfoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackProgress] = self.player.position
+    }
+    
+    @objc func rateChanged() {
+        if self.player.currentURL != self.lastURL {
+            self.updateNowPlayingInfoCenter()
+        }
+        self.lastURL = self.player.currentURL
     }
     
     @objc func updateNowPlayingInfoCenter() {
@@ -124,7 +132,7 @@ extension PlayerViewController {
     @objc func changePlaybackPositionCommandAction(_ sender: Any?) -> MPRemoteCommandHandlerStatus {
         if let sender = sender as? MPChangePlaybackPositionCommandEvent {
             self.newPlaybackPositionTime = sender.positionTime
-            self.player.position = self.newPlaybackPositionTime
+            self.updatePosition()
             return .success
         }
         return .commandFailed
