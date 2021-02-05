@@ -18,7 +18,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     private var positionUpdate = false
     private var lastPlaylistCount = 0
     private var observations: [NSKeyValueObservation] = []
-    private var lastItem: AVPlayerItem?
+    private var lastPosition: TimeInterval = 0
+    private var lastDuration: TimeInterval = 0
     
     var audioPlayer = AVQueuePlayer()
     
@@ -77,11 +78,18 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     var position: TimeInterval = 0 {
         didSet {
+            if self.lastPosition + 1 >= self.lastDuration {
+                self.mediaChanged()
+            }
+            
             if !self.positionUpdate {
                 let newTime = CMTime(seconds: position, preferredTimescale: .max)
                 self.audioPlayer.seek(to: newTime)
                 self.positionSet()
             }
+            
+            self.lastPosition = position
+            self.lastDuration = self.duration
         }
     }
     
