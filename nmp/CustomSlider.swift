@@ -25,8 +25,9 @@ class CustomSliderCell: NSSliderCell {
     var barHeight: CGFloat = 3
     var barRadius: CGFloat = 2.5
     var backgroundColor = NSColor.gray.withAlphaComponent(0.5)
-    var filledColor = NSColor.lightGray
+    var filledColor = NSColor.darkGray
     var mouseDown = false
+    var barRect: NSRect?
     
     var position: CGFloat {
         get {
@@ -54,23 +55,21 @@ class TimeSliderCell: CustomSliderCell {
         var newRect = rect
         newRect.size.height = self.barHeight
         
-        let value = self.position
-        
-        let finalWidth = value * controlView!.frame.width
-        
-        var leftRect = newRect
-        leftRect.size.width = finalWidth
-        
         let bg = NSBezierPath(roundedRect: newRect, xRadius: self.barRadius, yRadius: self.barRadius)
         self.backgroundColor.setFill()
         bg.fill()
         
-        let active = NSBezierPath(roundedRect: leftRect, xRadius: self.barRadius, yRadius: self.barRadius)
-        self.filledColor.setFill()
-        active.fill()
+        self.barRect = newRect
     }
     
     override func drawKnob(_ knobRect: NSRect) {
+        if let barRect = self.barRect {
+            let filledRect = NSRect(x: barRect.minX, y: barRect.minY, width: knobRect.minX, height: barRect.height)
+            let active = NSBezierPath(roundedRect: filledRect, xRadius: self.barRadius, yRadius: self.barRadius)
+            self.filledColor.setFill()
+            active.fill()
+        }
+        
         let size = NSSize(width: knobRect.width, height: knobRect.height / 3)
         let rect = NSRect(x: knobRect.minX, y: knobRect.minY + size.height / 1.5, width: size.width, height: size.height)
         let path = NSBezierPath(roundedRect: rect, xRadius: self.knobRadius, yRadius: self.knobRadius)
@@ -84,19 +83,21 @@ class VolumeSliderCell: CustomSliderCell {
         var newRect = rect
         newRect.size.height = self.barHeight
         
-        let value = self.position
-        
-        let finalWidth = value * controlView!.frame.width - 5
-        
-        var leftRect = newRect
-        leftRect.size.width = finalWidth
-        
         let bg = NSBezierPath(roundedRect: newRect, xRadius: self.barRadius, yRadius: self.barRadius)
         self.backgroundColor.setFill()
         bg.fill()
         
-        let active = NSBezierPath(roundedRect: leftRect, xRadius: self.barRadius, yRadius: self.barRadius)
-        self.filledColor.setFill()
-        active.fill()
+        self.barRect = newRect
+    }
+    
+    override func drawKnob(_ knobRect: NSRect) {
+        if let barRect = self.barRect {
+            let filledRect = NSRect(x: barRect.minX, y: barRect.minY, width: knobRect.minX, height: barRect.height)
+            let active = NSBezierPath(roundedRect: filledRect, xRadius: self.barRadius, yRadius: self.barRadius)
+            self.filledColor.setFill()
+            active.fill()
+        }
+        
+        super.drawKnob(knobRect)
     }
 }
