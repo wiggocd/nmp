@@ -13,14 +13,14 @@ class PlaylistOutlineView: NSOutlineView {
     let notificationCenter = NotificationCenter.default
     let deleteAnimation: NSTableView.AnimationOptions = .init()
     
-    var currentRow: Int!
+    var rowUnderMouse: Int!
     var removedIndexes: IndexSet = []
     
     override func menu(for event: NSEvent) -> NSMenu? {
         let point = convert(event.locationInWindow, from: nil)
-        self.currentRow = self.row(at: point)
+        self.rowUnderMouse = self.row(at: point)
         
-        if self.currentRow > -1 {
+        if self.rowUnderMouse > -1 {
             let menu = NSMenu()
             let deleteItem = NSMenuItem(title: "Delete", action: #selector(removeRowsConditionally), keyEquivalent: "\u{08}")
             deleteItem.keyEquivalentModifierMask = [.command]
@@ -33,7 +33,7 @@ class PlaylistOutlineView: NSOutlineView {
     }
     
     @objc func removeRowsConditionally() {
-        if self.selectedRowIndexes.count > 0 {
+        if self.selectedRowIndexes.count > 0 && self.selectedRowIndexes.contains(self.rowUnderMouse) {
             self.removeSelectedRows()
         } else {
             self.removeCurrentRow()
@@ -47,9 +47,9 @@ class PlaylistOutlineView: NSOutlineView {
     }
     
     func removeCurrentRow() {
-        self.removedIndexes = [self.currentRow] as IndexSet
+        self.removedIndexes = [self.rowUnderMouse] as IndexSet
         removeItems(at: self.removedIndexes, inParent: nil, withAnimation: self.deleteAnimation)
         self.notificationCenter.post(name: .playlistIndexesRemoved, object: self)
-        self.currentRow = nil
+        self.rowUnderMouse = nil
     }
 }
