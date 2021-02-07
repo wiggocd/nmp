@@ -211,7 +211,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     private func updatePlayerQueue(fromPlaylist playlist: [URL], withStartingIndex startingIndex: Int = 0) {
         if playlist.count > 0 {
-            if 1 < self.audioPlayer.items().count {
+            let lastQueueCount = self.audioPlayer.items().count
+            if 1 < lastQueueCount {
                 var count = self.audioPlayer.items().count
                 
                 while 1 < count {
@@ -220,7 +221,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 }
             }
             
-            let queueStartingIndex = startingIndex + 1
+            let queueCount = self.audioPlayer.items().count
+            let queueStartingIndex = queueCount < lastQueueCount ? startingIndex + 1 : startingIndex
             if queueStartingIndex < playlist.count {
                 for i in queueStartingIndex..<playlist.count {
                     self.audioPlayer.insert(AVPlayerItem(url: playlist[i]), after: nil)
