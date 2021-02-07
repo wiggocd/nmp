@@ -210,8 +210,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     private func updatePlayerQueue(fromPlaylist playlist: [URL], withStartingIndex startingIndex: Int = 0) {
-        print(startingIndex)
-        
         if playlist.count > 0 {
             if 1 < self.audioPlayer.items().count {
                 var count = self.audioPlayer.items().count

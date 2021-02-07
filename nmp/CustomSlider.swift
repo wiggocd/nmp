@@ -13,6 +13,12 @@ class CustomSlider: NSSlider {
     override func setNeedsDisplay(_ invalidRect: NSRect) {
         super.setNeedsDisplay(bounds)
     }
+    
+    override func mouseDown(with event: NSEvent) {
+        if let cell = self.cell as? CustomSliderCell { cell.mouseDown = true }
+        super.mouseDown(with: event)
+        if let cell = self.cell as? CustomSliderCell { cell.mouseDown = false }
+    }
 }
 
 class CustomSliderCell: NSSliderCell {
@@ -20,6 +26,7 @@ class CustomSliderCell: NSSliderCell {
     var barRadius: CGFloat = 2.5
     var backgroundColor = NSColor.gray.withAlphaComponent(0.5)
     var filledColor = NSColor.lightGray
+    var mouseDown = false
     
     var position: CGFloat {
         get {
@@ -31,7 +38,17 @@ class CustomSliderCell: NSSliderCell {
 
 class TimeSliderCell: CustomSliderCell {
     var knobRadius: CGFloat = 1.2
-    var knobColor = NSColor.lightGray
+    var standardKnobColor = NSColor.lightGray
+    var alternateKnobColor = NSColor.gray
+    var knobColor: NSColor {
+        get {
+            if self.mouseDown {
+                return self.alternateKnobColor
+            } else {
+                return self.standardKnobColor
+            }
+        }
+    }
     
     override func drawBar(inside rect: NSRect, flipped: Bool) {
         var newRect = rect
