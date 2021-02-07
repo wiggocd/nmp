@@ -210,20 +210,21 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     }
     
     private func updatePlayerQueue(fromPlaylist playlist: [URL], withStartingIndex startingIndex: Int = 0) {
+        print(startingIndex)
+        
         if playlist.count > 0 {
             if 1 < self.audioPlayer.items().count {
-                var i = 1
                 var count = self.audioPlayer.items().count
                 
-                while i < count {
-                    self.audioPlayer.remove(self.audioPlayer.items()[i])
-                    i+=1
+                while 1 < count {
+                    self.audioPlayer.remove(self.audioPlayer.items()[1])
                     count = self.audioPlayer.items().count
                 }
             }
             
-            if startingIndex < playlist.count {
-                for i in startingIndex..<playlist.count {
+            let queueStartingIndex = startingIndex + 1
+            if queueStartingIndex < playlist.count {
+                for i in queueStartingIndex..<playlist.count {
                     self.audioPlayer.insert(AVPlayerItem(url: playlist[i]), after: nil)
                 }
             }
