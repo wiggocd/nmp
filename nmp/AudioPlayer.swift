@@ -20,6 +20,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     private var observations: [NSKeyValueObservation] = []
     private var lastPosition: TimeInterval = 0
     private var lastDuration: TimeInterval = 0
+    private var lastPlaylist: [URL] = []
     
     var audioPlayer = AVQueuePlayer()
     
@@ -36,6 +37,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             }
             
             self.application?.userDefaults.set(strings, forKey: "Playlist")
+            self.lastPlaylist = playlist
             self.lastPlaylistCount = playlist.count
         }
     }
@@ -211,22 +213,32 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     private func updatePlayerQueue(fromPlaylist playlist: [URL], withStartingIndex startingIndex: Int = 0) {
         if playlist.count > 0 {
-            let lastQueueCount = self.audioPlayer.items().count
-            if 1 < lastQueueCount {
-                var count = self.audioPlayer.items().count
-                
-                while 1 < count {
-                    self.audioPlayer.remove(self.audioPlayer.items()[1])
-                    count = self.audioPlayer.items().count
-                }
+            let currentItemRemoved: Bool
+            if let playlistIndex = self.playlistIndex,
+               playlistIndex < playlist.count && playlistIndex < self.lastPlaylist.count
+                && playlist[playlistIndex] != self.lastPlaylist[playlistIndex] {
+                currentItemRemoved = true
+            } else {
+                currentItemRemoved = false
             }
             
-            let queueCount = self.audioPlayer.items().count
-            let queueStartingIndex = queueCount < lastQueueCount ? startingIndex + 1 : startingIndex
+            let lastQueueCount = self.audioPlayer.items().count
+            let queueStartingIndex = self.playlist.count - startingIndex < lastQueueCount && !currentItemRemoved ?
+                startingIndex + 1 : startingIndex
             if queueStartingIndex < playlist.count {
                 for i in queueStartingIndex..<playlist.count {
                     self.audioPlayer.insert(AVPlayerItem(url: playlist[i]), after: nil)
                 }
+            }
+            
+            var i = 1
+            while i < lastQueueCount {
+                self.audioPlayer.remove(self.audioPlayer.items()[1])
+                i+=1
+            }
+            
+            if currentItemRemoved {
+                self.audioPlayer.replaceCurrentItem(with: nil)
             }
         } else {
             self.audioPlayer.removeAllItems()
