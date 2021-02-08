@@ -872,15 +872,28 @@ CA
                                     </connections>
                                 </popUpButtonCell>
                             </popUpButton>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wbT-Bo-w9S">
+                                <rect key="frame" x="18" y="37" width="118" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="114" id="YZn-vx-lPL"/>
+                                </constraints>
+                                <textFieldCell key="cell" alignment="right" title="Using non-System appearance may cause issues" id="bfA-mO-vms">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstItem="Y6h-w3-HI3" firstAttribute="leading" secondItem="stP-hq-Cc1" secondAttribute="leading" id="Ak7-Jm-gD3"/>
+                            <constraint firstItem="wbT-Bo-w9S" firstAttribute="trailing" secondItem="DBE-yt-jSc" secondAttribute="trailing" id="BT4-H4-8Af"/>
                             <constraint firstItem="DBE-yt-jSc" firstAttribute="top" secondItem="3wv-DY-s7j" secondAttribute="top" constant="20" symbolic="YES" id="Jkz-e1-yNC"/>
                             <constraint firstItem="stP-hq-Cc1" firstAttribute="leading" secondItem="Ib5-jq-lOi" secondAttribute="leading" id="Mik-6S-irl"/>
                             <constraint firstItem="stP-hq-Cc1" firstAttribute="top" secondItem="Y6h-w3-HI3" secondAttribute="bottom" constant="5" id="SjU-M9-B38"/>
                             <constraint firstItem="DBE-yt-jSc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="3wv-DY-s7j" secondAttribute="leading" constant="20" symbolic="YES" id="UeQ-I7-Kwr"/>
                             <constraint firstAttribute="bottom" secondItem="hEM-GM-f7Q" secondAttribute="bottom" constant="12" symbolic="YES" id="YUL-Qq-bpM"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Y6h-w3-HI3" secondAttribute="trailing" constant="20" symbolic="YES" id="cqC-Vy-AZB"/>
+                            <constraint firstItem="wbT-Bo-w9S" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="3wv-DY-s7j" secondAttribute="leading" constant="20" id="dBg-eA-egL"/>
                             <constraint firstItem="hEM-GM-f7Q" firstAttribute="centerX" secondItem="3wv-DY-s7j" secondAttribute="centerX" id="f0k-fR-kOX"/>
                             <constraint firstItem="hEM-GM-f7Q" firstAttribute="leading" secondItem="DBE-yt-jSc" secondAttribute="trailing" constant="27" id="hmp-er-QEr"/>
                             <constraint firstItem="Ib5-jq-lOi" firstAttribute="top" secondItem="stP-hq-Cc1" secondAttribute="bottom" constant="6" symbolic="YES" id="kJw-2G-Kaw"/>
@@ -890,6 +903,7 @@ CA
                             <constraint firstAttribute="bottom" secondItem="Ib5-jq-lOi" secondAttribute="bottom" constant="47" id="p9I-1U-ysP"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="stP-hq-Cc1" secondAttribute="trailing" constant="20" symbolic="YES" id="vWQ-JW-JMQ"/>
                             <constraint firstItem="Y6h-w3-HI3" firstAttribute="top" secondItem="hEM-GM-f7Q" secondAttribute="top" id="yEm-iZ-M3B"/>
+                            <constraint firstItem="wbT-Bo-w9S" firstAttribute="firstBaseline" secondItem="stP-hq-Cc1" secondAttribute="baseline" id="zex-4F-nf8"/>
                         </constraints>
                     </view>
                     <connections>
