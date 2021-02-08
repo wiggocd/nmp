@@ -56,6 +56,10 @@ class Application: NSApplication {
         } else {
             self.showTransparentAppearance = self.userDefaults.bool(forKey: "ShowTransparentAppearance")
         }
+        
+        if let appearanceName = self.userDefaults.string(forKey: "NSAppearanceName") {
+            self.appearance = NSAppearance(named: NSAppearance.Name(rawValue: appearanceName))
+        }
     }
     
     func resetUserDefaults() {
