@@ -104,14 +104,15 @@ class GeneralPreferencesViewController: NSViewController {
         if let selectedTitle = self.appearancePopUp.titleOfSelectedItem,
            self.appearanceNames.contains(selectedTitle) {
             if selectedTitle == "System" {
-                self.application?.appearance = NSAppearance()
+                self.application?.appearance = self.application?.systemAppearance
                 self.application?.userDefaults.removeObject(forKey: "NSAppearanceName")
+            } else {
+                self.application?.appearance = self.appearances[selectedTitle] as? NSAppearance
+                self.application?.userDefaults.setValue(self.application?.appearance?.name, forKey: "NSAppearanceName")
             }
             
-            self.application?.appearance = self.appearances[selectedTitle] as? NSAppearance
             self.notificationCenter.post(name: .preferencesChanged, object: nil)
             self.appearancePopUp.title = selectedTitle
-            self.application?.userDefaults.setValue(self.application?.appearance?.name, forKey: "NSAppearanceName")
         }
     }
     

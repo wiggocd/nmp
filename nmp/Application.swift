@@ -19,6 +19,8 @@ class Application: NSApplication {
     let bgBlurRadius: CGFloat = 50
     let animationDuration: TimeInterval = 0.5
     
+    var systemAppearance: NSAppearance?
+    
     var colorBg: Bool! {
         didSet {
             self.userDefaults.set(colorBg, forKey: "ColorBg")
@@ -33,6 +35,7 @@ class Application: NSApplication {
     
     override init() {
         super.init()
+        self.systemAppearance = self.appearance
         self.initialiseUserDefaults()
     }
     
