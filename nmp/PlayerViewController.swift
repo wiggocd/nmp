@@ -295,15 +295,20 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         }
     }
     
-    func resetCoverImage() {
-        self.coverImageView.image = self.defaultCoverImage
-    }
-    
     func setCoverImageShadow() {
         let shadow = NSShadow()
         shadow.shadowColor = NSColor(white: 0.2, alpha: 0.5)
         shadow.shadowBlurRadius = 10
         self.coverImageBox.shadow = shadow
+    }
+    
+    func resetCoverImage() {
+        self.coverImageView.image = self.defaultCoverImage
+        self.resetCoverImageShadow()
+    }
+    
+    func resetCoverImageShadow() {
+        self.coverImageBox.shadow = nil
     }
     
     func setBackgroundViewAndAppearance() {
