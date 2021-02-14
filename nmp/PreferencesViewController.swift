@@ -36,20 +36,6 @@ class GeneralPreferencesViewController: NSViewController {
     let application = NSApplication.shared as? Application
     let notificationCenter = NotificationCenter.default
     
-    let appearanceNames = [
-        "System",
-        "Light",
-        "Dark"
-    ]
-    
-    let appearances = [
-        "System": NSApplication.shared.appearance,
-        "Light": NSAppearance(named: .aqua),
-        "Dark": NSAppearance(named: .darkAqua)
-    ]
-    
-    
-    @IBOutlet weak var appearancePopUp: NSPopUpButton!
     @IBOutlet weak var colorBgButton: NSButton!
     @IBOutlet weak var transparentAppearanceButton: NSButton!
     
@@ -67,7 +53,51 @@ class GeneralPreferencesViewController: NSViewController {
         } else {
             self.transparentAppearanceButton.state = .off
         }
-        
+    }
+    
+    @IBAction func colorBgAction(_ sender: Any) {
+        if let sender = sender as? NSButton {
+            if sender.state == .on {
+                self.application?.colorBg = true
+            } else {
+                self.application?.colorBg = false
+            }
+            
+            self.notificationCenter.post(name: .preferencesChanged, object: nil)
+        }
+    }
+    
+    @IBAction func transparentAppearanceAction(_ sender: Any) {
+        if let sender = sender as? NSButton {
+            if sender.state == .on {
+                self.application?.showTransparentAppearance = true
+            } else {
+                self.application?.showTransparentAppearance = false
+            }
+            
+            self.notificationCenter.post(name: .preferencesChanged, object: nil)
+        }
+    }
+}
+
+class AdvancedPreferencesViewController: NSViewController {
+    let application = NSApplication.shared as? Application
+    let notificationCenter = NotificationCenter.default
+    let appearanceNames = [
+        "System",
+        "Light",
+        "Dark"
+    ]
+    
+    let appearances = [
+        "System": NSApplication.shared.appearance,
+        "Light": NSAppearance(named: .aqua),
+        "Dark": NSAppearance(named: .darkAqua)
+    ]
+    
+    @IBOutlet weak var appearancePopUp: NSPopUpButton!
+    
+    override func viewDidLoad() {
         self.initialisePopUpMenus()
     }
     
@@ -115,35 +145,6 @@ class GeneralPreferencesViewController: NSViewController {
             self.appearancePopUp.title = selectedTitle
         }
     }
-    
-    @IBAction func colorBgAction(_ sender: Any) {
-        if let sender = sender as? NSButton {
-            if sender.state == .on {
-                self.application?.colorBg = true
-            } else {
-                self.application?.colorBg = false
-            }
-            
-            self.notificationCenter.post(name: .preferencesChanged, object: nil)
-        }
-    }
-    
-    @IBAction func transparentAppearanceAction(_ sender: Any) {
-        if let sender = sender as? NSButton {
-            if sender.state == .on {
-                self.application?.showTransparentAppearance = true
-            } else {
-                self.application?.showTransparentAppearance = false
-            }
-            
-            self.notificationCenter.post(name: .preferencesChanged, object: nil)
-        }
-    }
-}
-
-class AdvancedPreferencesViewController: NSViewController {
-    let application = NSApplication.shared as? Application
-    let notificationCenter = NotificationCenter.default
     
     @IBAction func resetUserDefaultsAction(_ sender: Any) {
         self.application?.resetUserDefaults()
