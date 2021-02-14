@@ -297,7 +297,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     
     func resetCoverImage() {
         self.coverImageView.image = self.defaultCoverImage
-        self.setCoverImageShadow()
     }
     
     func setCoverImageShadow() {
