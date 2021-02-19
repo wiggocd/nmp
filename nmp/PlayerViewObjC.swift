@@ -37,7 +37,7 @@ extension PlayerViewController {
     }
     
     @objc func updateNowPlayingInfoCenter() {
-        // MARK: Todo - fix position incrementing whilst paused, this could be to do with the player class
+        // MARK: Todo - fix position incrementing whilst paused. This problem also exists within Apple's Now Playing example project I believe, so may not be a problem with this project in particular
         
         if self.player.hasMedia() {
             var dict: [String: Any] = [
