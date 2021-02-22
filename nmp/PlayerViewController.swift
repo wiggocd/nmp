@@ -386,7 +386,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     }
     
     func updatePlaylist() {
-        self.createPlaylistItems(urls: self.player.playlist)
+        self.createPlaylistItems(urls: self.player.items())
         self.playlistOutlineView.reloadData()
     }
     

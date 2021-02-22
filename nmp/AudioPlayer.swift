@@ -21,14 +21,12 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     private var lastPosition: TimeInterval = 0
     private var lastDuration: TimeInterval = 0
     private var lastPlaylist: [URL] = []
+    private var lastQueueCount = 0
     
     var audioPlayer = AVQueuePlayer()
     
-    var playlist: [URL] = [] {
+    private var playlist: [URL] = [] {
         didSet {
-            let startingIndex = self.playlistIndex == nil ? 0
-                : self.playlistIndex!
-            updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: startingIndex)
             self.playlistChanged()
             
             var strings: [String] = []
@@ -208,6 +206,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             if !shouldPlay && !audioObjectHasMedia() { self.pause() }
             
             self.startPositionTimer()
+            updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: self.playlistIndex ?? 0)
         }
     }
     
@@ -222,8 +221,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 currentItemRemoved = false
             }
             
-            let lastQueueCount = self.audioPlayer.items().count
-            let queueStartingIndex = !currentItemRemoved ?
+            let initalQueueCount = self.audioPlayer.items().count
+            let isLastItem = self.lastQueueCount == 1
+            let queueStartingIndex = isLastItem && !currentItemRemoved ?
                 startingIndex + 1 : startingIndex
              if queueStartingIndex < playlist.count {
                 for i in queueStartingIndex..<playlist.count {
@@ -231,8 +231,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 }
             }
             
+            
             var i = 1
-            while i < lastQueueCount {
+            while i < initalQueueCount {
                 self.audioPlayer.remove(self.audioPlayer.items()[1])
                 i+=1
             }
@@ -244,6 +245,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             self.audioPlayer.removeAllItems()
         }
         
+        self.lastQueueCount = self.audioPlayer.items().count
         self.mediaChanged()
     }
     
@@ -269,12 +271,14 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             }
             
             self.startPositionTimer()
+            updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: self.playlistIndex ?? 0)
         }
     }
     
     func removeMedia(atIndex index: Int) {
         if index >= 0 && index < self.playlist.count {
             self.playlist.remove(at: index)
+            updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: self.playlistIndex ?? 0)
         }
     }
     
@@ -287,6 +291,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                     modifiableIndexes[n] -= 1
                 }
             }
+            
+            updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: self.playlistIndex ?? 0)
         }
     }
     
@@ -310,6 +316,8 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 self.playlist.insert(contentsOf: items, at: toIndex)
             }
         }
+        
+        updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: self.playlistIndex ?? 0)
     }
     
     func play() {
@@ -418,6 +426,10 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 }
             }
         }
+    }
+    
+    func items() -> [URL] {
+        return self.playlist
     }
     
     func audioObjectHasMedia() -> Bool {
