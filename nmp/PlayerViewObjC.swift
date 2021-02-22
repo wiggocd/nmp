@@ -20,13 +20,12 @@ extension PlayerViewController {
         self.positionLabel.stringValue = to_hhmmss(seconds: self.player.position)
         if self.newPlaybackPositionTime != nil {
             self.player.position = self.newPlaybackPositionTime
-            self.nowPlayingInfoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.player.position
             self.newPlaybackPositionTime = nil
         }
     }
     
     @objc func positionSet() {
-        self.nowPlayingInfoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackProgress] = self.player.position
+        self.nowPlayingInfoCenter.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.player.position
     }
     
     @objc func rateChanged() {
@@ -37,12 +36,11 @@ extension PlayerViewController {
     }
     
     @objc func updateNowPlayingInfoCenter() {
-        // MARK: Todo - fix position incrementing whilst paused. This problem also exists within Apple's Now Playing example project I believe, so may not be a problem with this project in particular
-        
+        // MARK: Todo - fix position incrementing whilst paused
         if self.player.hasMedia() {
             var dict: [String: Any] = [
                 MPNowPlayingInfoPropertyPlaybackRate: self.player.rate,
-                MPNowPlayingInfoPropertyPlaybackProgress: self.player.position,
+                MPNowPlayingInfoPropertyElapsedPlaybackTime: self.player.position,
                 MPMediaItemPropertyPlaybackDuration: self.player.duration
             ]
             
@@ -74,16 +72,19 @@ extension PlayerViewController {
     @objc func playbackStarted(_ notification: Notification) {
         self.playPauseButton.image = NSImage(named: "Pause")
         self.nowPlayingInfoCenter.playbackState = .playing
+        self.updateNowPlayingInfoCenter()
     }
     
     @objc func playbackPaused(_ notification: Notification) {
         self.playPauseButton.image = NSImage(named: "Play")
         self.nowPlayingInfoCenter.playbackState = .paused
+        self.updateNowPlayingInfoCenter()
     }
     
     @objc func playbackStopped(_ notification: Notification) {
         self.playPauseButton.image = NSImage(named: "Play")
         self.nowPlayingInfoCenter.playbackState = .stopped
+        self.updateNowPlayingInfoCenter()
     }
     
     @objc func togglePlayPauseCommandAction() -> MPRemoteCommandHandlerStatus {

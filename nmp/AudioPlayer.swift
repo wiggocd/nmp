@@ -202,11 +202,11 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 }
             }
             
+            updatePlayerQueue(fromPlaylist: self.playlist, withStartingIndex: self.playlistIndex ?? 0)
             if updateIndexIfNew && !playerHadMedia { self.playlistIndex = 0 }
-            if !shouldPlay && !audioObjectHasMedia() { self.pause() }
+            if !shouldPlay && !self.audioObjectHasMedia() { self.pause() }
             
             self.startPositionTimer()
-            updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: self.playlistIndex ?? 0)
         }
     }
     
@@ -378,6 +378,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     func clear() {
         self.playlistIndex = nil
         self.playlist = []
+        self.updatePlayerQueue(fromPlaylist: self.playlist)
         self.stop()
     }
     
