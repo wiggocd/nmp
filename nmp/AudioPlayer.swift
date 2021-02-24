@@ -195,11 +195,22 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         if urls.count > 0 {
             let playerHadMedia = self.audioObjectHasMedia()
             
-            for url in urls {
-                if url!.isFileURL && audioFileTypes.contains(url!.pathExtension) {
-                    self.playlist.append(url!)
+            var mediaURLs = urls
+            var sorted = false
+            var i = 0
+            while !sorted {
+                if !mediaURLs[i]!.isFileURL || !audioFileTypes.contains(mediaURLs[i]!.pathExtension) {
+                    mediaURLs.remove(at: i)
+                } else {
+                    i+=1
+                }
+                
+                if i >= mediaURLs.count {
+                    sorted = true
                 }
             }
+            
+            self.playlist.append(contentsOf: mediaURLs as! [URL])
             
             updatePlayerQueue(fromPlaylist: self.playlist, withStartingIndex: self.playlistIndex ?? 0)
             if updateIndexIfNew && !playerHadMedia { self.playlistIndex = 0 }
@@ -221,9 +232,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             }
             
             let initalQueueCount = self.audioPlayer.items().count
-            print(self.lastQueuePlaylistCount)
             let itemsRemoved = playlist.count < self.lastQueuePlaylistCount
-            let queueStartingIndex = !currentItemRemoved && (playlist.count - startingIndex > self.lastQueueCount || itemsRemoved) ?
+            let newQueueItems = playlist.count - startingIndex > self.lastQueueCount
+            let queueStartingIndex = !currentItemRemoved && (newQueueItems || itemsRemoved) ?
                 startingIndex + 1 : startingIndex
              if queueStartingIndex < playlist.count {
                 for i in queueStartingIndex..<playlist.count {
