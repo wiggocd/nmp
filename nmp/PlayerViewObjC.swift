@@ -144,11 +144,9 @@ extension PlayerViewController {
     @objc func playlistIndexesRemoved(_ sender: Any?) {
         if let sender = sender as AnyObject? {
             if let object = sender.object as? PlaylistOutlineView {
-                var indexes: [Int] = []
                 for index in object.removedIndexes {
-                    indexes.append(index)
+                    self.player.removeMedia(atIndex: index)
                 }
-                self.player.removeMedia(atIndexes: indexes)
             }
         }
     }

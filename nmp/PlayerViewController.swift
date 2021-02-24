@@ -449,16 +449,6 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         }
     }
     
-    func removeMediaAtSelectedRows() {
-        if self.playlistOutlineView.selectedRowIndexes.count > 0 {
-            var selectedRows: [Int] = []
-            for index in self.playlistOutlineView.selectedRowIndexes {
-                selectedRows.append(index)
-            }
-            self.player.removeMedia(atIndexes: selectedRows)
-        }
-    }
-    
     func killPlayer() {
         self.player.stop()
     }

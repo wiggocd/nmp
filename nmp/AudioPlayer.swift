@@ -16,7 +16,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     private var positionTimer: Timer?
     private var indexUpdate = false
     private var positionUpdate = false
-    private var lastPlaylistCount = 0
+    private var lastQueuePlaylistCount = 0
     private var observations: [NSKeyValueObservation] = []
     private var lastPosition: TimeInterval = 0
     private var lastDuration: TimeInterval = 0
@@ -36,7 +36,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             
             self.application?.userDefaults.set(strings, forKey: "Playlist")
             self.lastPlaylist = playlist
-            self.lastPlaylistCount = playlist.count
         }
     }
     
@@ -222,7 +221,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             }
             
             let initalQueueCount = self.audioPlayer.items().count
-            let queueStartingIndex = !currentItemRemoved && playlist.count - startingIndex > self.lastQueueCount ?
+            print(self.lastQueuePlaylistCount)
+            let itemsRemoved = playlist.count < self.lastQueuePlaylistCount
+            let queueStartingIndex = !currentItemRemoved && (playlist.count - startingIndex > self.lastQueueCount || itemsRemoved) ?
                 startingIndex + 1 : startingIndex
              if queueStartingIndex < playlist.count {
                 for i in queueStartingIndex..<playlist.count {
@@ -245,6 +246,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
         
         self.lastQueueCount = self.audioPlayer.items().count
+        self.lastQueuePlaylistCount = playlist.count
         self.mediaChanged()
     }
     
@@ -277,20 +279,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     func removeMedia(atIndex index: Int) {
         if index >= 0 && index < self.playlist.count {
             self.playlist.remove(at: index)
-            updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: self.playlistIndex ?? 0)
-        }
-    }
-    
-    func removeMedia(atIndexes indexes: [Int]) {
-        if indexes.count > 0 {
-            var modifiableIndexes = indexes
-            for i in 0...modifiableIndexes.count-1 {
-                self.removeMedia(atIndex: modifiableIndexes[i])
-                for n in i...modifiableIndexes.count-1 {
-                    modifiableIndexes[n] -= 1
-                }
-            }
-            
             updatePlayerQueue(fromPlaylist: playlist, withStartingIndex: self.playlistIndex ?? 0)
         }
     }
