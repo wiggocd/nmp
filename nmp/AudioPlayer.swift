@@ -273,9 +273,22 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     private func _insertMedia(urls: [URL], atIndex index: Int, updateIndexIfNew: Bool, shouldPlay: Bool) {
         if urls.count > 0 {
-            for i in 0..<urls.count {
-                self.playlist.insert(urls[i], at: index + i)
+            var mediaURLs = urls
+            var sorted = false
+            var i = 0
+            while !sorted {
+                if !mediaURLs[i].isFileURL || !audioFileTypes.contains(mediaURLs[i].pathExtension) {
+                    mediaURLs.remove(at: i)
+                } else {
+                    i+=1
+                }
+                
+                if i >= mediaURLs.count {
+                    sorted = true
+                }
             }
+            
+            self.playlist.insert(contentsOf: mediaURLs, at: index)
             
             if self.audioObjectHasMedia() {
                 if updateIndexIfNew { self.playlistIndex = 0 }
