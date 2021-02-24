@@ -35,7 +35,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             }
             
             self.application?.userDefaults.set(strings, forKey: "Playlist")
-            self.lastPlaylist = playlist
         }
     }
     
@@ -257,6 +256,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         }
         
         self.lastQueueCount = self.audioPlayer.items().count
+        self.lastPlaylist = self.playlist
         self.lastQueuePlaylistCount = playlist.count
         self.mediaChanged()
     }
