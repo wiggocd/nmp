@@ -222,8 +222,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             }
             
             let initalQueueCount = self.audioPlayer.items().count
-            let isLastItem = self.lastQueueCount == 1
-            let queueStartingIndex = isLastItem && !currentItemRemoved ?
+            let queueStartingIndex = !currentItemRemoved && playlist.count - startingIndex > self.lastQueueCount ?
                 startingIndex + 1 : startingIndex
              if queueStartingIndex < playlist.count {
                 for i in queueStartingIndex..<playlist.count {
