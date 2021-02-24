@@ -30,6 +30,20 @@ extension PlayerViewController {
                 
                 self.application?.userDefaults.set(false, forKey: "PlaylistHidden")
             })
+            
+            NSAnimationContext.runAnimationGroup({ context in
+                context.duration = self.application!.animationDuration
+                if let window = self.view.window, let previousHeight = previousWindowHeightWithPlaylist {
+                    for constraint in windowWithPlaylistConstraints {
+                        constraint.isActive = true
+                    }
+                    
+                    let lastFrame = window.frame
+                    let displayRect = NSRect(x: lastFrame.minX, y: lastFrame.minY, width: lastFrame.width, height: previousHeight)
+                    
+                    window.animator().setFrame(displayRect, display: true)
+                }
+            })
         } else {
             NSAnimationContext.runAnimationGroup({ context in
                 context.duration = self.application!.animationDuration // 0.4
@@ -38,6 +52,21 @@ extension PlayerViewController {
                 self.playlistBox.isHidden = true
                 self.application?.userDefaults.set(true, forKey: "PlaylistHidden")
             }
+            
+            NSAnimationContext.runAnimationGroup({ context in
+                context.duration = self.application!.animationDuration
+                if let window = self.view.window {
+                    for constraint in windowWithPlaylistConstraints {
+                        constraint.isActive = false
+                    }
+                    
+                    let lastFrame = window.frame
+                    let displayRect = NSRect(x: lastFrame.minX, y: lastFrame.minY, width: lastFrame.width, height: lastFrame.height - self.playlistBox.frame.height)
+                    self.previousWindowHeightWithPlaylist = lastFrame.height;
+                    
+                    window.animator().setFrame(displayRect, display: true)
+                }
+            })
         }
     }
     

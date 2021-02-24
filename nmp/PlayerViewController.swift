@@ -35,8 +35,10 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     var buttons: [NSButton] = []
     var boxes: [NSBox] = []
     var sliders: [NSSlider] = []
+    var windowWithPlaylistConstraints: [NSLayoutConstraint] = []
     var newPlaybackPositionTime: TimeInterval! = nil
     var lastURL: URL?
+    var previousWindowHeightWithPlaylist: CGFloat?
     
     @IBOutlet var titleTextView: NSTextView!
     @IBOutlet var detailsTextView: NSTextView!
@@ -58,6 +60,8 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     @IBOutlet weak var playlistBox: NSBox!
     @IBOutlet weak var playlistScrollView: NSScrollView!
     @IBOutlet weak var playlistOutlineView: PlaylistOutlineView!
+    
+    @IBOutlet var imageBoxBottomConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,6 +128,10 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
         self.sliders = [
             self.timeSlider,
             self.volumeSlider
+        ]
+        
+        self.windowWithPlaylistConstraints = [
+            self.imageBoxBottomConstraint
         ]
     }
     
