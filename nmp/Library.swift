@@ -42,7 +42,13 @@ class AudioMetadata: NSObject {
             case "albumName":
                 self.album = stringValue
             case "artwork":
-                self.artwork = CGImage(jpegDataProviderSource: CGDataProvider(data: item.dataValue! as CFData)!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent(rawValue: 32)!)
+                if let data = item.dataValue {
+                    let dataProvider = CGDataProvider(data: data as CFData)
+                    if let provider = dataProvider {
+                        self.artwork = CGImage(jpegDataProviderSource: provider, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
+                    }
+                }
+//                break
             default:
                 break
             }

@@ -419,16 +419,14 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                         do {
                             dataProvider = CGDataProvider(data: try Data(contentsOf: url) as CFData)
                         } catch let error {
-                            print(error.localizedDescription)
+                            print("Error creating cover art data provider: \(error.localizedDescription)")
                         }
                         
                         if let provider = dataProvider {
-                            if let colorRendering = CGColorRenderingIntent(rawValue: 32) {
-                                if url.pathExtension == "jpg" || coverArtURL?.pathExtension == "jpeg" {
-                                    metadata.artwork = CGImage(jpegDataProviderSource: provider, decode: nil, shouldInterpolate: false, intent: colorRendering)
-                                } else if url.pathExtension == "png" {
-                                    metadata.artwork = CGImage(pngDataProviderSource: provider, decode: nil, shouldInterpolate: false, intent: colorRendering)
-                                }
+                            if url.pathExtension == "jpg" || coverArtURL?.pathExtension == "jpeg" {
+                                metadata.artwork = CGImage(jpegDataProviderSource: provider, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
+                            } else if url.pathExtension == "png" {
+                                metadata.artwork = CGImage(pngDataProviderSource: provider, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
                             }
                         }
                     }

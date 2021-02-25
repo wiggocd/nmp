@@ -14,7 +14,7 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     let application = Application.shared as? Application
     let player = AudioPlayer()
     let coverImageMinimumSize = NSSize(width: 640, height: 640)
-    let coverImageCornerRadius: CGFloat = 10
+    let coverImageCornerRadius: CGFloat = 8
     let backgroundDarknessAlpha: CGFloat = 0.55
     let darkAppearance = NSAppearance(named: .darkAqua)
     let mediaHotKeyModifiers: NSEvent.ModifierFlags = [.command]
