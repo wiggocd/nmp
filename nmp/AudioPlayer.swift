@@ -76,10 +76,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     var position: TimeInterval = 0 {
         didSet {
-            if self.lastPosition + 1 >= self.lastDuration {
-                self.mediaChanged()
-            }
-            
             if !self.positionUpdate {
                 let newTime = CMTime(seconds: position, preferredTimescale: .max)
                 self.audioPlayer.seek(to: newTime)
@@ -258,7 +254,6 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         self.lastQueueCount = self.audioPlayer.items().count
         self.lastPlaylist = self.playlist
         self.lastQueuePlaylistCount = playlist.count
-        self.mediaChanged()
     }
     
     func insertMedia(urls: [URL], atIndex index: Int, updateIndexIfNew: Bool, shouldPlay: Bool, async: Bool = true) {
