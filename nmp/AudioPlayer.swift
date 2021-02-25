@@ -76,6 +76,10 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     
     var position: TimeInterval = 0 {
         didSet {
+            if self.lastPosition + 1 >= self.lastDuration {
+                self.mediaChanged()
+            }
+            
             if !self.positionUpdate {
                 let newTime = CMTime(seconds: position, preferredTimescale: .max)
                 self.audioPlayer.seek(to: newTime)
@@ -410,22 +414,20 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                 
                 if directoryURL.hasDirectoryPath {
                     let coverArtURL = getCoverArt(fromDirectory: directoryURL)
-                    if coverArtURL != nil {
-                        var dataProvider: CGDataProvider!
+                    if let url = coverArtURL {
+                        var dataProvider: CGDataProvider?
                         do {
-                            dataProvider = CGDataProvider(data: try Data(contentsOf: coverArtURL!) as CFData)
+                            dataProvider = CGDataProvider(data: try Data(contentsOf: url) as CFData)
                         } catch let error {
                             print(error.localizedDescription)
                         }
                         
-                        if dataProvider != nil {
-                            let colorRendering = CGColorRenderingIntent(rawValue: 32)
-                            
-                            if colorRendering != nil {
-                                if coverArtURL?.pathExtension == "jpg" || coverArtURL?.pathExtension == "jpeg" {
-                                    metadata.artwork = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
-                                } else if coverArtURL?.pathExtension == "png" {
-                                    metadata.artwork = CGImage(pngDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: colorRendering!)
+                        if let provider = dataProvider {
+                            if let colorRendering = CGColorRenderingIntent(rawValue: 32) {
+                                if url.pathExtension == "jpg" || coverArtURL?.pathExtension == "jpeg" {
+                                    metadata.artwork = CGImage(jpegDataProviderSource: provider, decode: nil, shouldInterpolate: false, intent: colorRendering)
+                                } else if url.pathExtension == "png" {
+                                    metadata.artwork = CGImage(pngDataProviderSource: provider, decode: nil, shouldInterpolate: false, intent: colorRendering)
                                 }
                             }
                         }

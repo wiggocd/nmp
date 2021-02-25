@@ -11,9 +11,9 @@ import Cocoa
 
 extension NSImage {
     func roundCorners(withRadius radius: CGFloat) -> NSImage {
-        let rect = NSRect(origin: .zero, size: self.size)
-        
         if let cgImage = self.cgImage {
+            let rect = NSRect(origin: .zero, size: self.size)
+            
             if let context = CGContext(data: nil,
                                         width: Int(rect.width),
                                         height: Int(rect.height),
@@ -28,7 +28,7 @@ extension NSImage {
                 context.draw(cgImage, in: rect)
                 
                 if let composedImage = context.makeImage() {
-                    return NSImage(cgImage: composedImage, size: size)
+                    return NSImage(cgImage: composedImage, size: self.size)
                 }
             }
         }
