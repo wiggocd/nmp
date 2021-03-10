@@ -16,7 +16,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
     private var positionTimer: Timer?
     private var indexUpdate = false
     private var positionUpdate = false
-    private var lastQueuePlaylistCount = 0
+    private var lastPlaylistCount = 0
     private var observations: [NSKeyValueObservation] = []
     private var lastPosition: TimeInterval = 0
     private var lastDuration: TimeInterval = 0
@@ -231,9 +231,10 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             }
             
             let initalQueueCount = self.audioPlayer.items().count
-            let itemsRemoved = playlist.count < self.lastQueuePlaylistCount
+            let itemsRemoved = playlist.count < self.lastPlaylistCount
             let newQueueItems = playlist.count - startingIndex > self.lastQueueCount
-            let queueStartingIndex = !currentItemRemoved && (newQueueItems || itemsRemoved) ?
+            let newPlaylist = playlist != self.lastPlaylist
+            let queueStartingIndex = !currentItemRemoved && ((newQueueItems && newPlaylist) || itemsRemoved) ?
                 startingIndex + 1 : startingIndex
              if queueStartingIndex < playlist.count {
                 for i in queueStartingIndex..<playlist.count {
@@ -250,6 +251,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
             
             if currentItemRemoved {
                 self.audioPlayer.replaceCurrentItem(with: nil)
+                self.mediaChanged()
             }
         } else {
             self.audioPlayer.removeAllItems()
@@ -257,7 +259,7 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
         
         self.lastQueueCount = self.audioPlayer.items().count
         self.lastPlaylist = self.playlist
-        self.lastQueuePlaylistCount = playlist.count
+        self.lastPlaylistCount = playlist.count
     }
     
     func insertMedia(urls: [URL], atIndex index: Int, updateIndexIfNew: Bool, shouldPlay: Bool, async: Bool = true) {

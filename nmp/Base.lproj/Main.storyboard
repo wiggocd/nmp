@@ -232,13 +232,13 @@ CA
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HM5-Hp-Buj">
-                                            <rect key="frame" x="10" y="10" width="316" height="74"/>
+                                            <rect key="frame" x="10" y="10" width="316" height="124"/>
                                             <clipView key="contentView" id="A8b-QK-RMP">
-                                                <rect key="frame" x="1" y="1" width="314" height="72"/>
+                                                <rect key="frame" x="1" y="1" width="314" height="122"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnSelection="YES" columnResizing="NO" emptySelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="mjt-PA-sGQ" viewBased="YES" id="N36-pr-j6a">
-                                                        <rect key="frame" x="0.0" y="0.0" width="314" height="47"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="314" height="97"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -632,13 +632,13 @@ CA
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <scrollView autoresizesSubviews="NO" borderType="none" autohidesScrollers="YES" horizontalLineScroll="20" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZUU-ru-jEQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="283" height="80"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="283" height="99"/>
                                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="vu6-q2-hY3">
-                                                <rect key="frame" x="0.0" y="0.0" width="283" height="80"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="283" height="99"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" outlineTableColumn="wnY-SM-EmK" id="mzH-Gz-28f" customClass="PlaylistOutlineView" customModule="nmp" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="283" height="80"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="283" height="99"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <size key="intercellSpacing" width="2" height="3"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -721,10 +721,10 @@ CA
                                         </scrollView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="ZUU-ru-jEQ" secondAttribute="trailing" id="DTr-cx-0IQ"/>
-                                        <constraint firstItem="ZUU-ru-jEQ" firstAttribute="top" secondItem="c5M-73-KtE" secondAttribute="top" constant="20" id="JHD-Mq-E6o"/>
-                                        <constraint firstAttribute="bottom" secondItem="ZUU-ru-jEQ" secondAttribute="bottom" id="Snb-uX-VaB"/>
-                                        <constraint firstItem="ZUU-ru-jEQ" firstAttribute="leading" secondItem="c5M-73-KtE" secondAttribute="leading" id="sVK-ET-GSN"/>
+                                        <constraint firstItem="ZUU-ru-jEQ" firstAttribute="top" secondItem="c5M-73-KtE" secondAttribute="top" id="KZF-NF-Uzf"/>
+                                        <constraint firstAttribute="bottom" secondItem="ZUU-ru-jEQ" secondAttribute="bottom" id="Mst-qx-bzI"/>
+                                        <constraint firstItem="ZUU-ru-jEQ" firstAttribute="leading" secondItem="c5M-73-KtE" secondAttribute="leading" id="UvF-Cx-a4V"/>
+                                        <constraint firstAttribute="trailing" secondItem="ZUU-ru-jEQ" secondAttribute="trailing" id="tky-7N-aUH"/>
                                     </constraints>
                                 </view>
                                 <color key="borderColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -815,7 +815,7 @@ CA
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="75" y="747"/>
+            <point key="canvasLocation" x="74.5" y="747"/>
         </scene>
         <!--General-->
         <scene sceneID="fGz-x9-Kiv">
@@ -890,7 +890,7 @@ CA
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mpE-4J-reV">
-                                <rect key="frame" x="44" y="84" width="155" height="32"/>
+                                <rect key="frame" x="43" y="84" width="156" height="32"/>
                                 <buttonCell key="cell" type="push" title="Reset User Defaults" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="V2g-na-FEZ">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
