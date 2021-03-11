@@ -54,7 +54,9 @@ class AudioMetadata: NSObject {
             }
             
             self.name = fileDisplayName(forPath: url.path)
-            if (self.title == nil) {
+            if self.title == nil {
+                self.title = self.name
+            } else if let title = self.title, title.count == 0 {
                 self.title = self.name
             }
         }
@@ -63,11 +65,11 @@ class AudioMetadata: NSObject {
     func detailsString() -> String {
         if let artist = self.artist {
             if let album = self.album {
-                return artist + " - " + album
+                return artist + " \u{2014} " + album
             }
             return artist
         } else if let album = self.album {
-            return "No Artist - " + album
+            return "No Artist \u{2014} " + album
         } else {
             return "\u{2014}"
         }
@@ -97,7 +99,7 @@ class PlaylistItem: NSObject {
         let displayIndex = self.trackIndex + 1
         if let title = self.metadata.title {
             if let artist = self.metadata.artist {
-                return String(displayIndex) + ". " + artist + " - " + title
+                return String(displayIndex) + ". " + artist + " \u{2014} " + title
             } else {
                 return String(displayIndex) + ". " + title
             }
