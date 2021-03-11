@@ -23,10 +23,11 @@ let FILENAMES_PASTEBOARD_TYPE = NSPasteboard.PasteboardType.fileURL
 let playlistPasteboardTypes = [REORDER_PASTEBOARD_TYPE, FILENAMES_PASTEBOARD_TYPE]
 
 class AudioMetadata: NSObject {
-    var title: String = " "
-    var artist: String = " "
-    var album: String = " "
-    var artwork: CGImage!
+    var title: String?
+    var artist: String?
+    var album: String?
+    var artwork: CGImage?
+    var name = ""
     
     init(forURL url: URL) {
         let metadataList = AVAsset(url: url).commonMetadata
@@ -45,24 +46,31 @@ class AudioMetadata: NSObject {
                 if let data = item.dataValue {
                     let dataProvider = CGDataProvider(data: data as CFData)
                     if let provider = dataProvider {
-                        self.artwork = CGImage(jpegDataProviderSource: provider, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
+                        self.artwork = CGImage(jpegDataProviderSource: provider, decode: nil, shouldInterpolate: true, intent: .defaultIntent)
                     }
                 }
-//                break
             default:
                 break
+            }
+            
+            self.name = fileDisplayName(forPath: url.path)
+            if (self.title == nil) {
+                self.title = self.name
             }
         }
     }
     
     func detailsString() -> String {
-        if self.artist != " " {
-            if self.album != " " {
-                return self.artist + " - " + self.album
+        if let artist = self.artist {
+            if let album = self.album {
+                return artist + " - " + album
             }
-            return self.artist
+            return artist
+        } else if let album = self.album {
+            return "No Artist - " + album
+        } else {
+            return "\u{2014}"
         }
-        return " "
     }
 }
 
@@ -87,13 +95,14 @@ class PlaylistItem: NSObject {
     
     func playlistLabel() -> String {
         let displayIndex = self.trackIndex + 1
-        if self.metadata.title != " " {
-            if self.metadata.artist != " " {
-                return "\(displayIndex). " + self.metadata.artist + " - " + self.metadata.title
+        if let title = self.metadata.title {
+            if let artist = self.metadata.artist {
+                return String(displayIndex) + ". " + artist + " - " + title
+            } else {
+                return String(displayIndex) + ". " + title
             }
-            return "\(displayIndex). \(self.metadata.title)"
         }
-        return "\(displayIndex). \(fileDisplayName(forPath: self.url.path))"
+        return String(displayIndex) + ". " + fileDisplayName(forPath: self.url.path)
     }
 }
 

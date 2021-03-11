@@ -401,10 +401,14 @@ class PlayerViewController: NSViewController, NSOutlineViewDelegate {
     func updateMedia() {
         if self.player.playlistHasMedia() {
             if let metadata = self.player.metadata {
-                self.titleTextView.string = metadata.title
+                if let title = metadata.title {
+                    self.titleTextView.string = title
+                } else {
+                    self.titleTextView.string = metadata.name
+                }
                 self.detailsTextView.string = metadata.detailsString()
-                if metadata.artwork != nil {
-                    self.setCoverImage(image: metadata.artwork)
+                if let artwork = metadata.artwork {
+                    self.setCoverImage(image: artwork)
                     self.setBackgroundViewAndAppearance()
                 } else {
                     self.resetCoverImage()

@@ -426,9 +426,9 @@ class AudioPlayer: NSObject, AVAudioPlayerDelegate {
                         
                         if let provider = dataProvider {
                             if url.pathExtension == "jpg" || coverArtURL?.pathExtension == "jpeg" {
-                                metadata.artwork = CGImage(jpegDataProviderSource: provider, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
+                                metadata.artwork = CGImage(jpegDataProviderSource: provider, decode: nil, shouldInterpolate: true, intent: .defaultIntent)
                             } else if url.pathExtension == "png" {
-                                metadata.artwork = CGImage(pngDataProviderSource: provider, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
+                                metadata.artwork = CGImage(pngDataProviderSource: provider, decode: nil, shouldInterpolate: true, intent: .defaultIntent)
                             }
                         }
                     }
