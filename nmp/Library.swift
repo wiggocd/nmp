@@ -52,13 +52,13 @@ class AudioMetadata: NSObject {
             default:
                 break
             }
-            
-            self.name = fileDisplayName(forPath: url.path)
-            if self.title == nil {
-                self.title = self.name
-            } else if let title = self.title, title.count == 0 {
-                self.title = self.name
-            }
+        }
+        
+        self.name = fileDisplayName(forPath: url.path)
+        if self.title == nil {
+            self.title = self.name
+        } else if let title = self.title, title.count == 0 {
+            self.title = self.name
         }
     }
     
