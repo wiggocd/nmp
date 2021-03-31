@@ -26,4 +26,4 @@ Run `xcodebuild build` to build; an application package should be built to `buil
 
 _______
 
-The aim of this project is to create an audio playback program targeted for local files with an as similar to native as possible appearance :)
+The aim of this project is to create an audio playback program targeted for local files with an as similar to native as possible appearance.
