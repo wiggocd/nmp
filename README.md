@@ -1,6 +1,6 @@
 nmp - The New Music Player for macOS 10.15+
 
-[Website](https://wiggocd.github.io/nmp)
+[Website](https://gothgirl68k.github.io/nmp)
 
 ## Usage
 
